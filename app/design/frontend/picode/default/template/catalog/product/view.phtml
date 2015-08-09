@@ -54,7 +54,7 @@ $_customerHelper = $this->helper('conturifurnizori');
 
         <div class="product-img-box">
             <div class="product-name">
-                <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>.</h1>
+                <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
             </div>
             <?php echo $this->getChildHtml('media') ?>
             <?php echo $this->getChildHtml('rpp_view_count') ?>
@@ -62,7 +62,7 @@ $_customerHelper = $this->helper('conturifurnizori');
 
         <div class="product-shop">
             <div class="product-name">
-                <h1 class="title"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>.</h1>
+                <h1 class="title"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
             </div>
             <div class="review-summary">
                 <?php if ($reviewUrl = $this->getReviewsSummaryHtml($_product, 'default', false)): ?>
