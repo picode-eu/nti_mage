@@ -1,0 +1,76 @@
+<?php
+    $portofoliuCollection = $this->requestedCollection();
+    $_helper = $this->helper('portofoliu');
+    //echo $portofoliuCollection->getSelect();
+    //Zend_Debug::dump($portofoliuCollection); die();
+?>
+<div class="page-title category-title">
+    <h1>Portofolii VIDEO</h1>
+</div>
+<?php if(is_object($portofoliuCollection) && $portofoliuCollection->getSize()): ?>
+    <div class="toolbar">
+        <?php echo $this->getPagerHtml(); ?>
+    </div>
+    <div class="portofoliu-collection">
+        <div id="masonry-container">
+            <?php foreach($portofoliuCollection as $_video): ?>
+                <?php $_provider = $this->geProviderById($_video->getCustomerId()); ?>
+                <?php if ($_helper->checkVideoExists($_video->getVideoUrl(), $_video->getUrlType()) && $_provider): ?>
+                    <div class="portofoliu-item video-item">
+                        <?php
+                            $services = strtolower($_provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($_provider));
+                            $friendlyProviderName = $_helper->seoFriendlyUrl(strip_tags($_provider->getBusinessDescriptionsTitle())) . '/';
+                            $friendlyVideoName = $_helper->seoFriendlyUrl(strip_tags($_video->getVideoName())) . '/';
+                            $videoUrl = $this->getBaseUrl() . 'portofoliu/video/view/' . $friendlyProviderName . $_provider->getid() . '/' . $friendlyVideoName . $_video->getId();
+                        ?>
+                        <div class="video-thumb">
+                            <img src="<?php echo $this->getVimeoThumb($_video); ?>" />
+                            <a class="player-icon" href="<?php echo $videoUrl ?>" title="<?php echo strip_tags($_video->getVideoName()); ?>"><span>
+                               <span class="ion-play"></span>
+                            </a>
+                        </div>
+                        <div class="video-details">
+                            <h2 class="video-title">
+                                <a class="video-title" href="<?php echo $videoUrl ?>" title="<?php echo strip_tags($_video->getVideoName()); ?>">
+                                    <?php echo $_video->getVideoName(); ?>
+                                </a>
+                            </h2>
+                            <div class="video-description">
+                                <p><?php echo $_helper->stringTruncate(strip_tags(html_entity_decode($_video->getVideoDescription())), 130); ?></p>
+                            </div>
+                        </div>
+                        <?php $fiendlyUrl = $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $friendlyProviderName . $_provider->getId(); ?>
+                        <a class="provider-link" href="<?php echo $fiendlyUrl ?>" title="<?php echo strip_tags($_provider->getBusinessDescriptionsTitle()) ?>">
+                            <div class="provider-info">
+                                <p>
+                                    <span class="name ion-briefcase">
+                                        <?php echo strip_tags($_provider->getBusinessDescriptionsTitle()); ?>
+                                    </span>
+                                    <span class="date ion-calendar"><?php echo date('d.m.Y', strtotime($_video->getCreatedAt())); ?></span>
+                                </p>
+
+                            </div>
+                        </a>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <div class="toolbar">
+        <?php echo $this->getPagerHtml(); ?>
+    </div>
+<?php else: ?>
+    <?php echo $this->__('Momentan nu avem niciun portofoliu video de afisat.') ?>
+<?php endif ?>
+
+
+<script type="text/javascript">
+    //<![CDATA[
+    var container = document.querySelector('#masonry-container');
+    var msnry = new Masonry( container );
+    // layout Masonry again after all images have loaded
+    imagesLoaded( container, function() {
+      msnry.layout();
+    });
+    //]]>
+</script>

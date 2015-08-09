@@ -1,0 +1,245 @@
+<?php
+	$furnizoriHelper = $this->helper('conturifurnizori');
+    $customer = $this->getCustomer();
+    $account = $furnizoriHelper->getAccountTypeNameBylLevel('cont_level', $customer->getFurnizorAccountLevel());
+    $accountName = $account ? $account->getName() : '';
+    $status = $customer->getResource()->getAttribute('furnizor_account_status');
+    // check expiration date
+    $now = strtotime(date('Y-m-d 00:00:00', Mage::getModel('core/date')->timestamp(time())));
+    $expiration = strtotime($customer->getFurnizorAccountExpiration());
+    $diff = $expiration - $now;
+    // get customer last order
+    $order = $furnizoriHelper->getCustomerLastOrder();
+    // actions
+    $accountStatusText = $customer->getResource()->getAttribute('furnizor_account_status')->getFrontend()->getValue($customer);
+    switch ($customer->getFurnizorAccountStatus()) {
+        case '2': // 2 is for finalizara plata
+            $action = '<a href="' . $this->getBaseUrl() . 'conturifurnizori/update/plateste/">Plateste online</a>';
+            $message = 'Contul tău de furnizor este în stadiul de "<strong>' . $accountStatusText . '</strong>" iar termenul de plată al facturii este <strong>' . date('d.m.Y', strtotime($customer->getFurnizorAccountTrialExp())) . '</strong>. După expirarea acestui termen vizibilitatea profilul tău de furnizor va deveni <strong>privată</strong>. Dacă nu ai primit factura proformă te rugăm să ne contactezi pentru a-ți retrimite o copie sau alege să plătești online pentru activare imediată.';
+            break;
+        case '3': // 2 is for aprobare
+            $action = '<a href="' . $this->getBaseUrl() . 'conturifurnizori/update/retrimitecererea/">Retrimite cererea</a>';
+            $message = 'Contul tău de furnizor este în stadiul de "<strong>' . $accountStatusText . '</strong>". Profilul nu poate fi public decât pentru conturile active.';
+            break;
+        case '4': // 2 is for blocat
+            $action = '<a href="' . $this->getBaseUrl() . 'conturifurnizori/update/deblocheaza/">Detalii</a>';
+            $message = 'Contul tău de furnizor este în stadiul "<strong>' . $accountStatusText . '</strong>". Te rugăm să ne contactezi pentru a analiza situația.';
+            break;
+        case '5': // 2 is for suspendat
+            $action = '<a href="' . $this->getBaseUrl() . 'conturifurnizori/produse/list/">Reactivează</a>';
+            $message = 'Contul tău a fost "<strong>' . $accountStatusText . '</strong>" ca urmare a inactivității.';
+            break;
+        case '6': // 2 is for sters
+            $action = '<a href="' . $this->getBaseUrl() . 'conturifurnizori/update/reactiveaza/">Solicită reactivarea</a>';
+            $message = 'Contul tău a fost "<strong>' . $accountStatusText . '</strong>" ca urmare a inactivității.';
+            break;
+        default:
+            $action = '<a href="' . $this->getBaseUrl() . 'conturifurnizori/produse/list/">Prelungește</a>';
+            $message = '';
+            break;
+    }
+	//Zend_Debug::dump($orders->getData());
+?>
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+
+<div class="dashboard">
+    <?php if ($message): ?>
+        <ul class="messages">
+            <li class="notice-msg">
+                <ul>
+                    <li>
+                        <span><?php echo $message ?></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    <?php endif; ?>
+    <div class="page-title">
+        <h1><?php echo $this->__('Panou general de control') ?></h1>
+    </div>
+    <?php if ($customer->getGroupId() == '4'): // 4 is for furnizori ?>
+        
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('dashboard-intro-' . $furnizoriHelper->getCustomerGroupCode())->toHtml() ?>
+        
+        <div class="box-account box-info">
+            <div class="current-order">
+                <div class="box-head">
+                    <h2>
+                        <?php echo $this->__('Cont curent') ?> - <?php echo $accountName ?>
+                    </h2>
+                    <span>
+                        <?php echo $this->__(' | Stare: ')  ?>
+                        <span class="<?php echo $customer->getFurnizorAccountStatus() == 1 ? 'green' : 'red'; ?>">
+                            <?php echo $customer->getResource()->getAttribute('furnizor_account_status')->getFrontend()->getValue($customer); ?>
+                        </span>
+                    </span>
+                </div>
+                <div class="box-content">
+                    <div class="table">
+                        <div class="table-head">
+                            <div class="head-row">
+                                <div class="table-data name"><?php echo $this->__('Denumire') ?></div>
+                                <div class="table-data expiration"><?php echo $this->__('Expirare') ?></div>
+                                <div class="table-data total"><?php echo $this->__('Cost') ?></div>
+                                <div class="table-data status"><?php echo $this->__('Status') ?></div>
+                                <div class="table-data action"><?php echo $this->__('') ?></div>
+                            </div>
+                        </div>
+                        <div class="table-content">
+                            <div class="table-row">
+                                <div class="table-data name"><?php echo $accountName ?></div>
+                                <div class="table-data expiration"><?php echo $furnizoriHelper->translateDate(date('d M Y', strtotime($customer->getFurnizorAccountExpiration()))); ?></div>
+                                <div class="table-data total"><?php echo $this->helper('core')->currency($order->getGrandTotal(), true, false); ?></div>
+                                <div class="table-data status"><?php echo $customer->getResource()->getAttribute('furnizor_account_status')->getFrontend()->getValue($customer); ?></div>
+                                <div class="table-data action"><?php // echo $action; ?></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php else: ?>
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('dashboard-intro-' . $furnizoriHelper->getCustomerGroupCode())->toHtml() ?>
+    <?php endif; ?>
+    
+    <?php if ($customer->getGroupId() == 4): // 4 is for furnizori ?>
+        <?php if ($customer->getAcOpNotificariEmail() && $customer->getAcOpRapoarteAvansate()): ?>
+        <div class="box-account box-info">
+            <div class="box-head">
+                <h2><?php echo $this->__('Mesaje / Rapoarte') ?></h2>
+            </div>
+            <div class="col2-set">
+                <?php echo $this->getBlockHtml('mesaje') ?>
+                <?php echo $this->getBlockHtml('rapoarte') ?>
+            </div>
+        </div>
+        <?php endif; ?>
+        
+        <?php /*
+        <div class="box-account box-info other">
+            <div class="box-head">
+                <h2><?php echo $this->__('Rapoarte') ?></h2>
+                <a href="<?php echo $this->getUrl('conturifurnizori/rapoarte/avansate/',array('_secure'=>true)) ?>">Detalii</a>
+            </div>
+            <?php echo $this->getBlockHtml('rapoarte') ?>
+        </div>
+        */ ?>
+        
+    <?php endif; ?>
+    
+    <?php //if ($customer->getGroupId() == 4): // 4 is for furnizori ?>
+        <?php //if ($customer->getAcOpNotificariEmail() && !$customer->getAcOpRapoarteAvansate()): ?>
+            <div class="box-account box-info">
+                <div class="box-head">
+                    <h2><?php echo $this->__('Mesaje necitite') ?></h2>
+                    <!-- <span class="msg-count">(x)</span> -->
+                    <a href="<?php echo $this->getUrl('conturifurnizori/mesaje/casutapostala/',array('_secure'=>true)) ?>"><?php echo $this->__('Toate mesajele') ?></a>
+                </div>
+                <?php echo $this->getBlockHtml('mesaje_single') ?>
+            </div>
+        <?php //endif; ?>
+        <?php if ($customer->getGroupId() == '4'): ?>
+            <div class="box-account box-profil">
+                <div class="box-head">
+                    <h2><?php echo $this->__('Setari profil') ?></h2>
+                    <a href="<?php echo $this->getUrl('conturifurnizori/setari/profil/',array('_secure'=>true)) ?>"><?php echo $this->__('Editeaza') ?></a>
+                </div>
+                <?php echo $this->getBlockHtml('profil') ?>
+            </div>
+        <?php endif; ?>
+    <?php //endif; ?>
+    
+    <?php /*
+    <div class="box-account box-info administrare">
+        <div class="box-head">
+            <h2><?php echo $this->__('Administre cont') ?></h2>
+        </div>
+        <?php echo $this->getChildHtml('customer.account.dashboard.extra') ?> 
+        <?php echo $this->getChildHtml('info') ?>
+    </div>
+    */ ?>
+    
+    <?php echo $this->getChildHtml('top'); // Recent Orders ?>
+    
+    <?php echo $this->getChildHtml('address') ?>
+    
+    <?php // echo $this->getChildHtml('info1') ?>
+    <?php // echo $this->getChildHtml('info2') ?>
+</div>
+
+<?php /*
+
+customer = array(69) {
+  ["website_id"] => string(1) "1"
+  ["entity_id"] => string(2) "89"
+  ["entity_type_id"] => string(1) "1"
+  ["attribute_set_id"] => string(1) "0"
+  ["email"] => string(23) "johnny.bravo@server.com"
+  ["group_id"] => string(1) "4"
+  ["increment_id"] => NULL
+  ["store_id"] => string(1) "1"
+  ["created_at"] => string(25) "2014-07-16T20:35:03+03:00"
+  ["updated_at"] => string(19) "2014-08-07 20:39:54"
+  ["is_active"] => string(1) "1"
+  ["disable_auto_group_change"] => string(1) "0"
+  ["created_in"] => string(18) "Default Store View"
+  ["firstname"] => string(6) "Johnny"
+  ["lastname"] => string(5) "Bravo"
+  ["password_hash"] => string(32) "88c865a9f873c0ba01545c841d34a587"
+  ["furnizor_location_city"] => string(11) "Cluj-Napoca"
+  ["furnizor_location_address"] => string(10) "Clabucet 6"
+  ["furnizor_location_zip"] => string(6) "400537"
+  ["furnizor_contact_firstname"] => string(6) "Johnny"
+  ["furnizor_contact_lastname"] => string(5) "Bravo"
+  ["furnizor_contact_email"] => string(23) "johnny.bravo@server.com"
+  ["furnizor_contact_phone"] => string(12) "0123.456.789"
+  ["business_images_logo"] => string(35) "/f/o/foto-maxim-logo-1407443948.jpg"
+  ["business_images_coperta"] => string(38) "/f/o/foto-maxim-coperta-1407443948.jpg"
+  ["business_descriptions_title"] => string(10) "Foto Maxim"
+  ["furnizor_company_name"] => string(11) "Happy Color"
+  ["business_descriptions_slogan"] => string(52) "O fotografie cere mai mult decat perfectiune tehnica"
+  ["business_descriptions_exp"] => string(2) "10"
+  ["furnizor_account_level"] => string(1) "2"
+  ["furnizor_account_trial_level"] => string(1) "0"
+  ["ac_op_max_oferte_active"] => string(1) "2"
+  ["ac_op_max_album_active"] => string(1) "3"
+  ["ac_op_spatiu_disc"] => string(3) "100"
+  ["ac_op_max_video_active"] => string(1) "3"
+  ["furnizor_account_online_status"] => string(1) "0"
+  ["business_networks_website"] => string(23) "http://www.mywebsite.ro"
+  ["business_networks_skype"] => string(8) "skype id"
+  ["business_networks_messenger"] => string(15) "yahoo messenger"
+  ["business_networks_facebook"] => string(8) "facebook"
+  ["business_networks_tweeter"] => string(7) "twetter"
+  ["business_networks_gplus"] => string(11) "google plus"
+  ["business_networks_linkedin"] => string(8) "linkedin"
+  ["business_networks_youtube"] => string(7) "youtube"
+  ["business_networks_vimeo"] => string(5) "vimeo"
+  ["furnizor_account_expiration"] => string(19) "2015-11-30 00:00:00"
+  ["default_billing"] => string(2) "57"
+  ["furnizor_account_status"] => string(1) "2"
+  ["furnizor_account_type"] => string(1) "2"
+  ["furnizor_company_type"] => string(1) "1"
+  ["furnizor_company_services"] => string(1) "1"
+  ["furnizor_location_province"] => string(3) "291"
+  ["ac_op_afisare_profil"] => string(1) "1"
+  ["ac_op_afisare_preferentiala"] => string(1) "1"
+  ["ac_op_afisare_oferte"] => string(1) "1"
+  ["ac_op_eticheta_oferta_speciala"] => string(1) "0"
+  ["ac_op_link_restul_ofertelor"] => string(1) "0"
+  ["ac_op_link_alte_oferte"] => string(1) "1"
+  ["ac_op_afisare_album_prezentare"] => string(1) "1"
+  ["ac_op_afisare_video_prezentare"] => string(1) "1"
+  ["ac_op_notificari_sms"] => string(1) "0"
+  ["ac_op_notificari_email"] => string(1) "1"
+  ["ac_op_link_direct_website"] => string(1) "1"
+  ["ac_op_afisare_retele"] => string(1) "1"
+  ["ac_op_rapoarte_avansate"] => string(1) "0"
+  ["business_descriptions_desc"] => string(427) "Description lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis orci risus, aliquam id aliquet vel, feugiat id velit. Pellentesque vitae justo at lorem condimentum blandit. Mauris nec justo a lectus placerat placerat. Vivamus lacinia congue auctor. Morbi ullamcorper euismod eros, vitae dapibus tellus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam non placerat enim."
+  ["business_descriptions_aparat"] => string(305) "Equipment vestibulum semper suscipit scelerisque. Curabitur nunc felis, iaculis nec venenatis quis, rhoncus id orci. Donec egestas gravida tempus. Integer varius, risus sit amet aliquam vulputate, erat est placerat nunc, a accumsan elit dolor venenatis metus. Nullam nibh leo, iaculis sed sapien sit amet."
+  ["business_networks_webshortdesc"] => string(246) "Pellentesque vel lobortis metus. In vitae enim aliquam, euismod nibh nec, tempor odio. Nulla facilisi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec faucibus libero vitae vehicula adipiscing. "
+  ["tax_class_id"] => string(1) "3"
+}
+
+*/ ?>

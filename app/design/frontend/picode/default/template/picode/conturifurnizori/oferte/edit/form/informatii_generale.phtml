@@ -1,0 +1,311 @@
+<?php
+    $product = $this->getProductForEdit();
+    $_provider = $this->getCustomer();
+    $attributeSource = Mage::getSingleton('eav/config');
+    //$serviciiPrestate = $product->getOfgTipOferta();
+?>
+
+<li class="fields">
+    <div class="field">
+        <label for="name" class="required"><em>*</em><?php echo $this->__('Denumire ofertă') ?></label>
+        <div class="input-box">
+            <input type="text" name="name" id="name" class="input-text required-entry" title="<?php echo $this->__('Denumire ofertă') ?>" value="<?php echo $product->getName() ?>" />
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_tip_oferta" class="required"><em>*</em><?php echo $this->__('Tip ofertă') ?></label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_tip_oferta')->getSource()->getAllOptions(false); ?>
+            <?php
+                $services = $_provider->getFurnizorCompanyServices();
+                $services = explode(' ', $services);
+
+                if (in_array('3', $services)) {
+                    array_push($services, '1');
+                    array_push($services, '2');
+                }
+            ?>
+            <select name="ofg_tip_oferta" id="ofg_tip_oferta" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <?php if ($option['value'] != '0' && in_array($option['value'], $services)): ?>
+                        <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgTipOferta() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                            <?php echo $option['label'] ?>
+                        </option>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="wide">
+        <label for="description" class="required"><em>*</em><?php echo $this->__('Descriere ofertă') ?></label>
+        <div class="input-box">
+            <textarea name="description" class="required-entry"><?php echo $product->getDescription() ?></textarea>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="visibility" class="required"><em>*</em><?php echo $this->__('Vizibilitate') ?></label>
+        <div class="input-box">
+            <select name="visibility" id="visibility" class="select validate-select">
+                <option vlaue="" <?php echo $product->getVisibility() == '' ? 'selected="selected"' : ''; ?>><?php echo $this->__('') ?></option>
+                <option value="1"<?php echo $product->getVisibility() == '1' ? 'selected="selected"' : ''; ?>><?php echo $this->__('Privat') ?></option>
+                <option value="4"<?php echo $product->getVisibility() == '4' ? 'selected="selected"' : ''; ?>><?php echo $this->__('Pubilc') ?></option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="price" class="required"><em>*</em><?php echo $this->__('Preț (RON inclusiv TVA. Ex. 1234)') ?></label>
+        <div class="input-box">
+            <?php $price = $product->getPrice() ? number_format($product->getPrice(), 0, ',', '') : false; ?>
+            <input type="text" name="price" id="price" class="input-text required-entry validate-number" title="<?php echo $this->__('Preț (RON inclusiv TVA)') ?>" value="<?php echo $price ? $price : '' ?>" />
+        </div>
+    </div>
+</li>
+<?php if ($_provider->getAcOpEtichetaOfertaSpeciala()): ?>
+    <li class="fields">
+        <div class="field">
+            <label for="oferta_speciala" class="required"><em>*</em><?php echo $this->__('Ofertă specială') ?></label>
+            <div class="input-box">
+                <select name="oferta_speciala" id="oferta_speciala" class="select validate-select" onchange="updateNextField(this, 'special_price', 'special_from_date', 'special_to_date')">
+                    <option vlaue="0" <?php echo !$product->getOfertaSpeciala() ? 'selected="selected"' : ''; ?>><?php echo $this->__('Nu') ?></option>
+                    <option value="1"<?php echo $product->getOfertaSpeciala() ? 'selected="selected"' : ''; ?>><?php echo $this->__('Da') ?></option>
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <label for="special_price" class="<?php echo $this->isRequiredLabel($product, 'oferta_speciala', '1') ?>">
+                <em><?php echo $product->getLabelAsterix($product, 'oferta_speciala', '1'); ?></em>
+                <?php echo $this->__('Pret special (RON inclusiv TVA. Ex. 1234)') ?>
+            </label>
+            <div class="input-box">
+                <input 
+                    type="text" 
+                    name="special_price" 
+                    id="special_price" 
+                    class="input-text validate-number <?php echo $this->isRequired($product, 'oferta_speciala', '1', 'input') ?>" 
+                    title="<?php echo $this->__('Pret special (RON inclusiv TVA)') ?>" 
+                    value="<?php echo $product->getSpecialPrice() ? number_format($product->getSpecialPrice(), 0, ',', '') : '' ?>" 
+                    <?php echo $this->isDisabled($product, 'oferta_speciala', '1') ?> 
+                />
+            </div>
+        </div>
+    </li>
+    <li class="fields">
+        <div class="field">
+            <label for="special_from_date" class="<?php echo $this->isRequiredLabel($product, 'oferta_speciala', '1') ?>">
+                <em><?php echo $product->getLabelAsterix($product, 'oferta_speciala', '1'); ?></em>
+                <?php echo $this->__('Valabilă de la') ?>
+            </label>
+            <?php $fromDate = $product->getData('special_from_date') ? date('d.m.Y', strtotime($product->getData('special_from_date'))) : ''; ?>
+            <div class="input-box">
+                <input 
+                    type="text" 
+                    name="special_from_date" 
+                    id="special_from_date" 
+                    class="input-text <?php echo $this->isRequired($product, 'oferta_speciala', '1', 'input') ?>" 
+                    title="<?php echo $this->__('Valabila de la') ?>" 
+                    value="<?php echo $fromDate; ?>" 
+                    <?php echo $this->isDisabled($product, 'oferta_speciala', '1') ?> 
+                    readonly 
+                />
+            </div>
+        </div>
+        <div class="field">
+            <label for="special_to_date" class="<?php echo $this->isRequiredLabel($product, 'oferta_speciala', '1') ?>">
+                <em><?php echo $product->getLabelAsterix($product, 'oferta_speciala', '1'); ?></em>
+                <?php echo $this->__('Valabilă până la') ?>
+            </label>
+            <?php $toDate = $product->getData('special_to_date') ? date('d.m.Y', strtotime($product->getData('special_to_date'))) : ''; ?>
+            <div class="input-box">
+                <input 
+                    type="text" 
+                    name="special_to_date" 
+                    id="special_to_date" 
+                    class="input-text <?php echo $this->isRequired($product, 'oferta_speciala', '1', 'input') ?>" 
+                    title="<?php echo $this->__('Valabila pana la') ?>" 
+                    value="<?php echo $toDate; ?>" 
+                    <?php echo $this->isDisabled($product, 'oferta_speciala', '1') ?> 
+                    readonly
+                />
+            </div>
+        </div>
+    </li>
+<?php endif; ?>
+<li class="fields custom-zones"  style="display: block;">
+    <div class="field wide">
+        <?php $zonaPersonalizata = explode(',', $product->getOfgZonaPersonalizata()); ?>
+        <?php foreach ($zonaPersonalizata as $key => $zona): ?>
+            <?php $zonaPersonalizataProcessed[$zona] = $zona; ?>
+            <?php unset($key); ?>
+        <?php endforeach; ?>
+        <?php
+            $customerModel = Mage::getModel('customer/customer');
+            $attr = Mage::getModel('customer/customer')->getResource()->getAttribute('furnizor_company_zone');
+            if ($attr->usesSource()) {
+                $neighborhood = $attr->getSource()->getZoneNeighboring('furnizor_company_zone');
+            }
+        ?>
+        <label class="wide required" for="ofg_zona_personalizata"><em>*</em><?php echo $this->__('Ofertă valabilă pentru (în concordanță cu "Zona de activitate" din profilul tău de furnizor):') ?></label>
+        <input class="invisible checkbox validate-one-required-by-name" id="ofg_zona_personalizata_hidden" type="checkbox" name="ofg_zona_personalizata_hidden" value="1" />
+        <div id="group" class="input-box">
+            <?php $zones = $this->getAllAttributeOptions('furnizor_location_province') ?>
+            <?php $services = $_provider->getFurnizorCompanyZone() ?>
+            <?php
+                switch ($services) {
+                    case '1': // Local
+                    case '2': // Doar in judet
+                        $availableZones = array($_provider->getFurnizorLocationProvince());
+                        break;
+                    case '3': // Judetele limitrofe
+                        $availableZones = $neighborhood[$_provider->getFurnizorLocationProvince()];
+                        $availableZones = explode(',', $availableZones);
+                        break;
+                        case '4': // Toate tara
+                        $availableZones = $attributeSource->getAttribute('customer', 'furnizor_location_province')->getSource()->getOptionValueArray();
+                        break;
+                    case '5': // Personalizat
+                        $availableZones = $_provider->getFurnizorCompanyCstzone();
+                        $availableZones = explode(',', $availableZones);
+                        break;
+                    default:
+                        $availableZones = $attributeSource->getAttribute('customer', 'furnizor_location_province')->getSource()->getOptionValueArray();
+                        break;
+                }
+            ?>
+            <?php foreach ($zones as $zone): ?>
+                <?php if ($zone['value'] != ''): ?>
+                    <div class="ckeckbox-holder">
+                        <input type="checkbox" 
+                               class="checkbox <?php echo !in_array($zone['value'], $availableZones) ? 'disabled' : false; ?>" 
+                               groupid="ofg_zona_personalizata" 
+                               id="zone_<?php echo $zone['value'] ?>" 
+                               name="ofg_zona_personalizata[]" 
+                               value="<?php echo $zone['value'] ?>" 
+                               <?php echo in_array($zone['value'], $zonaPersonalizataProcessed) && in_array($zone['value'], $availableZones) ? 'checked="checked"' : false; ?>
+                               <?php echo in_array($zone['value'], $availableZones) ? '' : 'disabled="disabled"'; ?>
+                        />
+                        <label for="zone_<?php echo $zone['value'] ?>" class="<?php echo in_array($zone['value'], $availableZones) ? '' : 'disabled'; ?>"><?php echo $zone['label'] ?></label>
+                    </div>
+                <?php endif ?>
+            <?php endforeach ?>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofg_cheltuieli_transport" class="required"><em>*</em><?php echo $this->__('Cheltuieli transport') ?></label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_cheltuieli_transport')->getSource()->getAllOptions(false); ?>
+            <select name="ofg_cheltuieli_transport" id="ofg_cheltuieli_transport" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgCheltuieliTransport() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_cheltuieli_cazare" class="required"><em>*</em><?php echo $this->__('Cheltuieli cazare (dacă este cazul)') ?></label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_cheltuieli_cazare')->getSource()->getAllOptions(false); ?>
+            <select name="ofg_cheltuieli_cazare" id="ofg_cheltuieli_cazare" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgCheltuieliCazare() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</li>
+<?php /*
+<?php if (!$this->fotoIsHidden($serviciiPrestate) || !$this->videoIsHidden($serviciiPrestate)): ?>
+    <li class="fields">
+        <div class="field <?php echo $this->fotoIsHidden($serviciiPrestate) ?>">
+            <label for="ofg_nr_fotografi" class="required"><em>*</em><?php echo $this->__('Nr. fotografi') ?></label>
+            <div class="input-box">
+                <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_nr_fotografi')->getSource()->getAllOptions(false); ?>
+                <select name="ofg_nr_fotografi" id="ofg_nr_fotografi" class="select validate-select">
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgNrFotografi() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            </div>
+        </div>
+        <div class="field <?php echo $this->videoIsHidden($serviciiPrestate) ?>">
+            <label for="ofg_nr_cameramani" class="required"><em>*</em><?php echo $this->__('Nr. cameramani') ?></label>
+            <div class="input-box">
+                <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_nr_cameramani')->getSource()->getAllOptions(false); ?>
+                <select name="ofg_nr_cameramani" id="ofg_nr_cameramani" class="select validate-select">
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgNrCameramani() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            </div>
+        </div>
+    </li>
+<?php endif; ?>
+*/ ?>
+<li class="fields">
+    <div class="wide">
+        <label for="images" class=""><?php echo $this->__('Adaugă imagini (Format recomandat 450x450px, max. 1MB)') ?></label>
+        <div class="input-box">
+            <div class="images-wrapper">
+                <div class="image-holder">
+                    <div id="new_main_img"></div>
+                    <div class="orig-img" id="orig_main_img">
+                        <?php $mainImage = $product->getImage() == 'no_selection' || !$product->getImage() ? false : true; ?>
+                        <img class="product-image" src="<?php echo $this->helper('catalog/image')->init($product, 'image')->resize(210); ?>" />
+                    </div>
+                    <span id="main_img" class="button <?php echo $mainImage ? 'change-image' : 'new-image'; ?>">
+                        <?php echo $mainImage ? 'Modifica' : 'Selecteaza'; ?>
+                    </span>
+                    <?php //if ($mainImage): ?>
+                        <span style="display: <?php echo $mainImage ? 'block' : 'none' ?>" class="delete-image">Sterge</span>
+                    <?php //endif; ?>
+                </div>
+                <?php $imgGalery = $product->getId() ? $product->getMediaGalleryImages()->getItems() : array(); ?>
+                <?php $i = 1; ?>
+                <?php if (count($imgGalery) - 1 > 0): ?>
+                    <?php foreach ($imgGalery as $img): ?>
+                        <?php if ($product->getImage() != $img->getFile()): ?>
+                            <div class="image-holder">
+                                <div id="new_addimg_<?php echo $i ?>"></div>
+                                <div class="orig-img" id="orig_addimg_<?php echo $i ?>">
+                                    <img class="product-image" src="<?php echo $this->helper('catalog/image')->init($product, 'image', $img->getFile())->resize(210); ?>" />
+                                </div>
+                                <span id="addimg_<?php echo $i ?>" class="button change-image">Modifica</span>
+                                <span class="delete-image">Sterge</span>
+                            </div>
+                            <?php $i++; ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                
+                <?php if ($i < 4): ?>
+                    <?php for ($j = $i; $j <= 3; $j++): ?>
+                        <div class="image-holder">
+                            <div id="new_addimg_<?php echo $j ?>"></div>
+                            <div class="orig-img" id="orig_addimg_<?php echo $j ?>">
+                                <img class="product-image" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>catalog/product/placeholder/default/default-image.jpg" />
+                            </div>
+                            <span id="addimg_<?php echo $j ?>" class="button new-image">Selecteaza</span>
+                            <span style="display: none" class="delete-image">Sterge</span>
+                        </div>
+                    <?php endfor; ?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</li>

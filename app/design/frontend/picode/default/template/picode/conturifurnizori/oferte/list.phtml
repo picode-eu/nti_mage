@@ -1,0 +1,10 @@
+<?php
+if ($this->getOfertaCollection()->getSize()) {
+    foreach ($this->getOfertaCollection() as $p) {
+        //Zend_Debug::dump($p->getData());
+        echo $p->getSku();
+    }
+} else {
+    echo 'no collection';
+}
+?>

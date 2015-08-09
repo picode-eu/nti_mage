@@ -1,0 +1,23 @@
+<?php
+    /*
+     * @block Picode_ConturiFurnizori_Block_Conturi_List
+     * 
+     * Se poate transmite ca si parametru nr. de zile in spate (int, required)
+     * astefel putem limita colectia la o perioada exacta
+     * pentru nelimitat = false
+     * Se poate transmite ca si parametru un integer la care sa fie limitata colectia (int, optional)
+     * default este false (toata colectia)
+     * Ex. $this->getProvidersLastAdded(7, 14);
+     */
+    $providersCollection = $this->getTopProviders(false);
+    $helper = $this->helper('conturifurnizori');
+    //Zend_Debug::dump(get_class_methods($helper));
+?>
+<div class="">
+    <div class="single-tab">
+        <h3><?php echo $this->__('Furnizori de TOP') ?></h3>
+        <div class="intro">
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('furnizori-de-top-intro')->toHtml() ?>
+        </div>
+    </div>
+</div>

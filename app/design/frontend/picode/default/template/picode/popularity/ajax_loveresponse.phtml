@@ -1,0 +1,13 @@
+<?php
+	//Mage::log('popularity phtml block' . "\n", false, 'popularity_vote.log');
+    $referer = Mage::helper('core/http')->getHttpReferer() ? Mage::helper('core/http')->getHttpReferer()  : Mage::getUrl();
+    $response = explode('~', $this->addLove());
+?>
+
+<?php if ($response[0] == 'error'): ?>
+    <script type="text/javascript">
+        window.location = '<?php echo $referer ?>';
+    </script>
+<?php else: ?>
+   <?php  echo $response[1]; ?>
+<?php endif; ?>

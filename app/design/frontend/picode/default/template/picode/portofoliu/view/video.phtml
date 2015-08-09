@@ -1,0 +1,103 @@
+<?php
+    $_video = $this->requestedCollection();
+    $_provider = $this->geProviderById($_video->getCustomerId());
+    $_helper = $this->helper('portofoliu');
+    //Zend_Debug::dump($_video->getData());
+    /*
+    array(11) {
+      ["video_id"] => string(1) "6"
+      ["customer_id"] => string(3) "216"
+      ["video_name"] => string(21) "Metallica - St. Anger"
+      ["video_description"] => string(550) "Fusce nunc metus, rutrum quis blandit quis, interdum quis tortor. Donec suscipit porttitor felis, eu accumsan lorem bibendum eu. Suspendisse a tellus nibh. Nullam rutrum eleifend nibh, et vulputate ligula posuere vitae. Aenean quis facilisis enim. Vivamus velit tortor, vestibulum quis lacus at, faucibus facilisis tellus. Suspendisse potenti. Phasellus eu aliquet metus. Curabitur ante velit, posuere nec neque a, auctor laoreet orci. Nulla elit nisi, sollicitudin sed massa rutrum, sollicitudin vulputate eros. Sed euismod ligula et mattis eleifend"
+      ["video_url"] => string(11) "3rFoGVkZ29w"
+      ["url_type"] => string(7) "youtube"
+      ["is_visible"] => string(1) "1"
+      ["visit_count"] => string(1) "0"
+      ["created_at"] => string(19) "2015-07-14 20:30:55"
+      ["cur_page"] => int(1)
+        ["page_size"] => int(24)
+    }
+    */
+?>
+<div class="portofoliu-holder">
+    <?php if (!$_video->getId()): ?>
+        <div class="videoclip-wrapper">
+            <p><?php echo $this->__('Videoclipul nu mai exista.') ?> <a href="<?php echo $this->getBaseUrl() ?>portofoliu/video/">Inapoi</a></p>
+        </div>
+    <?php else: ?>
+        <div class="portofoliu-wrapper">
+            <div class="portofoliu-main-media">
+                <?php if ($_helper->checkVideoExists($_video->getVideoUrl(), $_video->getUrlType())): ?>
+                    <?php echo $this->getEmbedCode($_video->getUrlType(), $_video->getVideoUrl()); ?>
+                <?php else: ?>
+                    <p class="video-error"><?php echo $this->__('Videoclipul nu exista sau linkul nu este corect.') ?></p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div class="description-wrapper">
+            <div class="portofoliu-details">
+                <h1><?php echo strip_tags($_video->getVideoName()); ?></h1>
+                <p><?php echo strip_tags($_video->getVideoDescription()); ?></p>
+            </div>
+        </div>
+
+        <?php if ($_provider): ?>
+            <div class="provider-wrapper">
+                <?php $friendlyProviderName = $_helper->seoFriendlyUrl(strip_tags($_provider->getBusinessDescriptionsTitle())) . '/'; ?>
+                <?php $fiendlyUrl = $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $friendlyProviderName . $_provider->getId(); ?>
+                <div class="provider-details">
+                    <div class="provider-logo">
+                        <?php
+                        $img = $_provider->getBusinessImagesLogo() ?
+                            Mage::helper('conturifurnizori')->resizeImage($_provider->getBusinessImagesLogo(), 220, false, true) :
+                            $this->getBaseUrl() . 'media/catalog/product/placeholder/default/logo-placeholder.jpg';
+                        ?>
+                        <a href="<?php echo $fiendlyUrl ?>" title="<?php strip_tags($_provider->getBusinessDescriptionsTitle()); ?>">
+                            <img src="<?php echo $img ?>" title="<?php echo strip_tags($_provider->getBusinessDescriptionsTitle()); ?>" />
+                        </a>
+                    </div>
+                    <div class="provider-right">
+                        <h2>
+                            <a href="<?php echo $fiendlyUrl ?>" title="<?php strip_tags($_provider->getBusinessDescriptionsTitle()) ?>">
+                                <?php echo strip_tags($_provider->getBusinessDescriptionsTitle()); ?> | <?php echo $_provider->getFurnizorLocationCity() ?>
+                            </a>
+                        </h2>
+                        <p class="services">
+                            Servicii: <?php echo strtoupper($_provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($_provider)); ?>
+                        </p>
+                        <p class="description"><?php echo $_helper->stringTruncate($_provider->getBusinessDescriptionsDesc(), 220); ?></p>
+                    </div>
+                    <p class="description-mobile"><?php echo $_helper->stringTruncate($_provider->getBusinessDescriptionsDesc(), 220); ?></p>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>
+
+<form id="contactViewForm"></form>
+
+<script type="text/javascript">
+    //<![CDATA[
+    jQuery(document).ready(function()
+    {
+        jQuery(document).on('click', '#update-contact, #tab-contact', function(){
+            jQuery('#contactViewForm').ajaxForm({
+                data: { entity_id: '<?php echo $_video->getCustomerId() ?>', entity_type: 'furnizori', update: 'ctcview'},
+                method: 'post',
+                url: '<?php echo $this->getBaseUrl() ?>reputationpoints/update/contactview',
+                beforeSubmit: function(){
+                    jQuery('#contact-loading').show();
+                },
+                success: function(response) {
+                    jQuery('#contactViewForm, #update-contact, .ion-chevron-down, #contact-loading').remove();
+                    var response = jQuery.parseJSON(response);
+                    jQuery.each(response, function(id, value) {
+                        jQuery('#' + id).html(value);
+                    });
+                }
+            }).submit();
+        });
+    });
+    //]]>
+</script>

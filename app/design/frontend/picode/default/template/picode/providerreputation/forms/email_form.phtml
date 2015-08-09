@@ -1,0 +1,41 @@
+<div class="form-wrapper">
+    <div class="overlay">
+        <img src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif'); ?>" />
+    </div>
+    <span class="close-button fa fa-times"></span>
+    <form id="sendForm">
+        <ul class="form-list">
+            <p class="note"><?php echo $this->__('Trimte prin email unui prieten. Toate datele transmise sunt și vor rămâne confidențiale.') ?></p>
+            <div class="response-wrapper" style="display: none">
+                <p id="send-response"></p>
+            </div>
+            
+            <li class="narrow left-aligned">
+                <label class="required" for="sender_fullname"><em>*</em><?php echo $this->__('Numele tău') ?></label>
+                <div class="input-box">
+                    <input title="<?php echo $this->__('Numele tău') ?>" class="input-text required-entry" id="sender_fullname" value="" name="sender_fullname" type="text">
+                </div>
+            </li>
+            <li class="narrow left-aligned">
+                <label class="required" for="receiver_email"><em>*</em><?php echo $this->__('Adresa de email a prietenului') ?></label>
+                <div class="input-box">
+                    <input title="<?php echo $this->__('Adresa de email a prietenului') ?>l" class="input-text required-entry validate-email" id="receiver_email" value="" name="receiver_email" type="email">
+                </div>
+            </li>
+            
+            <li class="right-aligned">
+                <label class="required" for="message"><em>*</em><?php echo $this->__('Mesajul tău') ?></label>
+                <div class="input-box">
+                    <textarea id="message" name="message" class="textarea required-entry"></textarea>
+                </div>
+            </li>
+            
+        </ul>
+        <div class="buttons-set">               
+            <button type="button" title="<?php echo $this->__('Trimite mesajul') ?>" class="button">
+                <span><span><?php echo $this->__('Trimite mesajul') ?></span></span>
+            </button>
+        </div>
+    </form>
+
+</div>

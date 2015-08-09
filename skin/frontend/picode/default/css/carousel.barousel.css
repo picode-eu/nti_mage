@@ -1,0 +1,392 @@
+.barousel
+{
+    position:relative;
+    margin-bottom:0px;
+    /*background:url(../images/bg_banner.gif) repeat 0 0;*/
+    width: 100%;
+    /*height:401px;*/
+}
+
+.barousel_image
+{
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+    height: 475px;
+    overflow: hidden;
+    border: 5px solid #fff;
+    background: #fff;
+    text-align: center;
+}
+
+.barousel_image img
+{
+    /*position:absolute;*/
+    display:none;
+    height: 100%;
+}
+
+.barousel_image img.default
+{
+    display:block;
+}
+
+.barousel_image img.current
+{
+    z-index:10;
+}
+
+.barousel_image img.previous
+{
+    z-index:5;
+}
+
+.barousel_content
+{
+    position:absolute;
+    padding:15px 18px 0 18px;
+    z-index:50;
+    /*background:url(../images/bg_barousel_content.png) repeat 0 0;*/
+    color:#fff;
+    width:247px;
+    bottom:36px;
+    left:10px;
+}
+
+.barousel_content div
+{
+    display:none;
+}
+
+.barousel_content div.default
+{
+    display:block;
+}
+
+.barousel_content p
+{
+    font-size:13px;
+    font-weight:normal;
+    line-height:17px;
+}
+
+.barousel_content p.header
+{
+    font-size:28px;
+    font-weight:normal;
+    line-height:28px;
+    color:#E74D4B;
+}
+
+.barousel_content a,
+.barousel_content a:hover
+{
+    color:#E74D4B;
+    background-color:transparent !important;
+}
+
+.barousel_nav
+{
+    position:absolute;
+    padding:3px 3px 0px 0;
+    height:23px;
+    background:transparent;
+    bottom:0;
+    z-index:20;
+    width:100%;
+}
+
+.barousel_nav .counter
+{
+    float:right;
+    font-size:0.75em;
+    color:#fff;
+    margin:3px 5px 0 0;
+}
+
+.barousel_nav ul
+{
+    float:right;
+    padding:0;
+    margin:0;
+}
+
+.barousel_nav li
+{
+    float:left;
+    padding-left:3px;
+    font-size:0;
+    line-height:0;
+    list-style:none;
+}
+
+.barousel_nav li a
+{
+    display:block;
+    width:25px;
+    height:20px;
+    background-color:#4d4d4d;
+    font-size:0;
+    line-height:0;
+    text-decoration:none;
+}
+
+.barousel_nav li a:hover
+{
+    background-color:#6e6e6e;
+}
+
+.barousel_nav li a.current
+{
+    background-color:#E74D4B;
+}
+
+.barousel_nav li.prev a
+{
+    background-image:url(../images/barousel_link_previous.gif);
+    background-repeat:no-repeat;
+    background-position:0 0;
+}
+
+.barousel_nav li.next a
+{
+    background-image:url(../images/barousel_link_next.gif);
+    background-repeat:no-repeat;
+    background-position:0 0;
+}
+
+.barousel img.ajax_loader
+{
+    display:none;
+    position:absolute;
+    z-index:99;
+    top:70px;
+    left:135px;
+}
+
+/*-------------> THSLIDE */
+.thslide
+{
+    background:transparent;
+    width:100%;
+    height:110px;
+}
+
+.thslide_nav_previous
+{
+    float:left;
+    height: 100%;
+    width: 25px;
+}
+
+.thslide_nav_next
+{
+    float:right;
+    height: 100%;
+    width: 25px;
+}
+
+.thslide_nav_previous a,
+.thslide_nav_next a
+{
+    display:block;
+    width:25px;
+    height: 100%;
+    text-decoration:none;
+}
+.thslide_nav_previous a span,
+.thslide_nav_next a span{
+    line-height: 92px;
+    margin-left: 5px;
+    font-size: 26px;
+    font-weight: 400;
+    color: #242424;
+}
+
+
+.thslide_nav_previous a:hover span,
+.thslide_nav_next a:hover span
+{
+    color:#E74D4B;
+}
+
+.thslide_list
+{
+    float: left;
+    overflow: hidden;
+    position: relative;
+    width: 92%;
+    height: 100%;
+}
+
+.thslide_list ul
+{
+    float:left;
+    width:9000px;
+    padding:0;
+    margin:0;
+    list-style:none;
+}
+
+.thslide_list li
+{
+    float:left;
+    margin-right:3px;
+}
+
+.thslide_list li a
+{
+    display: block;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    text-decoration: none;
+}
+
+.thslide_list li a img
+{
+    position:absolute;
+}
+
+.thslide_list li a span
+{
+    position:absolute;
+    display:block;
+    width: 100px;
+    height: 100px;
+}
+
+.thslide_list li a:hover span,
+.thslide_list li a.current span
+{
+    border:3px solid #E74D4B;
+}
+
+/* Specific implementation */
+#barousel_thslide
+{
+    height: 590px;
+}
+
+#barousel_thslide .barousel_content
+{
+    bottom:81px;
+}
+
+#thslide_barousel_nav
+{
+    position:absolute;
+    bottom:0;
+    border: 5px solid #fff;
+}
+
+@media only screen and (max-width: 1061px) {
+    #barousel_thslide {
+        height: 490px;
+    }
+    .barousel_image {
+        height: 371px;
+    }
+    .thslide_list {
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 980px) {
+    #barousel_thslide {
+        height: 540px;
+    }
+    .barousel_image {
+        height: 420px;
+    }
+}
+
+@media only screen and (max-width: 902px) {
+    #barousel_thslide {
+        height: 500px;
+    }
+    .barousel_image {
+        height: 380px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    #barousel_thslide {
+        height: 460px;
+    }
+    .barousel_image {
+        height: 340px;
+    }
+}
+
+@media only screen and (max-width: 770px) {
+    #barousel_thslide {
+        height: 560px;
+    }
+    .barousel_image {
+        height: 440px;
+    }
+}
+
+@media only screen and (max-width: 670px) {
+    #barousel_thslide {
+        height: 520px;
+    }
+    .barousel_image {
+        height: 400px;
+    }
+}
+
+@media only screen and (max-width: 670px) {
+    #barousel_thslide {
+        height: 480px;
+    }
+    .barousel_image {
+        height: 360px;
+    }
+}
+
+@media only screen and (max-width: 670px) {
+    .thslide_list {
+        width: 87%;
+    }
+}
+
+@media only screen and (max-width: 670px) {
+    #barousel_thslide {
+        height: 400px;
+    }
+    .barousel_image {
+        height: 280px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    #barousel_thslide {
+        height: 370px;
+    }
+    .barousel_image {
+        height: 250px;
+    }
+    .thslide_list {
+        width: 83%;
+    }
+}
+
+@media only screen and (max-width: 420px) {
+    #barousel_thslide {
+        height: 320px;
+    }
+    .barousel_image {
+        height: 200px;
+    }
+    .thslide_list {
+        width: 82%;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .thslide_list {
+        width: 78%;
+    }
+}

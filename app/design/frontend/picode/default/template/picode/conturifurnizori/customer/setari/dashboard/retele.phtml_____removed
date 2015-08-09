@@ -1,0 +1,11 @@
+<div class="col-2">
+    <div class="box">
+        <div class="box-title">
+            <h3><?php echo $this->__('Website / Retele') ?></h3>
+            <a href="<?php echo $this->getUrl('conturifurnizori/setari/retele/',array('_secure'=>true)) ?>"><?php echo $this->__('Editeaza') ?></a>
+        </div>
+        <div class="box-content">
+            Lista link-uri
+        </div>
+    </div>
+</div>

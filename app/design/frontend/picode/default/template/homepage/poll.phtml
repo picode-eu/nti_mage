@@ -1,0 +1,13 @@
+<?php
+    $poll = $this->getLayout()->createBlock('poll/activePoll');
+    $poll->setPollId(2);
+    $poll->setPollTemplate('poll/active.phtml', 'poll');
+    $poll->setPollTemplate('poll/result.phtml', 'results');
+    echo $poll->toHtml();
+
+//    $poll = $this->getLayout()->createBlock('poll/activePoll');
+//    $poll->setPollId(3);
+//    $poll->setPollTemplate('poll/active.phtml', 'poll');
+//    $poll->setPollTemplate('poll/result.phtml', 'results');
+//    echo $poll->toHtml();
+?>

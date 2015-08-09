@@ -1,0 +1,81 @@
+<?php
+	/*
+	 * @controller Picode_Furnizori_ContController
+	 * @block Picode_Furnizori_Block_Cont_Edit_Portofoliu
+	*/ 
+	$portofoliuCollection = $this->getRequestedCollection();
+	$collectionType = $this->getPortofoliuType();
+	//Zend_Debug::dump($portofoliuCollection->getData());
+?>
+<div class="my-account">
+	<div class="dashboard">
+	    <div class="portofoliu-container">
+	    	<div class="page-title">
+		        <h1><?php echo $this->__('Portofoliu foto') ?></h1>
+		    </div>
+	    	<?php if($portofoliuCollection): ?>
+		    	<?php if(!$portofoliuCollection->count()): ?>
+		    		<p class="alert"><?php echo $this->__('Nu ai niciun album in portofoliu.'); ?></p>
+		    		<button type="submit" onclick="window.location='<?php echo $this->getBaseUrl() ?>portofoliu/edit/album/'" title="Adaugă album nou" class="button">
+						<span>
+							<span>Adaugă unul acum</span>
+						</span>
+					</button>
+				<?php else: ?>
+				    <?php $_iterator = 0; ?>
+					<ol class="albums-list" id="albums-list">
+					<?php foreach($portofoliuCollection as $collection): ?>
+						<li class="item<?php if( ++$_iterator == sizeof($portofoliuCollection) ): ?> last<?php endif; ?>">
+							<?php $imgPath = $collection->getAlbumCover(); ?>
+							<a href="<?php echo $this->getBaseUrl() ?>furnizori/cont/edit/portofoliu-foto-video/album/view/<?php echo $collection->getAlbumId() ?>" title="<?php echo $collection->getAlbumName() ?>" class="album-image">
+								<!-- <img src="<?php echo $this->getBaseUrl().$this->resizeImg($imgPath, '170') ?>" width="170" alt="<?php echo $collection->getAlbumName() ?>" /> -->
+								<img src="<?php echo $this->getBaseUrl().'media/albums/'.$this->getCustomerId().'/thumb_'.$collection->getAlbumCover() ?>" width="100" height="100" alt="Coperta album <?php echo $collection->getAlbumName() ?>" />
+							</a>
+							<div class="album-details">
+				                <div class="f-fix">
+				                    <h2 class="album-name">
+				                    	<a href="<?php echo $this->getBaseUrl() ?>furnizori/cont/edit/portofoliu-foto-video/album/view/<?php echo $collection->getAlbumId() ?>" title="<?php echo $collection->getAlbumName() ?>"><?php echo $collection->getAlbumName() ?></a>
+				                    </h2>
+				                    <p>
+				                    	<span><?php echo $this->__('Adaugat in: ') ?></span><?php echo date('d.m.Y',strtotime($collection->getCreatedAt())) ?> | 
+				                    	<span><?php echo $this->__('Vizibilitate: ') ?></span><?php echo($collection->getIsVisible() ? 'public' : 'privat') ?>
+				                    </p>
+					                <p>
+					                	<?php echo $this->shortenString($collection->getAlbumDescription(), 180, true) ?>
+					                	<a href="<?php echo $this->getBaseUrl() ?>furnizori/cont/edit/portofoliu-foto-video/album/view/<?php echo $collection->getAlbumId() ?>">Vezi detalii complete</a>
+					                </p>
+					                <p><span><?php echo $this->__('Albumul contine: ') ?></span><?php echo $this->countPhotos($collection->getAlbumId()) ?> fotografii.</p>
+				                </div>
+				            </div>
+						</li>
+					<?php endforeach; ?>
+					</ol>
+		    	<?php endif; ?>
+		    <?php endif; ?>
+	    </div>
+	</div>
+</div>
+
+<?php /* masonry html structure and script
+<div id="masonry-container">
+    <div class="masonry-item">
+    	<div class="album-title">
+			<h1><?php echo $collection->getAlbumName() ?></h1>
+		</div>
+  	    <img src="<?php echo $this->getBaseUrl() ?>media/albums/<?php echo $this->getCustomerId() ?>/<?php echo $collection->getAlbumCover() ?>" />
+  	    <div class="album-details">
+			<p><?php echo $this->__('Adaugat la data de: ') ?><?php echo date('d.m.Y',strtotime($collection->getCreatedAt())) ?></p>
+			<p><?php echo $this->shortenString($collection->getAlbumDescription(), 100, true) ?></p>
+		</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+	var $container = $j('#masonry-container');
+	// initialize
+	$container.masonry({
+	  columnWidth: 250,
+	  itemSelector: '.masonry-item'
+	});
+</script>
+*/ ?>

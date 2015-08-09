@@ -1,0 +1,190 @@
+<?php
+    $customer        = $this->getCustomer();
+    $helper          = $this->helper('conturifurnizori');
+    $unreadMessages  = $this->getUnreadMessages();
+    $readMessages    = $this->getReadMessages();
+    $unreadMessageIds = array();
+    // echo 'reply to = ' . Mage::getSingleton('customer/session')->getReplyTo(); // should be null
+?>
+
+<div class="my-account">
+    <div class="dashboard setari">
+        <div class="page-title">
+            <h1><?php echo $this->__('Casuta postala / Notificari') ?></h1>
+        </div>
+        
+        <div class="box-account box-info">
+            <div class="box">
+                <div class="box-head">
+                    <h2>
+                        <?php echo $this->__('Mesaje necitite') ?>
+                        <?php if ($unreadMessages->getSize()): ?>
+                            <span class="msg-count">(<?php echo $unreadMessages->getSize() ?>)</span>
+                        <?php endif; ?>
+                    </h2>
+                </div>
+                <div class="box-content">
+                    <div class="table">
+                        <div class="table-head">
+                            <div class="head-row">
+                                <div class="table-data msg-subject">
+                                    <?php echo $this->__('Subiect') ?>
+                                </div>
+                                <div class="table-data msg-from">
+                                    <?php echo $this->__('Expeditor') ?>
+                                </div>
+                                <div class="table-data msg-date">
+                                    <?php echo $this->__('Data') ?>
+                                </div>
+                                <div class="table-data msg-msg">
+                                    <?php echo $this->__('Mesaj') ?>
+                                </div>
+                                <div class="table-data msg-action">
+                                    <?php echo $this->__('') ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-content">
+                            <?php if (!$unreadMessages->getSize()): ?>
+                                <div class="table-row">
+                                    <div class="table-data no-message">
+                                        <?php echo $this->__('Nu ai niciun mesaj necitit.') ?>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <?php foreach ($unreadMessages as $message): ?>
+                                    <?php $unreadMessageIds[] = $message->getId(); ?>
+                                    <div class="table-row">
+                                        <div class="table-data msg-subject">
+                                            <a href="<?php echo $this->getReadAction($message->getId()); ?>" title="<?php echo $this->__('Citeste mesajul') ?>">
+                                                <?php echo $helper->stringTruncate($message->getSubject(), 30); ?>
+                                            </a>
+                                        </div>
+                                        <div class="table-data msg-from">
+                                            <?php echo $this->getSenderFullName($message->getSenderId(), $message->getReplayTo()) ?>
+                                        </div>
+                                        
+                                        <div class="table-data msg-date">
+                                            <?php echo $helper->translateDate(date('d M Y', strtotime($message->getCreatedTime()))); ?>
+                                        </div>
+                                        <div class="table-data msg-msg">
+                                            <?php echo $helper->stringTruncate($message->getMessage(), 70); ?>
+                                        </div>
+                                        <div class="table-data msg-action">
+                                            <a href="<?php echo $this->getReadAction($message->getId()); ?>" title="<?php echo $this->__('Citeste mesajul') ?>"><?php echo $this->__('Citeste') ?></a>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box">
+                <div class="box-head">
+                    <h2>
+                        <?php if ($unreadMessages->getSize()): ?>
+                            <?php echo $this->__('Restul mesajelor') ?>
+                        <?php else: ?>
+                            <?php echo $this->__('Toate mesajele') ?>
+                        <?php endif; ?>
+                        <?php if ($readMessages->getSize()): ?>
+                            <span class="msg-count">(<?php echo $readMessages->getSize() ?>)</span>
+                        <?php endif; ?>
+                    </h2>
+                </div>
+                <div class="box-content">
+                    <div class="table">
+                        <div class="table-head">
+                            <div class="head-row">
+                                <div class="table-data msg-subject">
+                                    <?php echo $this->__('Subiect') ?>
+                                </div>
+                                <div class="table-data msg-from">
+                                    <?php echo $this->__('Expeditor') ?>
+                                </div>
+                                <div class="table-data msg-date">
+                                    <?php echo $this->__('Data') ?>
+                                </div>
+                                <div class="table-data msg-msg">
+                                    <?php echo $this->__('Mesaj') ?>
+                                </div>
+                                <div class="table-data msg-action">
+                                    <?php echo $this->__('') ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-content">
+                            <?php if (!$readMessages->getSize()): ?>
+                                <div class="table-row">
+                                    <div class="table-data no-message">
+                                        <?php echo $this->__('Nu ai niciun mesaj.') ?>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <?php //Zend_Debug::dump($unreadMessageIds); ?>
+                                <?php $viewedMessageIds = array(); ?>
+                                <?php foreach ($readMessages as $message): ?>
+                                    <?php //if (!in_array($message->getId(), $unreadMessageIds)): ?>
+                                        <?php $firstMessageId = false; ?>
+                                        <?php if ($message->getFirstMessageId()): ?>
+                                            <?php $firstMessageId = $message->getFirstMessageId() ?>
+                                            <?php $message = $this->getLastMessageFromConversation($message->getFirstMessageId()); ?>
+                                        <?php endif; ?>
+                                       
+                                        <?php if (in_array($message->getId(), $viewedMessageIds)): ?>
+                                            <?php continue; ?>
+                                        <?php endif; ?>
+                                        <?php $viewedMessageIds = $this->getConversationMessageIds($firstMessageId, $viewedMessageIds) ?>
+                                        <div class="table-row">
+                                            <div class="table-data msg-subject">
+                                                <?php echo $helper->stringTruncate($message->getSubject(), 30); ?>
+                                                <?php if ($this->countConversation($firstMessageId) > 1): ?>
+                                                    <span class="msg-count">(<?php echo $this->countConversation($firstMessageId); ?>)</span>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="table-data msg-from">
+                                                <?php echo $this->getSenderFullName($message->getSenderId(), $message->getReplayTo()) ?>
+                                            </div>
+                                            
+                                            <div class="table-data msg-date">
+                                                <?php echo $helper->translateDate(date('d M Y', strtotime($message->getCreatedTime()))); ?>
+                                            </div>
+                                            <div class="table-data msg-msg">
+                                                <?php echo $helper->stringTruncate($message->getMessage(), 70); ?>
+                                            </div>
+                                            <div class="table-data msg-action">
+                                                <a href="<?php echo $this->getReadAction($message->getId()); ?>" title="<?php echo $this->__('Citeste mesajul') ?>">
+                                                    <?php echo $this->__('Detalii') ?>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <?php $viewedMessageIds[] = $message->getId() ?>
+                                    <?php //endif; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        
+        jQuery('.view-more').click(function(){
+            jQuery(this).closest('.box').find('.some-class').toggleClass('active');
+            if (jQuery(this).text() == 'learn more') {
+                jQuery(this).text('hide');
+            } else {
+                jQuery(this).text('learn more');
+            }
+            
+        });
+        
+    })
+</script>
+

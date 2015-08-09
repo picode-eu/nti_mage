@@ -1,0 +1,42 @@
+<?php
+	/*
+	 * @controller Picode_Furnizori_ContController
+	 * @block Picode_Furnizori_Block_Cont_Edit_Portofoliu
+	*/ 
+	$album = $this->getRequestedCollection();
+	$photos = '';
+	//Zend_Debug::dump($album->getData());
+?>
+<div class="product-view">
+	<div class="product-essential">
+		<div class="no-display">
+			<input type="hidden" name="product" value="97" />
+			<input type="hidden" name="related_product" id="related-products-field" value="" />
+		</div>
+
+		<div class="product-shop">
+			<div class="product-name">
+				<h1>NP Wedding Agency</h1>
+			</div>
+
+			<p class="email-friend">
+				<a href="http://nuntainimagini.ro/dev/magento/sendfriend/product/send/id/97/cat_id/3/">Trimite prin email unui prieten</a>
+			</p>
+
+			<p class="no-rating">
+				<a href="http://nuntainimagini.ro/dev/magento/review/product/list/id/97/category/3/#review-form">Fii primul care adauga un comentariu</a>
+			</p>
+			
+			<div class="short-description">
+                <h2><?php echo $this->__('Descriere') ?></h2>
+                <div class="std"><?php echo $album->getAlbumDescription() ?></div>
+            </div>
+		</div>
+		
+		<div class="product-img-box">
+			<img src="<?php echo $this->getBaseUrl().$this->resizeImg($album->getAlbumCover(), '267') ?>" width="267" alt="<?php echo $album->getAlbumName() ?>" />
+        </div>
+
+        <div class="clearer"></div>
+	</div>
+</div>

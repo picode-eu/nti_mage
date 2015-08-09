@@ -1,0 +1,18 @@
+<?php
+    $furnizoriHelper = $this->helper('conturifurnizori');
+    $customer = $furnizoriHelper->getCustomer();
+?>
+
+<?php if ($customer->getAcOpNotificariEmail()): ?>
+    <div class="col-1">
+        <div class="box">
+            <div class="box-title">
+                <h3><?php echo $this->__('Casuta postala') ?></h3>
+                <a href="<?php echo $this->getUrl('conturifurnizori/mesaje/casutapostala/',array('_secure'=>true)) ?>"><?php echo $this->__('Detalii') ?></a> 
+            </div>
+            <div class="box-content">
+                Lista mesaje
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

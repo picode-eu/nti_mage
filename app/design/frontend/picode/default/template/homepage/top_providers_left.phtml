@@ -1,0 +1,65 @@
+<?php
+    /*
+     * @block Picode_ConturiFurnizori_Block_Conturi_List
+     * 
+     * Se poate transmite ca si parametru nr. de zile in spate (int, required)
+     * astefel putem limita colectia la o perioada exacta
+     * pentru nelimitat = false
+     * Se poate transmite ca si parametru un integer la care sa fie limitata colectia (int, optional)
+     * default este false (toata colectia)
+     * Ex. $this->getProvidersLastAdded(7, 14);
+     */
+    $limit = 21;
+    $columnCount = 4;
+    $providersCollection = $this->getTopProviders(false, $limit);
+    $helper = $this->helper('conturifurnizori');
+    $mediaUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+    //Zend_Debug::dump($providersCollection->getData());
+?>
+
+<?php if (!$providersCollection->getSize()): ?>
+    <?php echo $this->__('Niciun furnizor nou de listat') ?>
+<?php else: ?>
+    <div class="top-providers">
+        <div class="category-products">
+            <?php $i = 0; ?>
+            <ul id="masonry-container" class="products-grid products-grid--max-<?php //echo $columnCount ?>-col">
+                <?php foreach ($providersCollection as $_provider): ?>
+                    <li class="item">
+                        <a href="<?php echo $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $helper->seoFriendlyUrl($_provider->getBusinessDescriptionsTitle()) . '/' . $_provider->getId() ?>" title="<?php echo $_provider->getBusinessDescriptionsTitle() ?>" class="provider-image">
+                            <?php if ($_provider->getBusinessImagesLogo()): ?>
+                                <img src="<?php echo $helper->resizeImage($_provider->getBusinessImagesLogo(), 257, false, true) ?>" />
+                            <?php else: ?>
+                                <img src="<?php echo $mediaUrl ?>customer/no-logo.jpg" alt="Logo Furnizor" title="<?php echo $_provider->getBusinessDescriptionsTitle() ?>" class="provider-image" />
+                            <?php endif; ?>
+                        </a>
+                        <div class="provider-info">
+                            <a class="provider-title" href="<?php echo $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $helper->seoFriendlyUrl($_provider->getBusinessDescriptionsTitle()) . '/' . $_provider->getId() ?>" title="<?php echo $_provider->getBusinessDescriptionsTitle() ?>">
+                                <?php echo $_provider->getBusinessDescriptionsTitle() ?>
+                            </a>
+                            <dif class="bottom-info">
+                                <span class="rpf">RPF <?php echo $_provider->getProviderReputation() ?></span>
+                                <span>
+                                    <?php echo $_provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($_provider); ?>
+                                     | 
+                                    <?php echo $_provider->getFurnizorLocationCity() ?>
+                                </span>
+                            </dif>
+                        </div>
+                    </li>
+                <?php $i++; endforeach; ?>
+            </ul>
+        </div>
+    </div>
+<?php endif; ?>
+
+<script type="text/javascript">
+
+    // var container = document.querySelector('#masonry-container');
+    // var msnry = new Masonry( container );
+    // // layout Masonry again after all images have loaded
+    // imagesLoaded( container, function() {
+      // msnry.layout();
+    // });
+    
+</script>

@@ -1,0 +1,536 @@
+<?php
+    $customer       = $this->getCustomer();
+    $helper         = $this->helper('conturifurnizori');
+    $mediaUrl       = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+    //Zend_Debug::dump($customer->getData());
+?>
+
+<div class="my-account editable-form">
+	<div class="page-title">
+    	<h1><?php echo $this->__('Profil furnizor') ?></h1>
+	</div>
+	<div class="cover-image-form">
+        <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Logo') ?></h2>
+            <ul class="form-list image-upload">
+                <li class="fields">
+                    <?php /*
+                    <form id="image-form-cover" method="post" enctype="multipart/form-data" action='<?php echo $this->getFormUrl('coverupload') ?>'>
+                        <div class="field">
+                            <label for=""><?php echo $this->__('Schimba Coperta') ?></label>
+                            <div class="input-box">
+                                <input type="file" name="coverimage" id="coverimage" />
+                            </div>
+                            <p class="note"><?php echo $this->__('Formatul imagini recomandat 1024/353px (max 1MB).') ?></p>
+                            <script type="text/javascript" >
+                                jQuery(document).ready(function() {
+                                    jQuery('#image-form-cover').on('change', function() {
+                                        jQuery('#account-cover').hide();
+                                        jQuery('#uploaded-cover').show().html('<img class="cover-upload-loader" src="<?php echo $this->getSkinUrl('images/loader.gif') ?>" />');
+                                        jQuery("#image-form-cover").ajaxForm({
+                                           target:'#uploaded-cover'
+                                        }).submit();
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </form>
+                    */ ?>
+                    <form id="image-form-logo" method="post" enctype="multipart/form-data" action='<?php echo $this->getFormUrl('logoupload') ?>'>
+                        <div class="field">
+                            <label for=""><?php echo $this->__('Schimba Logo') ?></label>
+                            <div class="input-box">
+                                <input type="file" name="logoimage" id="logoimage" />
+                            </div>
+                            <p class="note"><?php echo $this->__('Formatul imagini recomandat 512/285px (max 1MB).') ?></p>
+                            <script type="text/javascript" >
+                                jQuery(document).ready(function() {
+                                    jQuery('#image-form-logo').on('change', function() {
+                                        jQuery('#account-logo').hide();
+                                        jQuery('#uploaded-logo').show().html('<img class="logo-upload-loader" src="<?php echo $this->getSkinUrl('images/loader.gif') ?>" />');
+                                        jQuery("#image-form-logo").ajaxForm({
+                                           target:'#uploaded-logo'
+                                        }).submit();
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+        </div>
+	</div>
+	
+	<form id="profil-form" class="profil-form" action="<?php echo $this->getFormUrl('profil') ?>" method="post" enctype="multipart/form-data">
+	    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+		<div class="fieldset">
+            <ul class="form-list account-header">
+                <li id="images-holder" class="fields images-holder">
+                    <?php /*
+                    <div id="account-cover" class="account-cover">
+                        <?php if ($customer->getBusinessImagesCoperta()): ?>
+                            <img src="<?php echo $mediaUrl . 'customer' . $customer->getBusinessImagesCoperta() ?>" alt="" title="" />
+                        <?php else: ?>
+                            <img src="<?php echo $mediaUrl . 'customer/default-cover.jpg' ?>" alt="" title="" />
+                        <?php endif; ?>
+                    </div>
+                    <div id="uploaded-cover" class="account-cover"></div>
+                    */ ?>
+                    <div id="account-logo" class="account-logo"> 
+                        <?php if ($customer->getBusinessImagesLogo()): ?>
+                            <img src="<?php echo $mediaUrl . 'customer' . $customer->getBusinessImagesLogo() ?>" alt="" title="" />
+                            <?php /* <input type="hidden" name="business_images_logo" value="<?php echo $customer->getBusinessImagesLogo() ?>" /> */ ?>
+                        <?php else: ?>
+                            <img src="<?php echo $mediaUrl . 'customer/default-logo.jpg' ?>" alt="" title="" />
+                        <?php endif; ?>
+                    </div>
+                    <div id="uploaded-logo" class="account-logo"></div>
+                </li>
+            </ul>
+            <div class="clear"></div>
+	        <h2 class="legend"><?php echo $this->__('Informatii generale') ?>
+	            <span class="required"><?php echo $this->__('* Campuri obligatorii') ?></span>
+	        </h2>
+	        
+	        <ul class="form-list">
+	            <li class="fields">
+	            	<div class="field">
+	            		<?php $attr = $this->getAttributeDetailsByCode('furnizor_company_name'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+	            	</div>
+	            	<div class="field">
+	            		<?php $attr = $this->getAttributeDetailsByCode('business_descriptions_title'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+	            	</div>
+	            </li>
+	            <li class="fields">
+	            	<div class="field">
+	            		<?php $attr = $this->getAttributeDetailsByCode('furnizor_company_type'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <select class="validate-select" title="<?php echo $attr->getFrontendLabel() ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" defaultvalue="">
+                                <?php $options = $this->getAllAttributeOptions($attr->getAttributeCode()) ?>
+                                <?php foreach ($options as $option): ?>
+                                    <option value="<?php echo $option['value'] ?>" <?php echo $option['value'] == $customer->getData($attr->getAttributeCode()) ? 'selected="selected"' : '' ?>>
+                                        <?php echo $option['label'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+	            	</div>
+	            	<div class="field">
+	            		<?php $attr = $this->getAttributeDetailsByCode('furnizor_company_services'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <select class="validate-select" title="<?php echo $attr->getFrontendLabel() ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" defaultvalue="">
+                                <?php $options = $this->getAllAttributeOptions($attr->getAttributeCode()) ?>
+                                <?php foreach ($options as $option): ?>
+                                    <option value="<?php echo $option['value'] ?>" <?php echo $option['value'] == $customer->getData($attr->getAttributeCode()) ? 'selected="selected"' : '' ?>>
+                                        <?php echo $option['label'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+	            	</div>
+	            </li>
+	            <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_account_online_status'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <select class="validate-select" title="<?php echo $attr->getFrontendLabel() ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" defaultvalue="">
+                                <?php $options = $this->getAllAttributeOptions($attr->getAttributeCode()) ?>
+                                <?php foreach ($options as $option): ?>
+                                    <option value="<?php echo $option['value'] ?>" <?php echo $option['value'] == $customer->getData($attr->getAttributeCode()) ? 'selected="selected"' : '' ?>>
+                                        <?php echo $option['label'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_company_zone'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?>  <?php echo $this->__('(relativă sediului)') ?><em>*</em></label>
+                        <div class="input-box">
+                            <select class="validate-select" title="<?php echo $attr->getFrontendLabel() ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" defaultvalue="">
+                                <?php $options = $this->getAllAttributeOptions($attr->getAttributeCode()) ?>
+                                <?php foreach ($options as $option): ?>
+                                    <option value="<?php echo $option['value'] ?>" <?php echo $option['value'] == $customer->getData($attr->getAttributeCode()) ? 'selected="selected"' : '' ?>>
+                                        <?php echo $option['label'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields custom-zones" <?php echo $customer->getFurnizorCompanyZone() == 5 ? 'style="display: block"' : ''; ?>>
+                    <div class="field wide">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_company_cstzone'); ?>
+                        <?php $customerZonezArr = explode(',', $customer->getFurnizorCompanyCstzone()); ?>
+                    	<label class="wide" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                    	<div class="input-box">
+	                        <?php $zones = $this->getAllAttributeOptions('furnizor_location_province') ?>
+	                        <?php foreach ($zones as $zone): ?>
+	                            <?php if ($zone['value'] != ''): ?>
+	                                <div class="ckeckbox-holder">
+	                                    <input type="checkbox" class="checkbox" id="zone_<?php echo $zone['value'] ?>" name="<?php echo $attr->getAttributeCode() ?>[]" value="<?php echo $zone['value'] ?>" <?php echo in_array($zone['value'], $customerZonezArr) ? 'checked="checked"' : ''; ?> />
+	                                    <label for="zone_<?php echo $zone['value'] ?>"><?php echo $zone['label'] ?></label>
+	                                </div>
+	                            <?php endif ?>
+	                        <?php endforeach ?>
+	                    </div>
+                    </div>
+                </li>
+	        </ul>
+	        
+	        <h2 class="legend"><?php echo $this->__('Adresă de contact (sediu)') ?></h2>
+            <p><?php echo $this->__('O adresă completă și exactă ajută la o mai bună localizare pe Google Maps.') ?></p>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_location_province'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <select class="validate-select" title="<?php echo $attr->getFrontendLabel() ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" defaultvalue="">
+                                <?php $options = $this->getAllAttributeOptions($attr->getAttributeCode()) ?>
+                                <?php foreach ($options as $option): ?>
+                                    <option value="<?php echo $option['value'] ?>" <?php echo $option['value'] == $customer->getData($attr->getAttributeCode()) ? 'selected="selected"' : '' ?>>
+                                        <?php echo $option['label'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php //echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_location_city'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php //echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_location_address'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_location_number'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_location_other'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_location_zip'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+            </ul>
+	        
+	        <h2 class="legend"><?php echo $this->__('Descriere activitate') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_descriptions_slogan'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_descriptions_exp'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <select class="validate-select" title="<?php echo $attr->getFrontendLabel() ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" defaultvalue="">
+                                <?php $options = $this->getAllAttributeOptions($attr->getAttributeCode()) ?>
+                                <?php foreach ($options as $option): ?>
+                                    <option value="<?php echo $option['value'] ?>" <?php echo $option['value'] == $customer->getData($attr->getAttributeCode()) ? 'selected="selected"' : '' ?>>
+                                        <?php echo $option['label'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field wide">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_descriptions_desc'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <textarea name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" class="required-entry"><?php echo $customer->getBusinessDescriptionsDesc() ?></textarea>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field wide">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_descriptions_aparat'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <textarea name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" class=""><?php echo $customer->getBusinessDescriptionsAparat() ?></textarea>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+            </ul>
+	        
+            <h2 class="legend"><?php echo $this->__('Persoană de contact') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_contact_firstname'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_contact_lastname'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_contact_email'); ?>
+                        <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text required-entry" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('furnizor_contact_phone'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+            </ul>
+            
+            <h2 class="legend"><?php echo $this->__('Website / Retele socializare') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field wide">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_website'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field wide">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_webshortdesc'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <textarea name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" class=""><?php echo $customer->getbusinessNetworksWebshortdesc() ?></textarea>
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_facebook'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_tweeter'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_gplus'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_linkedin'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_youtube'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_vimeo'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_skype'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    <?php /*
+                    <div class="field">
+                        <?php $attr = $this->getAttributeDetailsByCode('business_networks_messenger'); ?>
+                        <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                        <div class="input-box">
+                            <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                        </div>
+                        <?php if ($attr->getNote()): ?>
+                            <p class="note"><?php echo $attr->getNote() ?></p>
+                        <?php endif; ?>
+                    </div>
+                    */ ?>
+                </li>
+            </ul>
+            <div class="buttons-set">
+                <p class="back-link">
+                    <span class="ion-chevron-left"></span>
+                    <a href="http://nti.nuntainimagini.ro/customer/account/"><?php echo $this->__('Inapoi') ?></a>
+                </p>
+                <button class="button" title="<?php echo $this->__('Salvează') ?>" type="submit"><span><span><?php echo $this->__('Salvează') ?></span></span></button>
+            </div>
+	    </div>
+	</form>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('profil-form', false);
+    
+    jQuery('#furnizor_company_zone').change(function(){
+    	if (jQuery(this).val() == 5) { // 5 is for personalizat
+    		jQuery('li.custom-zones').show();
+    	} else {
+    		jQuery('li.custom-zones').hide();
+    		jQuery('li.custom-zones input').each(function(){
+    			jQuery(this).attr('checked', false);
+    		});
+    	}
+    })
+//]]>
+</script>

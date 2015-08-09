@@ -1,0 +1,141 @@
+<?php
+    $customer       = $this->getCustomer();
+    $helper         = $this->helper('conturifurnizori');
+    $mediaUrl       = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+    //Zend_Debug::dump($customer->getData());
+?>
+
+<?php //Zend_Debug::dump($this->getAttributeDetailsByCode('furnizor_company_name')->getData()) ?>
+
+<div class="my-account">
+    <div class="dashboard editable-form">
+        <div class="page-title">
+            <h1><?php echo $this->__('Website / Retele socializare') ?></h1>
+        </div>
+        
+        <form class="scaffold-form" id="form-validate" method="post" enctype="multipart/form-data" action="">
+            <div class="box-account box-info">
+                <div class="col2-set">
+                    <div class="col-1">
+                        <div class="box">
+                            <div class="box-head">
+                                <h2><?php echo $this->__('Website') ?></h2>
+                            </div>
+                            <div class="box-content">
+                                <?php if (!$customer): ?>
+                                    <p><?php echo $this->__('Informatiile despre furnizor nu sunt disponibile in acest moment.'); ?></p>
+                                <?php else: ?>
+                                    <ul class="form-list">
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_website'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_webshortdesc'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <textarea name="<?php echo $attr->getAttributeCode() ?>" value=""><?php echo $customer->getData($attr->getAttributeCode()) ?></textarea>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_skype'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_messenger'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-2">
+                        <div class="box">
+                            <div class="box-head">
+                                <h2><?php echo $this->__('Retele') ?></h2>
+                            </div>
+                            <div class="box-content">
+                                <?php if (!$customer): ?>
+                                    <p><?php echo $this->__('Informatiile despre furnizor nu sunt disponibile in acest moment.'); ?></p>
+                                <?php else: ?>
+                                    <ul class="form-list">
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_facebook'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_tweeter'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_gplus'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_linkedin'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_youtube'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_networks_vimeo'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        
+        jQuery('.view-more').click(function(){
+            jQuery(this).closest('.box').find('.some-class').toggleClass('active');
+            if (jQuery(this).text() == 'learn more') {
+                jQuery(this).text('hide');
+            } else {
+                jQuery(this).text('learn more');
+            }
+            
+        });
+        
+    })
+</script>
+

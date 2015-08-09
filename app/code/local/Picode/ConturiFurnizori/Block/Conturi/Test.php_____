@@ -1,0 +1,12 @@
+<?php
+/**
+ * Author: Nicu Popan nicupopan@gmail.com
+ *
+ * @category    Picode
+ * @package     Picode_ConturiFurnizori
+ */
+
+class Picode_ConturiFurnizori
+{
+    
+}

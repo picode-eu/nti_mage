@@ -1,0 +1,70 @@
+<?php
+	/**
+	 * controller -> Picode_Conturifurnizori_controllers_Update.php
+	 * block      -> Picode_Conturifurnizori_Block_Conturi_Update
+	 */
+?>
+
+<div id="response">
+    <div class="my-account">
+        <div class="dashboard setari">
+            <div class="page-title">
+                <h1><?php echo $this->getPageTitle() ?></h1>
+            </div>
+            
+            <div class="box">
+                <div class="box-content">
+                    <?php echo $this->getResponse() ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+        // ajax submit forms
+        jQuery('.submit-button').click(function()
+        {
+            var form = jQuery(this).closest('form');
+            var responseContainer = jQuery('#response');
+            //responseContainer.text('');
+            
+            jQuery(form).submit(function(e){
+                e.preventDefault();
+                doAjax(form);
+            });
+        });
+        
+        function doAjax(form)
+        {
+            var formId = form.attr('id');
+            var myForm = new VarienForm(formId, true);
+            var postUrl = form.attr('action');
+            
+            if (myForm.validator.validate()) {
+                form.find('.loading').show();
+                form.find('.button').hide();
+                new Ajax.Updater(
+                    { success: 'response' }, postUrl, {
+                        method:'post',
+                        asynchronous:false,
+                        evalScripts:false,
+                        onComplete:function(transport) {
+                            form.find('.loading').hide();
+                            if(transport.responseText == ''){
+                                //window.location.href = '<?php //echo $this->getBaseUrl() ?>customer/account/';
+                            } else {
+                                //form.closest('.account-dropdown').find('#response').show();
+                                return false;
+                            }
+                        },
+                        parameters: jQuery(form).serialize(true),
+                    }
+                );
+            } else {
+                return false;
+            }
+        }
+    //]]>
+</script>

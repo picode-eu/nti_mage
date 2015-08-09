@@ -1,0 +1,230 @@
+<?php /*
+    $regions = Mage::getModel('directory/region')->getResourceCollection()
+        ->addCountryFilter('RO')
+        ->load();
+
+    $prices = array('350', '9100');
+    $delta = 350;
+    $priceRange = range(min($prices), max($prices), $delta);
+
+    $count = 1;
+    $priceOptions = array();
+
+    foreach ($priceRange as $price) {
+        $current = $price;
+        $next = $current + $delta - 1;
+
+        if ($count == 1) {
+            $priceOptions[] = array(
+                'code' => '0-' . $next,
+                'value' => 'sub ' . $current . ' Ron',
+            );
+        }
+
+        $priceOptions[] = array(
+            'code' => $current . '-' . $next,
+            'value' => 'intre ' . $current . ' si ' . $next . ' Ron',
+            );
+
+        if ($count == count($priceRange)) {
+            $next += 1;
+            $priceOptions[] = array(
+                'code' => $current . '-50000',
+                'value' => 'mai mult de ' . $next . ' Ron',
+            );
+        }
+
+        $count++;
+    }
+
+    $experienta = Mage::getSingleton('eav/config')->getAttribute('customer', 'business_descriptions_exp');
+    $options = $experienta->getSource()->getAllOptions(false);
+*/ ?>
+
+<div id="min-advanced-search" class="header-advanced-search">
+    <div class="mini-advanced-search">
+       <span class="close-button fa fa-times"></span>
+        <?php echo $this->getChildHtml('topSearch') ?>
+        <?php /*
+        <form id="advanced-search" action="" method="post">
+           <ul class="form-list">
+               <li class="fields">
+                   <div class="field">
+                       <label for="search_for" class="required"><em>*</em><?php echo $this->__('Cauta furnizori sau oferte') ?></label>
+                       <div class="input-box">
+                           <select id="search_for" class="select validate-select" name="search_for">
+                               <option value=""><?php echo $this->__('Selecteaza') ?></option>
+                               <option value="oferte"><?php echo $this->__('Oferte') ?></option>
+                               <option value="furnizori"><?php echo $this->__('Furnizori') ?></option>
+                           </select>
+                       </div>
+                   </div>
+                   <div class="field">
+                       <label for="region">Valabile pentru ...</label>
+                       <div class="input-box">
+                           <select id="region" class="select" name="region">
+                               <option value=""><?php echo $this->__('Selecteaza') ?></option>
+                               <?php foreach ($regions as $region): ?>
+                                    <option value="<?php echo $region->getRegionId(); ?>"><?php echo $region->getDefaultName(); ?></option>
+                               <?php endforeach; ?>
+                           </select>
+                       </div>
+                   </div>
+               </li>
+               <li class="fields">
+                   <div class="field">
+                       <label for="services">Servicii</label>
+                       <div class="input-box">
+                           <select id="services" class="select" name="services">
+                               <option value=""><?php echo $this->__('Selecteaza') ?></option>
+                               <option value="1"><?php echo $this->__('Foto') ?></option>
+                               <option value="2"><?php echo $this->__('Video') ?></option>
+                               <option value="3"><?php echo $this->__('Foto si Video') ?></option>
+                           </select>
+                       </div>
+                   </div>
+                   <div class="field">
+                       <label for="prices">Tarif / Pret</label>
+                       <div class="input-box">
+                           <select id="prices" class="select" name="prices">
+                               <option value=""><?php echo $this->__('Selecteaza') ?></option>
+                               <?php foreach ($priceOptions as $price): ?>
+                                   <option value="<?php echo $price['code']; ?>"><?php echo $price['value']; ?></option>
+                               <?php endforeach; ?>
+                           </select>
+                       </div>
+                   </div>
+                   <div class="field" style="display: none;">
+                       <label for="experienta">Experienta</label>
+                       <div class="input-box">
+                           <select id="experienta" class="select" name="experienta">
+                               <?php foreach ($options as $exp): ?>
+                                   <option value="<?php echo $exp['value']; ?>"><?php echo $exp['label']; ?></option>
+                               <?php endforeach; ?>
+                           </select>
+                       </div>
+                   </div>
+               </li>
+               <li class="fields">
+                   <div class="field">
+                       <label for="denumire">Nume / Denumire</label>
+                       <div class="input-box">
+                           <input id="denumire" type="text" class="input-text" name="denumire" />
+                       </div>
+                   </div>
+                   <div class="field">
+                       <div class="input-box button-holder">
+                           <div class="please-wait"></div>
+                           <button class="button"><span><?php echo $this->__('Afiseaza toate rezultatele') ?></span></button>
+                       </div>
+                   </div>
+               </li>
+           </ul>
+        </form>
+        */ ?>
+    </div>
+    <div class="search-response"></div>
+</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    jQuery(document).ready(function(){
+        var formContainer = jQuery('#min-advanced-search');
+
+        // open / close advanced form
+        jQuery('#nav').on('click', '.top-search', function(){
+            jQuery('.search-overlay').toggle();
+            jQuery(this).toggleClass('active');
+            formContainer.toggleClass('visible');
+            jQuery('input[type=text], select').removeClass('validation-failed').val('');
+            jQuery('.search-response').html('');
+            jQuery('.validation-advice').remove();
+        });
+
+        // close advanced form on mouse leave
+        jQuery('#min-advanced-search').on('click', '.close-button', function(){
+            jQuery('.search-overlay').hide();
+            jQuery('.top-search').removeClass('active');
+            formContainer.removeClass('visible');
+
+            jQuery('input[type=text], select').removeClass('validation-failed').val('');
+            jQuery('.search-response').html('');
+            jQuery('.validation-advice').remove();
+        });
+
+        jQuery('#nav').on('mouseenter', 'a', function(){
+            if (!jQuery(this).parent().hasClass('nav-4')) {
+                jQuery('.search-overlay').hide();
+                jQuery('.top-search').removeClass('active');
+                formContainer.removeClass('visible');
+            }
+        });
+    });
+    //]]>
+</script>
+
+<?php /* // unused javascript
+    jQuery('#advanced-search').on('click', '#search_for', function(){
+        if (jQuery(this).val() == 'furnizori') {
+            jQuery('#advanced-search').attr('action', '<?php echo $this->getBaseUrl(); ?>miniadvancedsearch/search/provider/')
+            jQuery('#region').closest('.field').find('label').text('Cu sediul in judetul');
+            jQuery('#services').closest('.field').find('label').text('Servicii prestate');
+            jQuery('#prices').closest('.field').hide();
+            jQuery('#experienta').closest('.field').show();
+        } else if (jQuery(this).val() == 'oferte') {
+            jQuery('#advanced-search').attr('action', '<?php echo $this->getBaseUrl(); ?>miniadvancedsearch/search/offer/')
+            jQuery('#region').closest('.field').find('label').text('Valabile pentru judetul');
+            jQuery('#services').closest('.field').find('label').text('Tip oferta');
+            jQuery('#prices').closest('.field').show();
+            jQuery('#experienta').closest('.field').hide();
+        } else {
+            jQuery('#region').closest('.field').find('label').text('Valabile pentru ...');
+            jQuery('#services').closest('.field').find('label').text('Servicii');
+            jQuery('#prices').closest('.field').show();
+            jQuery('#experienta').closest('.field').hide();
+        }
+    });
+
+    jQuery('#advanced-search').on('change', 'select', function(){
+        var currentForm = jQuery(this).closest('form');
+        doAjax(currentForm);
+    });
+
+    jQuery('#advanced-search').on('keyup', ' input', function(){
+        //if (jQuery(this).val().length > 3) {
+            var currentForm = jQuery(this).closest('form');
+            doAjax(currentForm);
+        //}
+    })
+
+    function doAjax(form)
+    {
+        var formId = form.attr('id');
+        var myForm = new VarienForm(formId, false);
+
+        if (myForm.validator.validate())
+        {
+            // get input value
+            var formData = form.serialize();
+            //var formUrl = form.attr('action');
+            // ajax call
+            var request = jQuery.ajax({
+                url: '<?php echo $this->getUrl('miniadvancedsearch/search/quickresults/'); ?>',
+                type: 'POST',
+                data: formData,
+                // disable continue button
+                beforeSend: function(){
+                    form.find('button.button').attr('disabled', 'disabled');
+                    form.find('.please-wait').show();
+                }
+            });
+
+            request.done(function(result){
+                var responseMessage = result;
+                form.find('.please-wait').hide();
+                form.find('button.button').removeAttr('disabled');
+                jQuery('#min-advanced-search').find('.search-response').html(responseMessage);
+            });
+        }
+    }
+    */ ?>

@@ -1,0 +1,79 @@
+<?php
+    $customer        = $this->getCustomer();
+    $helper          = $this->helper('conturifurnizori');
+    // messages
+    $unreadMessages  = $this->getUnreadMessages();
+?>
+
+<div class="my-account">
+    <div class="dashboard setari">
+        <div class="page-title">
+            <h1><?php echo $this->__('Casuta postala / Notificari') ?></h1>
+        </div>
+        
+        <div class="box-account box-info">
+            <div class="box">
+                <div class="box-head">
+                    <h2>
+                        <?php echo $this->__('Mesaje necitite') ?>
+                        <?php if ($unreadMessages->getSize()): ?>
+                            <span class="msg-count">(<?php echo $unreadMessages->getSize() ?>)</span>
+                        <?php endif; ?>
+                    </h2>
+                </div>
+                <div class="box-content">
+                    <?php echo $this->getChildHtml('mesaje_noi'); ?>
+                </div>
+            </div>
+            
+            <?php if ($customer->getGroupId() != '4'): ?>
+	            <div class="box">
+	                <div class="box-head">
+	                    <h2>
+	                        <?php echo $this->__('Mesaje trimise') ?>
+	                        <?php if ($unreadMessages->getSize()): ?>
+	                            <span class="msg-count">(<?php echo $unreadMessages->getSize() ?>)</span>
+	                        <?php endif; ?>
+	                    </h2>
+	                </div>
+	                <div class="box-content">
+	                    <?php echo $this->getChildHtml('mesaje_trimise'); ?>
+	                </div>
+	            </div>
+            <?php endif; ?>
+            
+            <div class="box">
+                <div class="box-head">
+                    <h2>
+                        <?php if ($unreadMessages->getSize()): ?>
+                            <?php echo $this->__('Restul mesajelor') ?>
+                        <?php else: ?>
+                            <?php echo $this->__('Toate mesajele') ?>
+                        <?php endif; ?>
+                    </h2>
+                </div>
+                <div class="box-content">
+                    <?php echo $this->getChildHtml('conversatii'); ?>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        
+        jQuery('.view-more').click(function(){
+            jQuery(this).closest('.box').find('.some-class').toggleClass('active');
+            if (jQuery(this).text() == 'learn more') {
+                jQuery(this).text('hide');
+            } else {
+                jQuery(this).text('learn more');
+            }
+            
+        });
+        
+    })
+</script>
+

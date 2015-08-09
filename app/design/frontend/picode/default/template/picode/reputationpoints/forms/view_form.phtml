@@ -1,0 +1,35 @@
+<?php
+    $entityType  = $this->getLoadedEntityType();
+    $entityId    = $this->getLoadedEntityId();
+    $_helper     = $this->helper('reputationpoints');
+    $isEnabled   = $_helper->getModuleConfig('rpp_settings', 'enabled_' . $entityType);
+?>
+
+
+<?php if ($isEnabled): ?>
+    <form class="reputationpoints" id="viewForm"></form>
+    
+    <script type="text/javascript">
+    //<![CDATA[
+        jQuery(document).ready(function()
+        {
+            jQuery('#viewForm').ajaxForm({
+                data: { entity_id: '<?php echo $entityId ?>', entity_type: '<?php echo $entityType ?>'},
+                method: 'post',
+                url: '<?php echo $this->getBaseUrl() ?>reputationpoints/update/reputation/update/view/',
+                beforeSubmit: function(){
+                    // do something
+                    // if returns false then the form will not be submitted
+                },
+                success: function(response) {
+                    var response = jQuery.parseJSON(response);
+                    jQuery.each(response, function(id, value) {
+                        jQuery('#' + id).text(value);
+                    });
+               }
+            }).submit();
+            
+        });
+    //]]>
+    </script>
+<?php endif; ?>

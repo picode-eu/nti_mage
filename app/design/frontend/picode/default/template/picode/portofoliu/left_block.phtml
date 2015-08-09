@@ -1,0 +1,135 @@
+<?php
+	$helper = $this->helper('portofoliu');
+    $publicAlbums = $this->getAlbums(1);
+    $privateAlbums = $this->getAlbums(0);
+	$publicVideos = $this->getVideos(1);
+    $privateVideos = $this->getVideos(0);
+    //Zend_Debug::dump($publicVideos->getData()); die();
+?>
+
+<div class="block block-account portofoliu-left">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Portofoliu foto') ?></span></strong>
+    </div>
+    <div class="block-content">
+        <ul>
+            <li>
+                <span class="subtitle">Albume foto publice</span>
+                <ul>
+                    <?php if ($publicAlbums->getSize()): ?>
+                        <?php foreach ($publicAlbums as $album): ?>
+                            <li class="links">
+                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/album/id/<?php echo $album->getAlbumId() ?>" title="Editează albumul <?php echo $album->getAlbumName() ?>">
+                                    <?php echo $this->shortenString($album->getAlbumName(), 60, true) ?>
+                                </a>
+                                <a class="delete" href="javascript:void(0)" title="<?php echo $this->__('Sterge albumul') ?>" onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletealbum/id/<?php echo $album->getAlbumId() ?>', '<?php echo $album->getAlbumName() ?>')">
+                                    <?php echo $this->__('Sterge') ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <li class="no-products">
+                            <?php echo $this->__('Nu ai niciun album public') ?>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+            <li>
+                <span class="subtitle">Albume foto inactive</span>
+                <ul>
+                    <?php if ($privateAlbums->getSize()): ?>
+                        <?php foreach ($privateAlbums as $album): ?>
+                            <li class="links">
+                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/album/id/<?php echo $album->getAlbumId() ?>" title="Editează albumul <?php echo $album->getAlbumName() ?>">
+                                    <?php echo $this->shortenString($album->getAlbumName(), 60, true) ?>
+                                </a>
+                                <a class="delete" href="javascript:void(0)" title="<?php echo $this->__('Sterge albumul') ?>" onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletealbum/id/<?php echo $album->getAlbumId() ?>', '<?php echo $album->getAlbumName() ?>')">
+                                    <?php echo $this->__('Sterge') ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <li class="no-products">
+                            <?php echo $this->__('Nu ai niciun album inactiv') ?>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        </ul>
+        <div class="buttons-set">
+            <button class="button" title="Adaugă album nou" onclick="window.location='<?php echo $this->getBaseUrl() ?>portofoliu/edit/album/'">
+                <span><span>Adauga album nou</span></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="block block-account portofoliu-left">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Portofoliu video') ?></span></strong>
+    </div>
+    <div class="block-content">
+        <ul>
+            <li>
+                <span class="subtitle">Videoclipuri publice</span>
+                <ul>
+                    <?php if ($publicVideos->getSize()): ?>
+                        <?php foreach ($publicVideos as $video): ?>
+                            <li class="links">
+                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/video/id/<?php echo $video->getVideoId() ?>" title="Editează videoclipul <?php echo $video->getVideoName() ?>">
+                                    <?php echo $this->shortenString($video->getVideoName(), 60, true) ?>
+                                </a>
+                                <a class="delete" href="javascript:void(0)" title="<?php echo $this->__('Sterge videoclipul') ?>" onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletevideo/id/<?php echo $video->getVideoId() ?>', '<?php echo $video->getVideoName() ?>')">
+                                    <?php echo $this->__('Sterge') ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <li class="no-products">
+                            <?php echo $this->__('Nu ai niciun videoclip public') ?>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+            <li>
+                <span class="subtitle">Videoclipuri inactive</span>
+                <ul>
+                    <?php if ($privateVideos->getSize()): ?>
+                        <?php foreach ($privateVideos as $video): ?>
+                            <li class="links">
+                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/video/id/<?php echo $video->getVideoId() ?>" title="Editează videoclipul <?php echo $video->getVideoName() ?>">
+                                    <?php echo $this->shortenString($video->getVideoName(), 60, true) ?>
+                                </a>
+                                <a class="delete" href="javascript:void(0)" title="<?php echo $this->__('Sterge videoclipul') ?>" onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletevideo/id/<?php echo $video->getVideoId() ?>', '<?php echo $video->getVideoName() ?>')">
+                                    <?php echo $this->__('Sterge') ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <li class="no-products">
+                            <?php echo $this->__('Nu ai niciun videoclip inactiv') ?>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        </ul>
+        <div class="buttons-set">
+            <button class="button" title="Adaugă fisier video" onclick="window.location='<?php echo $this->getBaseUrl() ?>portofoliu/edit/video/'">
+                <span><span>Adauga videoclip nou</span></span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+    function confirmDelete(url, name)
+    {
+        if (confirm('Ești sigut că vrei să stergi albumul:' + "\n" + '"' + name + '"?')) {
+            window.location.href = url;
+        }
+        
+        return false;
+    }
+//]]>
+</script>

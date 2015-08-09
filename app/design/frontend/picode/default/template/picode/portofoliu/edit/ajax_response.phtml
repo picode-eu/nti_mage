@@ -1,0 +1,28 @@
+<?php
+    echo $this->ajaxUploadImage();
+    $inputName = $this->getInputName();
+?>
+
+<script type="text/javascript">
+    var randomnumber = Math.floor(Math.random() * (999 - 99 + 1)) + 99;
+    var inputName = '<?php echo $inputName ?>';
+    var htmlResponse = '';
+    
+	jQuery('.image-holder .add-image').removeClass('disabled');
+	
+	if (inputName == 'new_img') {
+	    htmlResponse += '<div id="added_img" class="image-holder">';
+        htmlResponse += '<img class="placeholder" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>catalog/product/placeholder/default/image.jpg" />';
+	    htmlResponse += '<span id="addimg" class="button add-image">+</span>';
+	    htmlResponse += '</div>';
+	    
+	    jQuery('#added_img').attr('id', 'added_img_' + randomnumber);
+	    jQuery('.images-wrapper').append(htmlResponse);
+	}
+	
+	var errorEl = jQuery('.error');
+	if (errorEl.length) {
+	    errorEl.closest('.image-holder').delay(3000).fadeOut('slow');
+	}
+	
+</script>

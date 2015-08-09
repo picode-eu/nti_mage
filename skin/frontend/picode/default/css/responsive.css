@@ -1,0 +1,570 @@
+/*** responsive style ***/
+@media only screen and (max-width: 1151px) {
+    .home-left .provider-info span { font-size: 12px; }
+}
+@media only screen and (max-width: 1061px) {
+    .home-left .provider-info span { font-size: 11px; }
+    .home-right .providers-add h2,
+    .home-right .wedding-couples-add h2 { font-size: 22px; padding: 10px 15px; margin: 0 0 10px 0; }
+    .home-right .providers-add p,
+    .home-right .wedding-couples-add p,
+    .home-right .providers-add ul,
+    .home-right .wedding-couples-add ul{ font-size: 13px; }
+    .home-right .providers-add ul,
+    .home-right .wedding-couples-add ul { margin-bottom: 0; }
+}
+@media only screen and (max-width: 1021px){
+    .nav-primary a.level0 { padding: 30px 20px; }
+}
+@media only screen and (max-width: 1011px) {
+    
+    .category-products .product-info h2,
+    .products-grid .product-type,
+    .price-box .price,
+    .price-box .special-price .price {
+        font-size: 13px;
+    }
+    .products-grid .actions {
+        min-height: 75px;
+    }
+    .products-grid .price-box {
+        bottom: 54px;
+    }
+    .products-grid .actions .popularity-count {
+        padding: 1px 5px 0;
+        font-size: 13px;
+    }
+    .products-grid li.item .actions a.button {
+        padding: 3px 10px;
+        font-size: 13px;
+    }
+    .product-info .love-count {
+        padding: 0 10px;
+        width: 40%;
+    }
+    .products-grid .actions {
+        min-height: 0;
+    }
+    .products-grid .product-info .left-info {
+        padding: 0 0 5px 10px;
+    }
+    .product-info .popularity,
+    .product-info .love-count {
+        padding: 5px 10px 0 0;
+        width: auto;
+    }
+    /*** product ***/
+   .product-view .provider-info, .product-view .offer-info {
+       font-size: 13px;
+   }
+   .product-view .provider-info .email-action {
+       top: inherit;
+       bottom: 10px;
+       right: 10px;
+   }
+    .col-main .category-title {
+        float: left;
+        width: 100%;
+    }
+    .category-title h1,
+    body.catalogsearch-result-index .page-title h1 {
+        border-left: 0px none;
+        text-align: center;
+        border-bottom: 1px solid rgb(231, 77, 75);
+        background: none repeat scroll 0% 0% rgb(244, 244, 244);
+        padding: 10px;
+    }
+    .regions-holder {
+        margin: 0;
+        padding: 0;
+        float: left;
+        width: 100%;
+        position: relative;
+        top: 0;
+        left: 0;
+    }
+    .page-header-container .logo {
+        /*max-width: 155px;*/
+        padding: 18px 0;
+    }
+    .slideshow-container .slide-content {
+        padding: 30px 20px 10px 10px;
+        width: 41%;
+    }
+    .slideshow-container .slide-content h2 {
+        font-size: 22px;
+    }
+    .slideshow-container .slide-content p {
+        font-size: 14px;
+        line-height: 20px;
+    }
+    .content-heading h1, .content-heading h2 {
+        font-size: 28px;
+    }
+    .content-middle .middle-2-cols .col-left,
+    .content-middle .middle-2-cols .col-right {
+        width: 100%;
+    }
+    .home-content .content-middle a.button {
+        width: auto;
+        bottom: 0;
+        right: 0;
+    }
+    .col2-left-layout .sorter,
+    .col2-left-layout .pager,
+    .col2-right-layout .sorter,
+    .col2-right-layout .pager,
+    .col3-layout .sorter,
+    .col3-layout .pager {
+        width: 100%;
+        float: left;
+    }
+    .toolbar .pager {
+        float: right;
+        clear: none; 
+    }
+    .category-products li.item {
+        width: 48.7%;
+    }
+    .products-grid > li:nth-child(odd) {
+        clear: none;
+        margin-right: 10px;
+    }
+    .products-grid > li:nth-child(even) {
+        margin-right: 0px;
+        clear: right;
+    }
+    .providers .toolbar, .providers .pager { max-height: inherit; }
+}
+@media only screen and (max-width: 981px) {
+    .home-left .new-providers h1 { font-size: 26px; }
+    .slideshow-container .slide-content { width: 45%; }
+    .home-left { width: 58%; }
+    .home-right { width: 41%; }
+    .home-left .new-providers li.item { width: 48%; }
+    .home-left .provider-info span { font-size: 13px; }
+}
+@media only screen and (max-width: 971px) {
+    .page-header-container .logo { padding: 0; float: none; margin: 0 auto; }
+    #header-nav { width: 100%; float: left; text-align: center; border-top: 5px solid #E74D4B; height: 95px; }
+    .nav-primary li.nav-5 { display: none; }
+    .nav-primary li.level0 ul { padding: 10px 0; }
+    .page-header.fix-nav { border-top: 0 none; }
+    .fix-nav a.logo { display: none; }
+}
+@media only screen and (max-width: 901px) {
+    .home-left .provider-info span { font-size: 12px; }
+    .home-left .new-providers h1 { font-size: 24px; }
+    .home-right .providers-add h2,
+    .home-right .wedding-couples-add h2 { font-size: 20px; padding: 7px 15px; }
+    .plans-grid li.plan-item {   width: 31%; }
+    .plans-grid li:nth-child(2) { width: 36%; }
+}
+@media only screen and (max-width: 851px) {
+    .plans-grid li.plan-item,
+    .plans-grid li:nth-child(2) { width: 33%; }
+    .providers .left-inside { margin: 0 2% 0 0; }
+}
+@media only screen and (max-width: 800px) {
+    .plans-list ul.plans-grid {
+        float: none;
+        margin: 0 auto;
+        width: 50%;
+        min-width: 280px;
+    }
+    .plans-grid li.plan-item {
+        width: 100%;
+        float: left;
+        display: block;
+        margin: 0 0 40px 0;
+    }
+    .plans-grid li:nth-child(2) {
+        padding-top: 10px;
+    }
+    .plans-grid li:last-child {
+        margin-bottom: 0;
+    }
+    .plans-list .single-tab ul {
+        float: none;
+        width: 50%;
+        margin: 0 auto 20px;
+        min-width: 300px;
+    }
+    .plans-list .single-tab li {
+        width: 100%;
+    }
+}
+@media only screen and (max-width: 701px) {
+    .plans-list .dashboard-intro,
+    .single-tab .intro p{
+        float: none;
+        width: 85%;
+        margin: 0 auto 20px;
+    }
+    .plans-list ul.plans-grid {
+        width: 60%;
+    }
+    .plans-list .single-tab ul {
+        width: 60%;
+    }
+}
+@media only screen and (max-width: 771px) {
+    .home-left,
+    .home-right { width: 100%; padding: 10px 0; }
+    .home-left .new-providers li.item { width: 32%; }
+    .home-right .providers-add,
+    .home-right .wedding-couples-add { width: 48%; margin: 0; min-height: 300px; }
+    .home-right .providers-add { margin-right: 20px; }
+    .home-right .wedding-couples-add a.button { margin: 0; position: relative; bottom: -96px; right: 20px; }
+    .home-middle-content h2 { text-align: center; }
+}
+@media only screen and (max-width: 671px) {
+    .cms-home .latest-products ul li {
+        width: 150px;
+        min-height: 290px;
+    }
+    .plans-list ul.plans-grid {
+        width: 70%;
+    }
+    .plans-list .single-tab ul {
+        width: 70%;
+    }
+}
+@media only screen and (max-width: 621px) {
+    .cms-home .latest-products ul li {
+        width: 142px;
+        min-height: 280px;
+    }
+}
+@media only screen and (max-width: 601px) {
+    .main { padding: 10px; }
+    .home-slideshow { display: none; }
+    .page-header-container .logo { width: 100%; text-align: 0; }
+    .page-header-container .logo img { margin: 0 auto; }
+    .slideshow-container .slide-content { padding: 10px 0; }
+    .home-left .new-providers li.item { width: 48%; }
+    .home-right .providers-add, .home-right .wedding-couples-add { min-height: 375px; }
+    .category-products ul li:last-child { display: none; }
+    .home-right .wedding-couples-add a.button { bottom: -135px; }
+    .home-middle-content p { text-align: center; }
+    .home-right .providers-add,
+    .home-right .wedding-couples-add { width: 100%; min-height: 100%; }
+    .home-right .wedding-couples-add { margin-top: 40px; margin-top: 40px; padding-bottom: 20px; margin-bottom: 20px; }
+    .home-right .providers-add { margin-right: 0; }
+    .home-right .providers-add h2,
+    .home-right .wedding-couples-add h2 {
+        font-size: 24px;
+        padding: 10px 15px;
+        text-align: center;
+    }
+    .home-right .providers-add p,
+    .home-right .wedding-couples-add p,
+    .home-right .providers-add ul,
+    .home-right .wedding-couples-add ul { font-size: 14px; }
+    .home-right .wedding-couples-add a.button { position: inherit; margin: 0 20px; }
+    .cms-home .latest-products ul li {
+        width: 178px;
+        min-height: 313px;
+    }
+    .offers-container h2, .home-middle-content h3 {
+        font-size: 24px;
+    }
+    .latest-offers,
+    .home-middle {
+        padding: 20px 0;
+    }
+    .home-middle-content p {
+        text-align: left;
+    }
+}
+@media only screen and (max-width: 537px) {
+    .plans-list ul.plans-grid,
+    .plans-list .single-tab ul,
+    .plans-list .dashboard-intro,
+    .single-tab .intro p {
+        width: 100%;
+    }
+    .plans-list ul.plans-grid {
+        padding: 0;
+    }
+    .popularity-views label { font-size: 11px; }
+    .popularity-views span.value { font-size: 16px; }
+    .provider-info-top .activity-description .read-more { font-size: 45px; padding: 0 2%; }
+    .providers .provider-info-bottom {position: relative; bottom: 0; width: 100%;  }
+}
+@media only screen and (max-width: 521px) {
+    .regions-holder h3 {
+        width: 100%;
+        text-align: center;
+        margin: 0px;
+        clear: both;
+        padding: 0px 10px 10px;
+    }
+    .regions-holder select.regions-options {
+        float: none;
+        display: block;
+        margin: 0px 0px 10px;
+        position: relative;
+        left: 50%;
+        margin-left: -95px;
+    }
+
+}
+@media only screen and (max-width: 536px) {
+    .cms-home .latest-products ul li {
+        width: 155px;
+        min-height: 290px;
+    }
+}
+@media only screen and (max-width: 451px) {
+    /*.cms-home .latest-offers,*/
+    /*.home-middle {*/
+        /*padding: 20px;*/
+    /*}*/
+    /*.offers-container h2,*/
+    /*.home-middle-content h3 {*/
+        /*font-size: 24px;*/
+    /*}*/
+    .providers .left-inside { width: 100%; margin: 0; }
+    .providers .reputation-wrapper, .offer .reputation-wrapper { width: auto; }
+    .providers .right-inside { width: 100%; }
+}
+@media only screen and (max-width: 421px) {
+    .home-left .new-providers li.item {
+        width: 47%;
+    }
+    .home-left .provider-info span {
+        font-size: 11px;
+    }
+
+}
+@media only screen and (max-width: 481px) {
+    .cms-home .main {
+        padding: 0;
+    }
+    body.cms-home .main-container {
+        padding: 10px;
+    }
+    .main-container {
+    	padding: 30px 10px;
+    }
+    .page-header-container .logo {
+        padding: 10px 0;
+        width: 100%;
+    }
+    .page-header-container .logo img {
+        margin: 0 auto;
+    }
+    .slideshow-container ul.slideshow {
+        position: relative;
+        margin: 0;
+        width: 100%;
+        padding-bottom: 30px;
+    }
+    .slideshow-container ul.slideshow li img {
+        max-width: none;
+        min-width: 480px;
+    }
+    .slideshow-container .slide-content {
+        width: 100%;
+        position: relative;
+        padding: 20px 0;
+    }
+    .slideshow-container .slide-content h2 {
+        font-size: 16px;
+        padding: 0;
+    }
+   .slideshow-container .slide-content p {
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+        line-height: 20px;
+    }
+    .slideshow-container .slideshow-prev,
+    .slideshow-container .slideshow-next {
+        display: none;
+    }
+    .home-content .content-heading {
+        margin: 10px 0;
+    }
+    .home-content .content-heading h1 {
+        padding: 10px 0 5px;
+        font-size: 28px;
+        width: 95%;
+    }
+    .home-content .content-heading p {
+        padding: 0;
+        width: 95%;
+    }
+    .home-content .content-middle .col-left,
+    .home-content .content-middle .col-right {
+        border-top: 5px solid #fff;
+		border-left: 0 none;
+		border-right: 0 none;
+		border-bottom: 15px solid #fff;
+		float: left;
+		box-shadow: 0 0 0 transparent;
+		margin: 10px 0;
+		padding: 0;
+		width: 100%;
+    }
+    .home-content .content-middle img {
+    	opacity: 1;
+        top: 40px;
+    }
+    .home-content .content-middle h2 {
+        font-size: 20px;
+        margin: 5px 0 0 0;
+        padding: 0 0 10px 0;
+        text-align: center;
+        width: 100%;
+    }
+    .home-content .content-middle p {
+        margin: 10px 10px 0;
+    }
+    .home-content .content-middle a.button {
+        bottom: 10px;
+        position: relative;
+    }
+    .content-heading h1,
+    .content-heading h2 {
+        font-size: 20px;
+    	padding: 10px 0 5px;
+		width: 95%;
+    }
+    .bx-wrapper .bx-viewport {
+    	padding: 5px 0 10px 0px;
+    }
+    .newest-providers ul.bxslider-newest li {
+    	/*width: 160px !important;*/ 
+    }
+    .cms-home .latest-offers,
+    .home-middle {
+        padding: 20px;
+    }
+    .offers-container h2,
+    .home-middle-content h3 {
+        font-size: 24px;
+    }
+    .cms-home .latest-products ul li {
+        width: 195px;
+        min-height: 335px;
+    }
+    .home-middle-content p {
+        text-align: left;
+    }
+}
+@media only screen and (max-width: 406px) {
+    .category-products li.item {
+        width: 47.9%;
+    }
+    .sorter label,
+    .product-info .love-count {
+        display: none;
+    }
+    .home-left .new-providers li.item {
+        width: 47%;
+        margin: 2px 5px 10px;
+    }
+    .home-left .provider-info span {
+        font-size: 10px;
+    }
+    .cms-home .latest-products ul li {
+        width: 158px;
+        min-height: 295px;
+        margin: 0.8%;
+    }
+
+}
+@media only screen and (max-width: 321px) {
+	.main-container {
+    	padding: 20px 0px;
+    }
+    .home-content .content-middle ul {
+    	padding: 0 10px;
+		width: 100%;
+		list-style-type: square;
+    }
+    .home-content .content-middle img {
+    	opacity: 0.5;
+    	padding: 0 10px;
+    }
+    .home-content .content-middle p {
+		margin: 10px 10px 0;
+		padding: 0 0 0 10px;
+		width: 90%;
+	}
+    .home-content .content-middle a.button {
+        left: 20px;
+    }
+    .category-products li.item {
+        width: 100%;
+        padding: 10px;
+        margin: 0;
+        clear: both;
+    }
+    .products-grid .product-info .bottom-info {
+        width: 106%;
+        left: -10px;
+        bottom: -10px;
+        padding: 5px 10px;
+    }
+    .product-info .love-count {
+        display: block;
+    }
+    .home-left, .home-right { padding: 0; }
+    .home-left .new-providers h1 { font-size: 16px; }
+    .home-left .new-providers p { font-size: 12px; margin: 5px 0 10px 0; }
+    .home-left .new-providers li.item { width: 97%; margin-bottom: 10px; }
+    .home-left .provider-info span { font-size: 13px; }
+    .home-right .providers-add h2,
+    .home-right .wedding-couples-add h2,
+    .home-middle-content h2 { font-size: 20px; }
+
+    #header-nav { position: relative; }
+    #nav {
+        display: block;
+        position: relative;
+        width: 100%;
+        z-index: 9;
+        background: #fff;
+        top: 0;
+    }
+    .nav-primary li.level0 > a { padding: 0 0 0 30px; border-bottom: 1px solid #E74D4B; }
+    #nav ul li:first-child { display: none; }
+    .nav-primary li.level0 ul { padding-top: 0; }
+    .page-header-container .nav-overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(0,0,0,0.3);
+    }
+    .nav-primary li.level1 a { text-align: left; }
+    .nav-primary li.level1 a {
+        border-bottom: 1px solid #E74D4B;
+    }
+    .cms-home .latest-products ul li {
+        float: none;
+        margin: 5px auto;
+    }
+    .latest-offers,
+    .home-middle{
+        padding: 20px 0 !important;
+    }
+    .offers-container h2,
+    .home-middle-content h3 {
+        font-size: 16px;
+    }
+    .home-middle .col-2 {
+        width: 100%;
+        margin: 10px 0;
+        text-align: left;
+    }
+    .home-middle-content p {
+        text-align: left;
+        margin: 0;
+        padding: 0 10px;
+    }
+}

@@ -1,0 +1,135 @@
+<?php
+    $loadedEntityType = $this->getLoadEdentityType();
+    $loadedEntityId = $this->getLoadedEntityId();
+    $_loadedEntity = $this->getLoadedEntityDetails($loadedEntityType, $loadedEntityId);
+    $_helper = $this->helper('reputationpoints');
+
+    switch ($loadedEntityType) {
+        case 'furnizori':
+            $entityUrl = $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $_helper->seoFriendlyUrl($_loadedEntity->getBusinessDescriptionsTitle()) . '/' . $loadedEntityId;
+            $entityName = $_loadedEntity->getBusinessDescriptionsTitle();
+            $entityType = 'Furnizor Servicii Nunta ';
+            break;
+        case 'product':
+            $entityUrl = $this->getBaseUrl() . $_loadedEntity->getUrlPath();
+            $entityName = $_loadedEntity->getName();
+            $entityType = 'Oferta Foto / Video ';
+            break;
+    }
+?>
+
+<form class="reputationpoints" id="frdemailForm">
+    <input type="hidden" name="update" value="frdemail" />
+    <input type="hidden" name="entity_id" value="<?php echo $loadedEntityId ?>" />
+    <input type="hidden" name="entity_type" value="<?php echo $loadedEntityType ?>" />
+    <ul class="form-list frdemail-form">
+        <p id="frdemail_sent" class="note response"><?php echo $this->__('Trimite linkul prin email unui prieten') ?></p>
+        <li class="fields">
+            <div class="field">
+                <label for="frd_sender_firstname" class="required"><em>*</em>Prenumele tau</label>
+                <div class="input-box">
+                    <input name="frd_sender_firstname" id="frd_sender_firstname" value="<?php echo $this->getDefault('customer', 'firstname') ?>" class="input-text required-entry" title="Prenumele tau" type="text" placeholder="Prenume expeditor" />
+                </div>
+            </div>
+            <div class="field">
+                <label for="frd_sender_lastname" class="required"><em>*</em>Numele tau</label>
+                <div class="input-box">
+                    <input name="frd_sender_lastname" id="frd_sender_lastname" value="<?php echo $this->getDefault('customer', 'lastname') ?>" class="input-text required-entry" title="Numele tau" type="text" placeholder="Nume expeditor" />
+                </div>
+            </div>
+        </li>
+        <li class="fields">
+            <div class="field">
+                <label for="frd_sender_email" class="required"><em>*</em>Email-ul tau</label>
+                <div class="input-box">
+                    <input name="frd_sender_email" id="frd_sender_email" value="<?php echo $this->getDefault('customer', 'email') ?>" class="input-text required-entry validate-email" title="Adresa ta de email" type="text" placeholder="Email expeditor" />
+                </div>
+            </div>
+            <div class="field">
+                <label for="frd_receiver_email" class="required"><em>*</em>Email-ul prientenului</label>
+                <div class="input-box">
+                    <input name="frd_receiver_email" id="frd_receiver_email" value="" class="input-text required-entry validate-email" title="Adresa de email a prietenului" type="text" placeholder="Email destinatar" />
+                </div>
+            </div>
+        </li>
+        <li class="fields">
+            <div class="wide">
+                <label for="frd_subject" class="required"><em>*</em>Subiect</label>
+                <div class="input-box">
+                    <?php $subject = 'Link ' . $entityType . ': ' . $entityName . ''; ?>
+                    <input name="frd_subject" id="frd_subject" value="<?php echo $subject ?>" class="input-text required-entry" title="Subiect" type="text" placeholder="Subiect" />
+                </div>
+            </div>
+        </li>
+        <li class="fields">
+            <div class="wide">
+                <label for="frd_message" class="">Mesaj</label>
+                <div class="input-box">
+                    <textarea id="frd_message" name="frd_message" class="textarea" placeholder="Adaugă mesajul tău..."></textarea>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="buttons-set">
+        <button type="submit" title="Trimite mesajul" class="button">
+            <span><span>Trimite</span></span>
+        </button>
+    </div>
+</form>
+
+<script type="text/javascript">
+    //<![CDATA[
+    jQuery(document).ready(function(){
+        // send to a firend click action
+        jQuery(document).on('click', '#frdemail', function(){
+            jQuery(this).closest('ul').find('.email-form').toggle('fast');
+        });
+
+        // send to a firend close action
+        jQuery(document).on('click', '.email-form .close-button', function(){
+            jQuery(this).closest('.email-form').slideUp('fast');
+        });
+
+        // send to a friend form submit
+        jQuery(document).on('click', '.email-form .button', function(e){
+            var form = new VarienForm('frdemailForm', false);
+
+            if(form.validator && form.validator.validate()) {
+                e.preventDefault();
+                // form.submit();
+
+                jQuery('#socialForm').ajaxForm({
+                    method: 'post',
+                    data: {
+                        update: 'frdemail',
+                        entity_id:        '<?php echo $loadedEntityId ?>',
+                        entity_type:      '<?php echo $loadedEntityType ?>',
+                        frd_sender_firstname: jQuery('#frd_sender_firstname').val(),
+                        frd_sender_lastname:  jQuery('#frd_sender_lastname').val(),
+                        frd_sender_email:     jQuery('#frd_sender_email').val(),
+                        frd_receiver_email:   jQuery('#frd_receiver_email').val(),
+                        frd_subject:          jQuery('#frd_subject').val(),
+                        frd_message:          jQuery('#frd_message').val(),
+                    },
+                    url: '<?php echo $this->getBaseUrl() ?>reputationpoints/update/send/',
+                    beforeSubmit: function(){
+                        // do something
+                        // if returns false then the form will not be submitted
+                    },
+                    success: function(response) {
+                        var response = jQuery.parseJSON(response);
+                        jQuery.each(response, function(id, value) {
+                            jQuery('#' + id).text(value);
+                        });
+                    }
+                }).submit();
+
+                return false;
+
+            } else {
+                alert('Câmpurile marcate cu steluță sunt obligatorii!');
+            }
+        });
+    });
+    //]]>
+</script>

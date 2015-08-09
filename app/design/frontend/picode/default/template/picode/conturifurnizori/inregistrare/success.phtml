@@ -1,0 +1,172 @@
+<?php
+    $referer = parse_url(Mage::helper('core/http')->getHttpReferer());
+    $refererPath = trim($referer['path'], '/');
+    $lastIncrementId = $this->getLastIncrementIdFromSession();
+    $_order = Mage::getModel('sales/order')->loadByIncrementId($lastIncrementId);
+    $_customer = Mage::getModel('customer/customer')->loadByEmail($_order->getCustomerEmail());
+?>
+
+<?php if ($refererPath == 'conturifurnizori/inregistrare' && $_order && $_customer): ?>
+    <div class="page-title">
+        <h1><?php echo $this->__('Inregistrare cu suces') ?></h1>
+        <div class="std">
+            <p><?php echo $this->__('Bine ai venit <strong>%s %s</strong>', ucwords($_customer->getFirstname()), ucwords($_customer->getLastname())) ?>.</p>
+            <p>Iti multumim pentru inregistrarea pe <strong class="website">Nunta<span class="italic">In</span>Imagini.ro</strong>. Un email de confirmare a fost trimis pe adresa
+                <strong><?php echo $_customer->getEmail(); ?></strong>.</p>
+            <p>Speram sa ai o experienta placuta la noi si vrem sa te asiguram ca echipa <strong class="website">Nunta<span class="italic">In</span>Imagini.ro</strong> lucreaza in permanenta pentru a-ti oferi noi optiuni de promovare a afacerii si ofertei tale foto si/sau video. Daca ai sugesti sau reclamatii nu ezita sa ne <a href="<?php echo $this->getBaseUrl(); ?>contacts/">contactezi</a>.
+            </p>
+            <p>
+                Cu simpatie,
+                <br />
+                Echipa <strong class="website">Nunta<span class="italic">In</span>Imagini.ro</strong>
+            </p>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php /*
+    array(140) {
+    ["entity_id"] => string(3) "157"
+    ["state"] => string(8) "complete"
+    ["status"] => string(8) "complete"
+    ["coupon_code"] => NULL
+    ["protect_code"] => string(6) "914d36"
+    ["shipping_description"] => NULL
+    ["is_virtual"] => string(1) "1"
+    ["store_id"] => string(1) "1"
+    ["customer_id"] => string(3) "211"
+    ["base_discount_amount"] => string(8) "-99.0000"
+    ["base_discount_canceled"] => NULL
+    ["base_discount_invoiced"] => NULL
+    ["base_discount_refunded"] => NULL
+    ["base_grand_total"] => string(6) "0.0000"
+    ["base_shipping_amount"] => string(6) "0.0000"
+    ["base_shipping_canceled"] => NULL
+    ["base_shipping_invoiced"] => NULL
+    ["base_shipping_refunded"] => NULL
+    ["base_shipping_tax_amount"] => string(6) "0.0000"
+    ["base_shipping_tax_refunded"] => NULL
+    ["base_subtotal"] => string(7) "99.0000"
+    ["base_subtotal_canceled"] => NULL
+    ["base_subtotal_invoiced"] => NULL
+    ["base_subtotal_refunded"] => NULL
+    ["base_tax_amount"] => string(6) "0.0000"
+    ["base_tax_canceled"] => NULL
+    ["base_tax_invoiced"] => NULL
+    ["base_tax_refunded"] => NULL
+    ["base_to_global_rate"] => string(6) "1.0000"
+    ["base_to_order_rate"] => string(6) "1.0000"
+    ["base_total_canceled"] => NULL
+    ["base_total_invoiced"] => NULL
+    ["base_total_invoiced_cost"] => NULL
+    ["base_total_offline_refunded"] => NULL
+    ["base_total_online_refunded"] => NULL
+    ["base_total_paid"] => NULL
+    ["base_total_qty_ordered"] => NULL
+    ["base_total_refunded"] => NULL
+    ["discount_amount"] => string(8) "-99.0000"
+    ["discount_canceled"] => NULL
+    ["discount_invoiced"] => NULL
+    ["discount_refunded"] => NULL
+    ["grand_total"] => string(6) "0.0000"
+    ["shipping_amount"] => string(6) "0.0000"
+    ["shipping_canceled"] => NULL
+    ["shipping_invoiced"] => NULL
+    ["shipping_refunded"] => NULL
+    ["shipping_tax_amount"] => string(6) "0.0000"
+    ["shipping_tax_refunded"] => NULL
+    ["store_to_base_rate"] => string(6) "1.0000"
+    ["store_to_order_rate"] => string(6) "1.0000"
+    ["subtotal"] => string(7) "99.0000"
+    ["subtotal_canceled"] => NULL
+    ["subtotal_invoiced"] => NULL
+    ["subtotal_refunded"] => NULL
+    ["tax_amount"] => string(6) "0.0000"
+    ["tax_canceled"] => NULL
+    ["tax_invoiced"] => NULL
+    ["tax_refunded"] => NULL
+    ["total_canceled"] => NULL
+    ["total_invoiced"] => NULL
+    ["total_offline_refunded"] => NULL
+    ["total_online_refunded"] => NULL
+    ["total_paid"] => NULL
+    ["total_qty_ordered"] => string(6) "1.0000"
+    ["total_refunded"] => NULL
+    ["can_ship_partially"] => NULL
+    ["can_ship_partially_item"] => NULL
+    ["customer_is_guest"] => string(1) "0"
+    ["customer_note_notify"] => string(1) "1"
+    ["billing_address_id"] => string(3) "164"
+    ["customer_group_id"] => string(1) "1"
+    ["edit_increment"] => NULL
+    ["email_sent"] => NULL
+    ["forced_shipment_with_invoice"] => NULL
+    ["payment_auth_expiration"] => NULL
+    ["quote_address_id"] => NULL
+    ["quote_id"] => string(3) "329"
+    ["shipping_address_id"] => NULL
+    ["adjustment_negative"] => NULL
+    ["adjustment_positive"] => NULL
+    ["base_adjustment_negative"] => NULL
+    ["base_adjustment_positive"] => NULL
+    ["base_shipping_discount_amount"] => string(6) "0.0000"
+    ["base_subtotal_incl_tax"] => string(7) "99.0000"
+    ["base_total_due"] => NULL
+    ["payment_authorization_amount"] => NULL
+    ["shipping_discount_amount"] => string(6) "0.0000"
+    ["subtotal_incl_tax"] => string(7) "99.0000"
+    ["total_due"] => NULL
+    ["weight"] => string(6) "0.0000"
+    ["customer_dob"] => NULL
+    ["increment_id"] => string(9) "100000157"
+    ["applied_rule_ids"] => string(1) "4"
+    ["base_currency_code"] => string(3) "RON"
+    ["customer_email"] => string(33) "american.beauty@nuntainimagini.ro"
+    ["customer_firstname"] => string(8) "american"
+    ["customer_lastname"] => string(6) "beauty"
+    ["customer_middlename"] => NULL
+    ["customer_prefix"] => NULL
+    ["customer_suffix"] => NULL
+    ["customer_taxvat"] => NULL
+    ["discount_description"] => string(13) "Early Starter"
+    ["ext_customer_id"] => NULL
+    ["ext_order_id"] => NULL
+    ["global_currency_code"] => string(3) "RON"
+    ["hold_before_state"] => NULL
+    ["hold_before_status"] => NULL
+    ["order_currency_code"] => string(3) "RON"
+    ["original_increment_id"] => NULL
+    ["relation_child_id"] => NULL
+    ["relation_child_real_id"] => NULL
+    ["relation_parent_id"] => NULL
+    ["relation_parent_real_id"] => NULL
+    ["remote_ip"] => string(13) "79.119.118.65"
+    ["shipping_method"] => NULL
+    ["store_currency_code"] => string(3) "RON"
+    ["store_name"] => string(50) "Main Website
+    Main Website Store
+    Default Store View"
+    ["x_forwarded_for"] => NULL
+    ["customer_note"] => NULL
+    ["created_at"] => string(19) "2015-06-21 07:52:28"
+    ["updated_at"] => string(19) "2015-06-21 07:52:29"
+    ["total_item_count"] => string(1) "1"
+    ["customer_gender"] => NULL
+    ["hidden_tax_amount"] => string(6) "0.0000"
+    ["base_hidden_tax_amount"] => string(6) "0.0000"
+    ["shipping_hidden_tax_amount"] => string(6) "0.0000"
+    ["base_shipping_hidden_tax_amnt"] => string(6) "0.0000"
+    ["hidden_tax_invoiced"] => NULL
+    ["base_hidden_tax_invoiced"] => NULL
+    ["hidden_tax_refunded"] => NULL
+    ["base_hidden_tax_refunded"] => NULL
+    ["shipping_incl_tax"] => string(6) "0.0000"
+    ["base_shipping_incl_tax"] => string(6) "0.0000"
+    ["coupon_rule_name"] => NULL
+    ["paypal_ipn_customer_notified"] => string(1) "0"
+    ["gift_message_id"] => NULL
+    ["payment_authorization_expiration"] => NULL
+    ["forced_do_shipment_with_invoice"] => NULL
+    ["base_shipping_hidden_tax_amount"] => string(6) "0.0000"
+}
+*/ ?>

@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+	<default>
+		<reference name="root">
+			<action method="setTemplate">
+				<template>page/2columns-left.phtml</template>
+			</action>
+		</reference>
+		<!-- <reference name="head">
+			<action method="addJs"><script>jquery/masonry.pkgd.js</script></action>
+    		<action method="addCss"><stylesheet>css/masonry.pkgd.css</stylesheet></action>
+		</reference> -->
+	</default>
+
+	<portofoliu_edit_album>
+		<reference name="head">
+			<action method="addItem"><type>skin_js</type><name>js/jquery/jquery.form.js</name></action>
+			<!-- <action method="addCss"><stylesheet>css/ajaxuploader/ajaxuploader.css</stylesheet></action> -->
+		</reference>
+		<reference name="left_first">
+			<block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+				<action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+				<action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+			</block>
+		</reference>
+		<reference name="content">
+			<block type="portofoliu/edit" name="portofoliu_edit_album" template="picode/portofoliu/edit/album.phtml">
+				<block type="portofoliu/edit" name="alert" template="picode/portofoliu/edit/alert.phtml"/>
+				<block type="portofoliu/edit" name="photo_form" template="picode/portofoliu/forms/photo.phtml"/>
+				<block type="portofoliu/edit" name="ajaxuploader_form" template="picode/portofoliu/edit/ajaxuploader.phtml"/>
+			</block>
+		</reference>
+	</portofoliu_edit_album>
+
+	<portofoliu_edit_video>
+		<reference name="left_first">
+			<block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+				<action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+				<action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+			</block>
+		</reference>
+		<reference name="content">
+			<block type="portofoliu/edit" name="portofoliu_edit_video" template="picode/portofoliu/edit/video.phtml"/>
+		</reference>
+	</portofoliu_edit_video>
+    
+    <customer_group_furnizori>
+        <reference name="left_first">
+            <block type="portofoliu/left" name="portofoliu_left" template="picode/portofoliu/left_block.phtml"/>
+        </reference>
+    </customer_group_furnizori>
+    
+    <portofoliu_edit_imageupload>
+        <reference name="root">
+            <action method="setTemplate"><template>page/empty.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="portofoliu/edit" name="image_response" template="picode/portofoliu/edit/ajax_response.phtml" />
+        </reference>
+    </portofoliu_edit_imageupload>
+
+    <!-- Portofoliu Foto -->
+	<portofoliu_foto_index>
+		<reference name="root">
+			<action method="setTemplate">
+				<template>page/1column.phtml</template>
+			</action>
+		</reference>
+		<reference name="left_first">
+			<block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+				<action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+				<action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+			</block>
+		</reference>
+		<reference name="head">
+    		<action method="addCss"><stylesheet>css/masonry.pkgd.css</stylesheet></action>
+    		<action method="addItem"><type>skin_js</type><name>js/jquery/masonry.pkgd.js</name></action>
+		</reference>
+		
+		<reference name="content">
+            <block type="portofoliu/portofoliu_foto" name="portofoliu_foto" template="picode/portofoliu/list_album.phtml" />
+		</reference>
+	</portofoliu_foto_index>
+	
+	<portofoliu_foto_view>
+		<reference name="root">
+			<action method="setTemplate">
+				<template>page/2columns-right.phtml</template>
+			</action>
+		</reference>
+		<reference name="head">
+			<!--<action method="addJs"><script>jquery/masonry.pkgd.js</script></action>-->
+			<!--<action method="addCss"><stylesheet>css/masonry.pkgd.css</stylesheet></action>-->
+			<action method="addItem"><type>skin_js</type><name>js/jquery/carousel.barousel.js</name></action>
+			<action method="addItem"><type>skin_js</type><name>js/jquery/thslide.js</name></action>
+			<action method="addCss"><stylesheet>css/carousel.barousel.css</stylesheet></action>
+		</reference>
+		<reference name="right">
+			<block type="conturifurnizori/conturi_furnizori" name="furnizori_right" before="-" template="picode/conturifurnizori/furnizori/view/right.phtml" />
+		</reference>
+		<reference name="content">
+			<block type="portofoliu/portofoliu_foto" name="portofoliu_foto" template="picode/portofoliu/view/album.phtml"/>
+		</reference>
+	</portofoliu_foto_view>
+
+    <!-- Protofoliu Video -->
+	<portofoliu_video_index>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/1column.phtml</template>
+            </action>
+        </reference>
+
+		<reference name="left">
+			
+		</reference>
+		<reference name="content">
+			<block type="portofoliu/portofoliu_video" name="portofoliu_video" template="picode/portofoliu/list_video.phtml"/>
+		</reference>
+	</portofoliu_video_index>
+	
+	<portofoliu_video_view>
+		<reference name="root">
+			<action method="setTemplate">
+				<template>page/2columns-right.phtml</template>
+			</action>
+		</reference>
+		<reference name="right">
+			<block type="conturifurnizori/conturi_furnizori" name="furnizori_right" before="-" template="picode/conturifurnizori/furnizori/view/right.phtml" />
+		</reference>
+		<reference name="content">
+			<block type="portofoliu/portofoliu_video" name="portofoliu_video_view" template="picode/portofoliu/view/video.phtml"/>
+		</reference>
+	</portofoliu_video_view>
+	
+</layout>

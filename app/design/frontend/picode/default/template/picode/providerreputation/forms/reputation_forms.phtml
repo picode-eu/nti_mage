@@ -1,0 +1,139 @@
+<form id="reputationForm"></form>
+<form id="socialForm"></form>
+<form id="contactViewForm"></form>
+<form id="loveViewForm"></form>
+
+<script type="text/javascript">
+//<![CDATA[
+    jQuery(document).ready(function()
+    {
+        jQuery('#reputationForm').ajaxForm({
+            data: { provider_id: '<?php echo $this->getLoadedProviderId() ?>' },
+            method: 'post',
+            url: '<?php echo $this->getBaseUrl() ?>providerreputation/update/reputation/type/views',
+            beforeSubmit: function(){
+                // do something
+                // if returns false then the form will not be submitted
+            },
+            success: function(response) {
+                var response = jQuery.parseJSON(response);
+                jQuery.each(response, function(id, value) {
+                    jQuery('#' + id).text(value);
+                });
+           }
+        }).submit();
+        
+        jQuery('.share-popup').click(function(event) {
+            //alert(this.href);
+            var width  = 575,
+                height = 500,
+                left   = (jQuery(window).width()  - width)  / 2,
+                top    = (jQuery(window).height() - height) / 2,
+                url    = this.href,
+                opts   = 'status=1' +
+                         ',width='  + width  +
+                         ',height=' + height  + 
+                         ',top='    + top    +
+                         ',left='   + left;
+            
+            window.open(url, 'share', opts);
+            
+            var shareId = jQuery(this).attr('id');
+            
+            jQuery('#socialForm').ajaxForm({
+                data: { provider_id: '<?php echo $this->getLoadedProviderId() ?>' },
+                method: 'post',
+                url: '<?php echo $this->getBaseUrl() ?>providerreputation/update/reputation/type/' + shareId,
+                beforeSubmit: function(){
+                    // do something
+                    // if returns false then the form will not be submitted
+                },
+                success: function(response) {
+                    var response = jQuery.parseJSON(response);
+                    jQuery.each(response, function(id, value) {
+                        jQuery('#' + id).text(value);
+                    });
+               }
+            }).submit();
+     
+            return false;
+        });
+        
+        jQuery(document).on('click', '#update-contact', function(){
+            jQuery('#contactViewForm').ajaxForm({
+                data: { provider_id: '<?php echo $this->getLoadedProviderId() ?>' },
+                method: 'post',
+                url: '<?php echo $this->getBaseUrl() ?>providerreputation/update/contacts',
+                beforeSubmit: function(){
+                    jQuery('#contact-loading').show();
+                },
+                success: function(response) {
+                    jQuery('#contactViewForm, #update-contact, .ion-chevron-down, #contact-loading').remove();
+                    var response = jQuery.parseJSON(response);
+                    jQuery.each(response, function(id, value) {
+                        jQuery('#' + id).html(value);
+                    });
+               }
+            }).submit();
+        });
+        
+        jQuery(document).on('click', '#love', function(){
+            jQuery('#contactViewForm').ajaxForm({
+                data: { provider_id: '<?php echo $this->getLoadedProviderId() ?>' },
+                method: 'post',
+                url: '<?php echo $this->getBaseUrl() ?>providerreputation/update/loves',
+                success: function(response) {
+                    var response = jQuery.parseJSON(response);
+                    jQuery.each(response, function(id, value) {
+                        jQuery('#' + id).text(value);
+                    });
+               }
+            }).submit();
+        });
+        
+        jQuery(document).on('click', '#send-email', function(){
+            jQuery(this).closest('.follow-it').find('.form-wrapper').toggle('fast');
+            jQuery(this).closest('.follow-it').find('.form-wrapper form').find('input[type=text], input[type=email], textarea').val('');
+        });
+        
+        jQuery(document).on('click', '#sendForm button', function(){
+            
+            var form = jQuery(this).closest('form');
+            var formId = form.attr('id');
+            //var formId = jQuery(this).closest('form').attr('id');
+            
+            jQuery(form).ajaxForm({
+                data: { provider_id: '<?php echo $this->getLoadedProviderId() ?>' },
+                method: 'post',
+                url: '<?php echo $this->getBaseUrl() ?>providerreputation/update/sendemail',
+                beforeSubmit: function(){
+                    var formValidate = new VarienForm(formId, false);
+                    
+                    if(!formValidate.validator || !formValidate.validator.validate()) {
+                        return false;
+                    } else {
+                        form.closest('.form-wrapper').find('.overlay').fadeIn('fast');
+                    }
+                },
+                success: function(response) {
+                    form.closest('.form-wrapper').find('.overlay').fadeOut('fast');
+                    form.find('input[type=text], input[type=email], textarea').val('');
+                    var response = jQuery.parseJSON(response);
+                    
+                    jQuery.each(response, function(id, value) {
+                        //form.find('.response-wrapper').show();
+                        jQuery('.form-wrapper').hide();
+                        jQuery('#' + id).html(value);
+                    });
+               }
+            }).submit();
+        });
+        
+        jQuery(document).on('click', '.close-button', function(){
+            jQuery(this).closest('.form-wrapper').slideUp('fast');
+            jQuery(this).closest('.form-wrapper form').find('input[type=text], input[type=email], textarea').val('');
+        });
+        
+    });
+//]]>
+</script>

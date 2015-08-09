@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Picode_MiniAdvancedSearch>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Picode_MiniAdvancedSearch>
+        <!-- <depends>
+            <Mage_CatalogSearch />
+        </depends> -->
+    </modules>
+</config>

@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * @category    Picode
+ * @package     Picode_ConturiFurnizori
+ * @copyright   Copyright (c) 2014 piCode
+ * 
+**/
+-->
+<config>
+    <modules>
+        <Picode_ConturiFurnizori>
+            <version>0.3.0</version>
+        </Picode_ConturiFurnizori>
+    </modules>
+    <frontend>
+        <routers>
+            <conturifurnizori>
+                <use>standard</use>
+                <args>
+                    <module>Picode_ConturiFurnizori</module>
+                    <frontName>conturifurnizori</frontName>
+                </args>
+            </conturifurnizori>
+            <checkout>
+                <args>
+                    <modules>
+                        <Picode_ConturiFurnizori before="Mage_Checkout">Picode_ConturiFurnizori_Overwrite_Checkout</Picode_ConturiFurnizori>
+                    </modules>
+                </args>
+            </checkout>
+        </routers>
+        <layout>
+            <updates>
+                <conturifurnizori>
+                    <file>picode/conturifurnizori.xml</file>
+                </conturifurnizori>
+            </updates>
+        </layout>
+        <events>
+            <customer_login>
+                <observers>
+                    <customer_login_observer>
+                        <type>singleton</type>
+                        <class>Picode_ConturiFurnizori_Model_Observer</class>
+                        <method>afterLogIn</method>
+                    </customer_login_observer>
+                </observers>
+            </customer_login>
+            <!-- add a customer group handle to use it in layout xml -->
+            <controller_action_layout_load_before>
+                <observers>
+                    <customer_group_handle>
+                        <class>Picode_ConturiFurnizori_Model_Observer</class>
+                        <method>addCustomerGroupHandle</method>
+                    </customer_group_handle>
+                </observers>
+            </controller_action_layout_load_before>
+            <coupon_code_changed>
+                <observers>
+                    <redirect_after_couponcode>
+                        <class>Picode_ConturiFurnizori_Model_Observer</class>
+                        <method>redirectAfterCouponApplied</method>
+                    </redirect_after_couponcode>
+                </observers>
+            </coupon_code_changed>
+        </events>
+    </frontend>
+    <global>
+        <blocks>
+            <conturifurnizori>
+                <class>Picode_ConturiFurnizori_Block</class>
+            </conturifurnizori>
+            <adminhtml>
+                <rewrite>
+                    <customer_grid>Picode_ConturiFurnizori_Block_Adminhtml_Customer_Grid</customer_grid><!-- rewrite the customer grid -->
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <helpers>
+            <conturifurnizori>
+                <class>Picode_ConturiFurnizori_Helper</class>
+            </conturifurnizori>
+        </helpers>
+        <models>
+            <conturifurnizori>
+                <class>Picode_ConturiFurnizori_Model</class>
+                <resourceModel>conturifurnizori_resource</resourceModel>
+            </conturifurnizori>
+            <conturifurnizori_resource>
+                <class>Picode_ConturiFurnizori_Model_Resource</class>
+                <entities>
+                    <usermessage>
+                        <table>usermessage</table>
+                    </usermessage>
+                </entities>
+            </conturifurnizori_resource>
+            <!-- rewrite addProduct method to add a new event: checkout_cart_product_add_before -->
+            <checkout>
+                <rewrite>
+                    <cart>Picode_ConturiFurnizori_Model_Checkout_Cart</cart>
+                </rewrite>
+            </checkout>
+        </models>
+        <template>
+            <email>
+                <aprove_free_acount  module="Picode_ConturiFurnizori">
+                    <label>Email abrobare Cont FREE</label>
+                    <file>aprove_free_account_email.html</file>
+                    <type>html</type>
+                </aprove_free_acount>
+            </email>
+        </template>
+        <sales>
+            <quote>
+                <item>
+                    <product_attributes>
+                        <cont_tip />
+                    </product_attributes>
+                </item>
+            </quote>
+        </sales>
+        <events>
+            <checkout_cart_product_add_before>
+                <observers>
+                    <picode_conturifurnizori_clear_cart>
+                        <type>singleton</type>
+                        <class>Picode_ConturiFurnizori_Model_Observer</class>
+                        <method>clearCart</method>
+                    </picode_conturifurnizori_clear_cart>
+                </observers>
+            </checkout_cart_product_add_before>
+            <checkout_cart_save_after>
+                <observers>
+                    <picode_conturifurnizori_redirect>
+                        <type>singleton</type>
+                        <class>Picode_ConturiFurnizori_Model_Observer</class>
+                        <method>redirectToCheckout</method>
+                    </picode_conturifurnizori_redirect>
+                </observers>
+            </checkout_cart_save_after>
+        </events>
+        <resources>
+            <conturifurnizori_setup>
+                <setup>
+                    <module>Picode_ConturiFurnizori</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </conturifurnizori_setup>
+            <conturifurnizori_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </conturifurnizori_write>
+            <conturifurnizori_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </conturifurnizori_read>
+        </resources>        
+        
+        <catalog>
+            <product>
+                <type>
+                    <conturifurnizori translate="label" module="catalog">
+                        <label>Planuri</label>
+                        <model>conturifurnizori/product_type_cf</model>
+                        <is_qty>1</is_qty>
+                        <index_data_retreiver>conturifurnizori/catalogIndex_data_cf</index_data_retreiver>
+                        <price_model>conturifurnizori/product_price</price_model>
+                        <composite>0</composite>
+                    </conturifurnizori>
+                </type>
+            </product>
+            <product>
+                <type>
+                    <ofertefurnizori translate="label" module="catalog">
+                        <label>Oferte</label>
+                        <model>conturifurnizori/product_type_of</model>
+                        <is_qty>1</is_qty>
+                        <index_data_retreiver>conturifurnizori/catalogIndex_data_of</index_data_retreiver>
+                        <price_model>conturifurnizori/product_price</price_model>
+                        <composite>0</composite>
+                    </ofertefurnizori>
+                </type>
+                <!--
+                   S-ar putea sa fie nevoie sa asignam manual unele attribute acestor tipuri de produse nou create
+                   Caz concret: atributele din tabul Price: price, special_price, special_from_date, special_to_date, tax_class_id ... si ar mai putea fi si altele 
+                -->
+            </product>    
+        </catalog>
+        
+        <template>
+            <email>
+                <customer_notification_email module="ConturiFurnizori">
+                    <label>Customer Notification Email</label>
+                    <file>customer_notification_email.html</file>
+                    <type>html</type>
+                </customer_notification_email>
+            </email>
+            <email>
+                <provider_notification_email module="ConturiFurnizori">
+                    <label>Customer Notification Email</label>
+                    <file>provider_notification_email.html</file>
+                    <type>html</type>
+                </provider_notification_email>
+            </email>
+        </template>
+        
+    </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <provider>
+                    <file>picode/conturifurnizori.xml</file>
+                </provider>
+            </updates>
+        </layout>
+    </adminhtml>
+</config>

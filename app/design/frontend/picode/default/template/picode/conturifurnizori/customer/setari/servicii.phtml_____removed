@@ -1,0 +1,142 @@
+<?php
+    $customer       = $this->getCustomer();
+    $helper         = $this->helper('conturifurnizori');
+    $mediaUrl       = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+    //Zend_Debug::dump($customer->getData());
+?>
+
+<?php //Zend_Debug::dump($this->getAttributeDetailsByCode('furnizor_company_name')->getData()) ?>
+
+<div class="my-account">
+    <div class="dashboard editable-form">
+        <div class="page-title">
+            <h1><?php echo $this->__('Detalii servicii') ?></h1>
+        </div>
+        
+        <form class="scaffold-form" id="form-validate" method="post" enctype="multipart/form-data" action="">
+            <div class="box-account box-info">
+                <div class="col2-set">
+                    <div class="col-1">
+                        <div class="box">
+                            <div class="box-head">
+                                <h2><?php echo $this->__('Descriere activitate') ?></h2>
+                            </div>
+                            <div class="box-content">
+                                <?php if (!$customer): ?>
+                                    <p><?php echo $this->__('Informatiile despre furnizor nu sunt disponibile in acest moment.'); ?></p>
+                                <?php else: ?>
+                                    <ul class="form-list">
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('furnizor_company_services'); ?>
+                                            <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                                            <div class="input-box">
+                                                <select class="validate-select required-entry" title="<?php echo $attr->getFrontendLabel() ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" defaultvalue="">
+                                                    <?php $options = $this->getAllAttributeOptions($attr->getAttributeCode()) ?>
+                                                    <?php foreach ($options as $option): ?>
+                                                        <option value="<?php echo $option['value'] ?>" <?php echo $option['value'] == $customer->getData($attr->getAttributeCode()) ? 'selected="selected"' : '' ?>>
+                                                            <?php echo $option['label'] ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_descriptions_exp'); ?>
+                                            <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                                            <div class="input-box">
+                                                <select class="validate-select required-entry" title="<?php echo $attr->getFrontendLabel() ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" defaultvalue="">
+                                                    <?php $options = $this->getAllAttributeOptions($attr->getAttributeCode()) ?>
+                                                    <?php foreach ($options as $option): ?>
+                                                        <option value="<?php echo $option['value'] ?>" <?php echo $option['value'] == $customer->getData($attr->getAttributeCode()) ? 'selected="selected"' : '' ?>>
+                                                            <?php echo $option['label'] ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_descriptions_desc'); ?>
+                                            <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                                            <div class="input-box">
+                                                <textarea name="<?php echo $attr->getAttributeCode() ?>" value=""><?php echo $customer->getData($attr->getAttributeCode()) ?></textarea>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('business_descriptions_aparat'); ?>
+                                            <label class="required" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?><em>*</em></label>
+                                            <div class="input-box">
+                                                <textarea name="<?php echo $attr->getAttributeCode() ?>" value=""><?php echo $customer->getData($attr->getAttributeCode()) ?></textarea>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-2">
+                        <div class="box">
+                            <div class="box-head">
+                                <h2><?php echo $this->__('Persoana de contact') ?></h2>
+                            </div>
+                            <div class="box-content">
+                                <?php if (!$customer): ?>
+                                    <p><?php echo $this->__('Informatiile despre furnizor nu sunt disponibile in acest moment.'); ?></p>
+                                <?php else: ?>
+                                    <ul class="form-list">
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('furnizor_contact_firstname'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('furnizor_contact_lastname'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('furnizor_contact_email'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <?php $attr = $this->getAttributeDetailsByCode('furnizor_contact_phone'); ?>
+                                            <label class="" for="<?php echo $attr->getAttributeCode() ?>"><?php echo $attr->getFrontendLabel() ?></label>
+                                            <div class="input-box">
+                                                <input type="text" class="input-text" title="<?php echo $attr->getFrontendLabel() ?>" value="<?php echo $customer->getData($attr->getAttributeCode()) ?>" name="<?php echo $attr->getAttributeCode() ?>" id="<?php echo $attr->getAttributeCode() ?>" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        
+        jQuery('.view-more').click(function(){
+            jQuery(this).closest('.box').find('.some-class').toggleClass('active');
+            if (jQuery(this).text() == 'learn more') {
+                jQuery(this).text('hide');
+            } else {
+                jQuery(this).text('learn more');
+            }
+            
+        });
+        
+    })
+</script>
+

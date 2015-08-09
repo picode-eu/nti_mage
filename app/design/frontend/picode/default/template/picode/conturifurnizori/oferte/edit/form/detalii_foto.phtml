@@ -1,0 +1,221 @@
+<?php
+    $product = $this->getProductForEdit();
+    $customer = $this->getCustomer();
+    $attributeSource = Mage::getSingleton('eav/config');
+    $serviciiPrestate = $customer->getFurnizorCompanyServices();
+?>
+
+<li class="fields">
+    <div class="field">
+        <label for="off_dvd" class="required"><em>*</em><?php echo $this->__('DVD cu fotografii') ?></label>
+        <div class="input-box">
+            <select name="off_dvd" id="off_dvd" class="select validate-select" onchange="updateNextField(this, 'off_dvd_nrcopii', 'off_dvd_nr_img')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getData('off_dvd') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getData('off_dvd') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="off_dvd_nrcopii" class="<?php echo $this->isRequiredLabel($product, 'off_dvd', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'off_dvd', '1'); ?></em>
+            <?php echo $this->__('Nr. copii DVD (seturi)') ?>
+        </label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'off_dvd_nrcopii')->getSource()->getAllOptions(false); ?>
+                <select 
+                    name="off_dvd_nrcopii" 
+                    id="off_dvd_nrcopii" 
+                    class="select <?php echo $this->isRequired($product, 'off_dvd', '1', 'select') ?>"
+                    <?php echo $this->isDisabled($product, 'off_dvd', '1') ?> 
+                >
+                    <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getData('off_dvd_nrcopii') == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="off_dvd_nr_img" class="<?php echo $this->isRequiredLabel($product, 'off_dvd', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'off_dvd', '1'); ?></em>
+            <?php echo $this->__('Nr. fotografii (minim)') ?></label>
+        <div class="input-box">
+            <input 
+                type="text" 
+                id="off_dvd_nr_img" 
+                class="input-text <?php echo $this->isRequired($product, 'off_dvd', '1', 'text') ?>" 
+                name="off_dvd_nr_img" 
+                value="<?php echo $product->getData('off_dvd_nr_img') ?>" 
+                <?php echo $this->isDisabled($product, 'off_dvd', '1') ?> 
+                />
+        </div>
+    </div>
+    <div class="field">
+        <label for="off_slide_show" class="required"><em>*</em><?php echo $this->__('Slide Show') ?></label>
+        <div class="input-box">
+            <select name="off_slide_show" id="off_slide_show" class="select validate-select" onchange="updateNextField(this, 'off_slide_show_detalii')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getData('off_slide_show') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getData('off_slide_show') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="wide">
+        <label for="off_slide_show_detalii" class="<?php echo $this->isRequiredLabel($product, 'off_slide_show', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'off_slide_show', '1'); ?></em>
+            <?php echo $this->__('Descriere Slide Show') ?>
+        </label>
+        <div class="input-box">
+            <textarea 
+                id="off_slide_show_detalii" 
+                name="off_slide_show_detalii"
+                class="<?php echo $this->isRequired($product, 'off_slide_show', '1', 'textarea') ?>" 
+                <?php echo $this->isDisabled($product, 'off_slide_show', '1') ?> 
+            ><?php echo $product->getData('off_slide_show_detalii') ?></textarea>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="off_album_clasic" class="required"><em>*</em><?php echo $this->__('Album Foto Clasic') ?></label>
+        <div class="input-box">
+            <select name="off_album_clasic" id="off_album_clasic" class="select validate-select" onchange="updateNextField(this, 'off_album_clasic_cant', 'off_album_clasic_detalii')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getData('off_album_clasic') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getData('off_album_clasic') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="off_album_clasic_cant" class="<?php echo $this->isRequiredLabel($product, 'off_album_clasic', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'off_album_clasic', '1'); ?></em>
+            <?php echo $this->__('Nr. albume Foto Clasice') ?>
+        </label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'off_album_clasic_cant')->getSource()->getAllOptions(false); ?>
+                <select 
+                    name="off_album_clasic_cant" 
+                    id="off_album_clasic_cant" 
+                    class="select <?php echo $this->isRequired($product, 'off_album_clasic', '1', 'select') ?>"
+                    <?php echo $this->isDisabled($product, 'off_album_clasic', '1') ?> 
+                >
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getData('off_album_clasic_cant') == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="wide">
+        <label for="off_album_clasic_detalii" class="<?php echo $this->isRequiredLabel($product, 'off_album_clasic', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'off_album_clasic', '1'); ?></em>
+            <?php echo $this->__('Descriere Album Foto Clasic') ?>
+        </label>
+        <div class="input-box">
+            <textarea 
+                id="off_album_clasic_detalii" 
+                name="off_album_clasic_detalii"
+                class="<?php echo $this->isRequired($product, 'off_album_clasic', '1', 'textarea') ?>" 
+                <?php echo $this->isDisabled($product, 'off_album_clasic', '1') ?> 
+            ><?php echo $product->getData('off_album_clasic_detalii') ?></textarea>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="off_album_carte" class="required"><em>*</em><?php echo $this->__('Album FotoCarte') ?></label>
+        <div class="input-box">
+            <select name="off_album_carte" id="off_album_carte" class="select validate-select" onchange="updateNextField(this, 'off_album_carte_cant', 'off_album_carte_detalii')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getData('off_album_carte') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getData('off_album_carte') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="off_album_carte_cant" class="<?php echo $this->isRequiredLabel($product, 'off_album_carte', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'off_album_carte', '1'); ?></em>
+            <?php echo $this->__('Nr. albume FotoCarte') ?>
+        </label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'off_album_carte_cant')->getSource()->getAllOptions(false); ?>
+                <select 
+                    name="off_album_carte_cant" 
+                    id="off_album_carte_cant" 
+                    class="select <?php echo $this->isRequired($product, 'off_album_carte', '1', 'select') ?>"
+                    <?php echo $this->isDisabled($product, 'off_album_carte', '1') ?> 
+                >
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getData('off_album_carte_cant') == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="wide">
+        <label for="off_album_carte_detalii" class="<?php echo $this->isRequiredLabel($product, 'off_album_carte', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'off_album_carte', '1'); ?></em>
+            <?php echo $this->__('Descriere Album FotoCarte') ?>
+        </label>
+        <div class="input-box">
+            <textarea 
+                id="off_album_carte_detalii" 
+                name="off_album_carte_detalii"
+                class="<?php echo $this->isRequired($product, 'off_album_carte', '1', 'textarea') ?>" 
+                <?php echo $this->isDisabled($product, 'off_album_carte', '1') ?> 
+            ><?php echo $product->getData('off_album_carte_detalii') ?></textarea>
+        </div>
+    </div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

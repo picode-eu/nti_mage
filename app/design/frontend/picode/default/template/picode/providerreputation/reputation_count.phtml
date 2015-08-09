@@ -1,0 +1,17 @@
+<?php
+	$reputation = $this->getProviderReputation();
+?>
+
+<div class="reputation-wrapper">
+    <div class="popularity-views">
+        <label><?php echo $this->__('RPF') ?></label>
+        <label><?php echo $this->__('Afişări') ?></label>
+        <span id="provider-reputation" class="value earned-points">
+            <?php $decimals = $reputation->getProviderReputation() > 999 ? 2 : 0; ?>
+        	<?php echo $this->helper('conturifurnizori')->convertReputationPoints($reputation->getProviderReputation(), $decimals) ?>
+        </span>
+        <span id="provider-views" class="value">
+        	<?php echo $reputation->getProviderViews() ?>
+        </span>
+    </div>    
+</div>

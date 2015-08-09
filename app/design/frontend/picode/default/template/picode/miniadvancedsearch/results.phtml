@@ -1,0 +1,32 @@
+<?php
+    $resultCollection = $this->getQuickSearchResult();
+?>
+
+<div class="result-count">
+    Afisate <?php echo count($resultCollection); ?> rezultat(e) din <?php echo $resultCollection->getSize(); ?> total
+</div>
+
+<?php if (count($resultCollection)): ?>
+    <ul class="items-list">
+        <?php foreach ($resultCollection as $_item): ?>
+            <li class="item">
+                <div class="item-image <?php echo $_item->getItemEntityType(); ?>">
+                    <a href="<?php echo $_item->getUrl(); ?>" title="<?php echo $_item->getName(); ?>">
+                        <img src="<?php echo $_item->getItemImage() ?>" alt="<?php echo $_item->getName(); ?>" title="<?php echo $_item->getName(); ?>" width="60" />
+                    </a>
+                </div>
+                <div class="item-details <?php echo $_item->getItemEntityType(); ?>">
+                    <h4>
+                        <a href="<?php echo $_item->getUrl(); ?>" title="<?php echo $_item->getName(); ?>"><?php echo $_item->getName(); ?></a>
+                    </h4>
+                    <p class="services"><?php echo $_item->getItemServices(); ?></p>
+                    <?php if ($_item->getItemEntityType() == 'provider'): ?>
+                        <p class="price"><?php echo $_item->getItemSediu() ?></p>
+                    <?php else: ?>
+                        <p class="price"><?php echo $_item->getItemPrice() ?></p>
+                    <?php endif; ?>
+                </div>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>

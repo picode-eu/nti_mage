@@ -1,0 +1,55 @@
+<!--<?xml version="1.0"?>-->
+<!--<layout version="0.1.0">-->
+    <!--<default>-->
+        <!---->
+    <!--</default>-->
+    <!---->
+    <!--<conturifurnizori_furnizori_profil>-->
+        <!--<reference name="head">-->
+            <!--<action method="addItem"><type>skin_js</type><name>js/jquery/jquery.form.js</name></action>-->
+        <!--</reference>-->
+        <!--<reference name="furnizori_view">-->
+            <!--<block type="providerreputation/update" name="reputation" template="picode/providerreputation/forms/reputation_forms.phtml" output="toHtml" />-->
+            <!--<block type="providerreputation/update" name="reputation_count" template="picode/providerreputation/reputation_count.phtml" />-->
+            <!--<block type="providerreputation/update" name="reputation_share" template="picode/providerreputation/social_buttons.phtml">-->
+                <!--<block type="providerreputation/update" name="email_form" template="picode/providerreputation/forms/email_form.phtml" />-->
+            <!--</block>-->
+        <!--</reference>-->
+    <!--</conturifurnizori_furnizori_profil>-->
+    <!---->
+    <!--<providerreputation_update_reputation>-->
+        <!--<reference name="root">-->
+            <!--<action method="setTemplate"><template>page/blank.phtml</template></action>-->
+        <!--</reference>-->
+        <!--<reference name="content">-->
+            <!--<block type="providerreputation/update" name="ajax_response" template="picode/providerreputation/forms/ajax_response.phtml" />-->
+        <!--</reference>-->
+    <!--</providerreputation_update_reputation>-->
+    <!---->
+    <!--<providerreputation_update_contacts>-->
+        <!--<reference name="root">-->
+            <!--<action method="setTemplate"><template>page/blank.phtml</template></action>-->
+        <!--</reference>-->
+        <!--<reference name="content">-->
+            <!--<block type="providerreputation/update" name="ajax_response" template="picode/providerreputation/forms/ajax_response.phtml" />-->
+        <!--</reference>-->
+    <!--</providerreputation_update_contacts>-->
+    <!---->
+    <!--<providerreputation_update_loves>-->
+        <!--<reference name="root">-->
+            <!--<action method="setTemplate"><template>page/blank.phtml</template></action>-->
+        <!--</reference>-->
+        <!--<reference name="content">-->
+            <!--<block type="providerreputation/update" name="ajax_response" template="picode/providerreputation/forms/ajax_response.phtml" />-->
+        <!--</reference>-->
+    <!--</providerreputation_update_loves>-->
+    <!---->
+    <!--<providerreputation_update_sendemail>-->
+        <!--<reference name="root">-->
+            <!--<action method="setTemplate"><template>page/blank.phtml</template></action>-->
+        <!--</reference>-->
+        <!--<reference name="content">-->
+            <!--<block type="providerreputation/update" name="ajax_response" template="picode/providerreputation/forms/ajax_response.phtml" />-->
+        <!--</reference>-->
+    <!--</providerreputation_update_sendemail>-->
+<!--</layout>-->

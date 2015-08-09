@@ -1,0 +1,68 @@
+<?php
+    $loadedEntityType = $this->getLoadEdentityType();
+    $loadedEntityId = $this->getLoadedEntityId();
+    $_loadedEntity = $this->getLoadedEntityDetails($loadedEntityType, $loadedEntityId);
+    $_helper = $this->helper('reputationpoints');
+
+    switch ($loadedEntityType) {
+        case 'furnizori':
+            $entityUrl = $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $_helper->seoFriendlyUrl($_loadedEntity->getBusinessDescriptionsTitle()) . '/' . $loadedEntityId;
+            $entityName = $_loadedEntity->getBusinessDescriptionsTitle();
+            break;
+        case 'product':
+            $entityUrl = $this->getBaseUrl() . $_loadedEntity->getUrlPath();
+            $entityName = $_loadedEntity->getName();
+            break;
+    }
+?>
+
+<div id="response"></div>
+<div class="follow-it">
+    <h3><?php echo $this->__('Arată că iți place / Distribuie'); ?></h3>
+    <ul>
+        <?php if ($_helper->getModuleConfig('rpp_settings', 'facebook_points') != ''): ?>
+            <li class="contact-social facebook">
+                <a id="facebook" class="share-popup" href="http://www.facebook.com/sharer.php?u=<?php echo $entityUrl; ?>" title="<?php echo $this->__('Distribuie cu Facebook') ?>">
+                    <span class="ion-social-facebook"></span>
+                </a>
+                <span id="facebook_count" class="social-count">
+                    <?php echo $_helper->convertReputationPoints($this->getRppSocialsCount()->getFacebookCount()); ?>
+                </span>
+            </li>
+        <?php endif; ?>
+        <?php if ($_helper->getModuleConfig('rpp_settings', 'twitter_points') != ''): ?>
+            <li class="contact-social twitter">
+                <a id="twitter" class="share-popup" href="<?php echo 'http://twitter.com/home?status=' . $entityName . ' /' . '+' . $entityUrl; ?>" title="<?php echo $this->__('Distribuie cu Twitter') ?>">
+                    <span class="ion-social-twitter"></span>
+                </a>
+                <span id="twitter_count" class="social-count">
+                    <?php echo $_helper->convertReputationPoints($this->getRppSocialsCount()->getTwitterCount()); ?>
+                </span>
+            </li>
+        <?php endif; ?>
+        <?php if ($_helper->getModuleConfig('rpp_settings', 'gplus_points') != ''): ?>
+            <li class="contact-social gplus">
+                <a id="gplus" class="share-popup" href="https://plus.google.com/share?url=<?php echo $entityUrl ?>" title="<?php echo $this->__('Distribuie cu Google+') ?>">
+                    <span class="ion-social-googleplus"></span>
+                </a>
+                <span id="gplus_count" class="social-count">
+                    <?php echo $_helper->convertReputationPoints($this->getRppSocialsCount()->getGplusCount()); ?>
+                </span>
+            </li>
+        <?php endif; ?>
+        <?php if ($_helper->getModuleConfig('rpp_settings', 'frdemail_points') != ''): ?>
+            <li class="contact-social frdemail">
+                <a id="frdemail" class="email-popup" href="javascript:void(0)" title="<?php echo $this->__('Trimite unui prieten') ?>">
+                    <span class="ion-email"></span>
+                </a>
+                <span id="frdemail_count" class="social-count">
+                    <?php echo $_helper->convertReputationPoints($this->getRppSocialsCount()->getFrdemailCount()); ?>
+                </span>
+            </li>
+            <li class="email-form">
+                <span class="close-button fa fa-times"></span>
+                <?php echo $this->getChildHtml('frdemail_form'); ?>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>

@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/jquery/jquery.form.js</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/reputationpoints.css</name></action>
+        </reference>
+    </default>
+    
+    <conturifurnizori_furnizori_profil>
+        <reference name="furnizori_view">
+            <block type="reputationpoints/update" name="rpp_view_count">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/view_count.phtml</template></action>
+            </block>
+            <block type="reputationpoints/update" name="socials">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/socials.phtml</template></action>
+            </block>
+        </reference>
+        <reference name="before_body_end">
+            <block type="reputationpoints/update" name="rpp_view_form">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/forms/view_form.phtml</template></action>
+            </block>
+            <block type="reputationpoints/update" name="rpp_socials_form">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/forms/socials_form.phtml</template></action>
+            </block>
+            <block type="reputationpoints/update" name="rpp_ctcview_form">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/forms/contact_view.phtml</template></action>
+            </block>
+        </reference>
+        <reference name="socials">
+            <block type="reputationpoints/update" name="frdemail_form" template="picode/reputationpoints/forms/frdemail_form.phtml" />
+        </reference>
+    </conturifurnizori_furnizori_profil>
+    
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>css/reputationpoints.css</name></action>
+        </reference>
+        <reference name="product.info">
+            <block type="reputationpoints/update" name="rpp_view_count">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/view_count.phtml</template></action>
+            </block>
+            <block type="reputationpoints/update" name="socials">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/socials.phtml</template></action>
+            </block>
+        </reference>
+        <reference name="before_body_end">
+            <block type="reputationpoints/update" name="rpp_view_form">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/forms/view_form.phtml</template></action>
+            </block>
+            <block type="reputationpoints/update" name="rpp_socials_form">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/forms/socials_form.phtml</template></action>
+            </block>
+            <block type="reputationpoints/update" name="rpp_ctcview_form">
+                <action ifconfig="reputationpoints/rpp_settings/enabled_all" method="setTemplate"><template>picode/reputationpoints/forms/contact_view.phtml</template></action>
+            </block>
+        </reference>
+        <reference name="socials">
+            <block type="reputationpoints/update" name="frdemail_form" template="picode/reputationpoints/forms/frdemail_form.phtml" />
+        </reference>
+    </catalog_product_view>
+
+    <reputationpoints_update_reputation>
+        <reference name="root">
+            <action method="setTemplate"><template>page/blank.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="reputationpoints/update" name="ajax_response" template="picode/reputationpoints/forms/ajax_response.phtml" />
+        </reference>
+    </reputationpoints_update_reputation>
+
+    <reputationpoints_update_social>
+        <reference name="root">
+            <action method="setTemplate"><template>page/blank.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="reputationpoints/update" name="ajax_response" template="picode/reputationpoints/forms/ajax_response.phtml" />
+        </reference>
+    </reputationpoints_update_social>
+
+    <reputationpoints_update_send>
+        <reference name="root">
+            <action method="setTemplate"><template>page/blank.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="reputationpoints/update" name="ajax_response" template="picode/reputationpoints/forms/ajax_response.phtml" />
+        </reference>
+    </reputationpoints_update_send>
+
+    <reputationpoints_update_contactview>
+        <reference name="root">
+            <action method="setTemplate"><template>page/blank.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="reputationpoints/update" name="ajax_response" template="picode/reputationpoints/forms/ajax_response.phtml" />
+        </reference>
+    </reputationpoints_update_contactview>
+</layout>

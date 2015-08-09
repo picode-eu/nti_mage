@@ -1,0 +1,62 @@
+<?php
+    $quote = $this->getQuote();
+    //$account = $this->helper('conturifurnizori')->accountIsPaid();
+    //Zend_Debug::dump($account);
+?>
+
+<form action="<?php echo $this->getAjaxUrl() ?>" method="post" id="form-personal-info">
+	<ul class="messages"><li class="error-msg"></li></ul>
+	<div class="">
+        <p><?php echo $this->__('Datele furnizate în acestă secțiune <strong>vor rămâne confidențiale</strong>. Acestea vor fi folosite doar pentru autentificarea în contul de furnizor și pentru comunicarea cu administratorii %s', '<a href="' . $this->getBaseUrl() . '">nuntainimagini.ro</a>'); ?></p>
+    </div>
+    <div class="fieldset">
+        <ul class="form-list">
+            <li class="fields">
+                <div class="field">
+                    <label for="customer_firstname" class="required"><em>*</em><?php echo $this->__('Nume') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="customer_firstname" id="customer_firstname" value="<?php echo $quote->getCustomerFirstname() ?>" class="input-text required-entry" title="<?php echo $this->__('Nume') ?>" onchange="autocompleteInput('furnizor_contact_firstname, firstname, firstname_pf', this)" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="customer_lastname" class="required"><em>*</em><?php echo $this->__('Prenume') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="customer_lastname" id="customer_lastname" value="<?php echo $quote->getCustomerLastname() ?>" title="<?php echo $this->__('Prenume') ?>" class="input-text required-entry" onchange="autocompleteInput('furnizor_contact_lastname, lastname, lastname_pf', this)" />
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="wide">
+                    <label for="customer_email" class="required"><em>*</em><?php echo $this->__('Email') ?></label>
+                    <div class="input-box">
+                        <input type="email" name="customer_email" id="customer_email" value="<?php echo $quote->getCustomerEmail() ?>" title="<?php echo $this->__('Email') ?>" class="input-text required-entry validate-email" onchange="autocompleteInput('furnizor_contact_email', this)" />
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="password_hash" class="required"><em>*</em><?php echo $this->__('Parola') ?></label>
+                    <div class="input-box">
+                        <input type="password" name="password_hash" id="password_hash" title="<?php echo $this->__('Parola') ?>" class="input-text required-entry validate-password" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="confirmation" class="required"><em>*</em><?php echo $this->__('Confirmare Parola') ?></label>
+                    <div class="input-box">
+                        <input type="password" name="confirmation" title="<?php echo $this->__('Confirmare Parola') ?>" id="confirmation" class="input-text required-entry validate-cpassword" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="buttons-set">
+        <button type="submit" title="<?php echo $this->__('Continuare') ?>" class="button load-next-step">
+            <span><span><?php echo $this->__('Continuare') ?></span></span>
+        </button>
+        <span style="display: none; float: left" class="please-wait">
+            <img class="v-middle" title="<?php echo $this->__('Se salvează...') ?>" alt="<?php echo $this->__('Se salvează...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+            <?php echo $this->__('Se salvează...') ?>
+        </span>
+        <p class="required"><?php echo $this->__('* Câmpuri obligatorii') ?></p>
+    </div>
+</form>

@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * @category    Picode
+ * @package     Picode_Overwrite
+ * @copyright   Copyright (c) 2014 piCode
+ * 
+**/
+-->
+<config>
+    <modules>
+        <Picode_Overwrite>
+            <version>0.1.0</version>
+        </Picode_Overwrite>
+    </modules>
+    <frontend>
+        <routers>
+            <catalog>
+                <args>
+                    <modules>
+                        <Picode_Overwrite before="Mage_Catalog">Picode_Overwrite</Picode_Overwrite>
+                    </modules>
+                </args>
+            </catalog>
+            <overwrite>
+                <use>standard</use>
+                <args>
+                    <module>Picode_Overwrite</module>
+                    <frontName>overwrite</frontName>
+                </args>
+            </overwrite>
+        </routers>
+    </frontend>
+    <global>
+        <blocks>
+            <overwrite>
+                <class>Picode_Overwrite_Block</class>
+            </overwrite>
+            <customer>              
+               <rewrite>
+                    <account_navigation>Picode_Overwrite_Block_Account_Navigation</account_navigation>
+               </rewrite>
+            </customer>
+            <catalog>              
+               <rewrite>
+                    <product_view>Picode_Overwrite_Block_Catalog_Product_View</product_view>
+               </rewrite>
+            </catalog>
+            <catalog>              
+               <rewrite>
+                    <product_list>Picode_Overwrite_Block_Catalog_Product_List</product_list>
+               </rewrite>
+            </catalog>
+            <catalog>
+                <rewrite>
+                    <product_list_toolbar>Picode_Overwrite_Block_Product_List_Toolbar</product_list_toolbar>
+                </rewrite>
+            </catalog>
+        </blocks>
+        <models>
+            <catalog>
+                <rewrite>
+                    <config>Picode_Overwrite_Model_Catalog_Config</config>
+                </rewrite>
+            </catalog>
+            <catalog_resource>
+                <rewrite>
+                    <product_collection>Picode_Overwrite_Model_Resource_Product_Collection</product_collection>
+                </rewrite>
+            </catalog_resource>
+        </models>
+    </global>
+</config>

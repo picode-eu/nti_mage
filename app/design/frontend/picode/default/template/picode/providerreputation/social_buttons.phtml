@@ -1,0 +1,53 @@
+<?php
+	$_provider = $this->getLoadedProviderDetails();
+	$_reputation = $this->getProviderReputation();
+	$_helper = $this->helper('conturifurnizori');
+	
+	$providerUrl = $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $_helper->seoFriendlyUrl($_provider->getBusinessDescriptionsTitle()) . '/' . $_provider->getId();
+	$link = 'javascript:void(0)';
+?>
+<div id="response"></div>
+<div class="follow-it">
+    <h3><?php echo $this->__('Arată că iți place / Distribuie'); ?></h3>
+    <ul class="">
+        <?php /*
+		<li class="contact-social comment">
+            <a href="<?php echo $link; ?>" title="<?php echo $this->__('Adauga un comentariu') ?>">
+                <span class="ion-compose"></span>
+            </a>
+            <span id="provider-comments" class="social-count"><?php echo $_reputation->getProviderComments() ?></span>
+        </li>
+        */ ?>
+        <li class="contact-social send">
+            <a id="send-email" href="<?php echo $link; ?>" title="<?php echo $this->__('Trimite unui prieten') ?>">
+                <span class="ion-email"></span>
+            </a>
+            <span id="provider-emails" class="social-count"><?php echo $_reputation->getProviderEmails() ?></span>
+        </li>
+        <li class="contact-social love">
+            <a id="love" href="<?php echo $link; ?>" title="<?php echo $this->__('Mie imi place') ?>">
+                <span class="ion-ios-heart"></span>
+            </a>
+            <span id="provider-loves" class="social-count"><?php echo $_reputation->getProviderLoves() ?></span>
+        </li>
+        <li class="contact-social facebook">
+            <a id="facebook" class="share-popup" href="http://www.facebook.com/sharer.php?u=<?php echo $providerUrl; ?>" title="<?php echo $this->__('Distribuie cu Facebook') ?>">
+                <span class="ion-social-facebook"></span>
+            </a>
+            <span id="provider-facebook" class="social-count"><?php echo $_reputation->getProviderFacebook() ?></span>
+        </li>
+        <li class="contact-social gplus">
+            <a id="gplus" class="share-popup" href="https://plus.google.com/share?url=<?php echo $providerUrl ?>" title="<?php echo $this->__('Distribuie cu Google+') ?>">
+                <span class="ion-social-googleplus"></span>
+            </a>
+            <span id="provider-gplus" class="social-count"><?php echo $_reputation->getProviderGplus() ?></span>
+        </li>
+        <li class="contact-social twitter">
+            <a id="tweets" class="share-popup" href="<?php echo 'http://twitter.com/home?status=' . $_provider->getBusinessDescriptionsTitle() . ' /' . '+' . $providerUrl; ?>" title="<?php echo $this->__('Distribuie cu Twitter') ?>">
+                <span class="ion-social-twitter"></span>
+            </a>
+            <span id="provider-tweets" class="social-count"><?php echo $_reputation->getProviderTweets() ?></span>
+        </li>
+    </ul>
+    <?php echo $this->getChildHtml('email_form'); ?>
+</div>

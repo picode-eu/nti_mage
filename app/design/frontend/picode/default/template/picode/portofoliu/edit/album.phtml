@@ -1,0 +1,219 @@
+<?php 
+    $albumId = $this->getRequest()->getParam('id');
+	$albumDetails = $this->getAlbumToEdit($albumId);
+    if ($albumDetails) {
+        $photos = $this->getPhotosByAlbumId($albumDetails->getAlbumId());
+    } else {
+        $photos = false;
+    }
+    
+    $helper = $this->helper('portofoliu');
+	$customerID = $this->getCustomer()->getId();
+    //Zend_Debug::dump($albumDetails); die();
+?>
+
+<div class="my-account editable-form portofoliu-form">
+    <div class="page-title">
+        <?php if ($albumDetails): ?>
+            <h1><?php echo $this->__('Editezi albumul foto: '); ?> <?php echo $albumDetails->getAlbumName(); ?></h1>
+        <?php else: ?>
+            <h1><?php echo $this->__('Albumul foto nou '); ?></h1>
+        <?php endif; ?>
+    </div>
+    
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    
+    <form id="form-validate" action="<?php echo $this->getUrl('portofoliu/edit/savealbum/') ?>" onsubmit="checkRequiredFields()" method="post" enctype="multipart/form-data">
+        <div id="informatii-generale-wrapper" class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Setari generale') ?></h2>
+            <ul id="informatii-generale" class="form-list">
+                <input type="hidden" name="album_id" value="<?php echo $albumDetails ? $albumDetails->getId() : ''; ?>" />
+                <input id="coverImg" type="hidden" name="cover_img" value="<?php echo $albumDetails ? $albumDetails->getAlbumCover() : '' ?>" />
+                <?php echo $this->getBlockHtml('formkey')?>
+                <li class="fields">
+                    <div class="field">
+                        <label for="album_name" class="required"><em>*</em><?php echo $this->__('Titlu album') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="album_name" id="album_name" value="<?php echo $albumDetails ? $albumDetails->getAlbumName() : '' ?>" title="<?php echo $this->__('Titlu album') ?>" class="input-text required-entry" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="is_visible" class="required"><em>*</em><?php echo $this->__('Vizibilitate') ?></label>
+                        <div class="input-box">
+                                <select name="is_visible" id="is_visible" title="<?php echo $this->__('Vizibilitate') ?>" class="validate-select custom-required">
+                                    <?php if ($albumDetails): ?>
+                                        <option value="0" <?php if($albumDetails->getIsVisible() == 0) echo 'selected="selected"' ?>>
+                                            <?php echo $this->__('Vizibil doar pentru mine'); ?>
+                                        </option>
+                                        <option value="1" <?php if($albumDetails->getIsVisible() == 1) echo 'selected="selected"' ?>>
+                                            <?php echo $this->__('Vizibil pentru toti'); ?>
+                                        </option>
+                                    <?php else: ?>
+                                        <option value="" selected="selected"><?php echo $this->__('Selecteaza'); ?></option>
+                                        <option value="0"><?php echo $this->__('Vizibil doar pentru mine'); ?></option>
+                                        <option value="1"><?php echo $this->__('Vizibil pentru toti'); ?></option>
+                                    <?php endif; ?>
+                                </select>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="wide">
+                        <label for="album_description" class="required"><em>*</em><?php echo $this->__('Descriere album') ?></label>
+                        <div class="input-box">
+                            <textarea 
+                                name="album_description" 
+                                id="album_description" 
+                                title="Descriere album" 
+                                class="input-textarea required-entry" 
+                                onKeyDown="CountLeft(this.form.album_description,this.form.count_album_description,750);" 
+                                onKeyUp="CountLeft(this.form.album_description,this.form.count_album_description,750);"><?php echo $albumDetails ? $albumDetails->getAlbumDescription() : ''; ?></textarea>
+                            <div class="ch-count">
+                                Caractere rămase: 
+                                <input readonly type="text" id="count_album_description" name="count_album_description" size="1" maxlength="3" value="" style="background:transparent; border:0 none;">
+                            </div>
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                    jQuery(document).ready(function(){
+                                        var descriptionLeft = 750 - jQuery('#album_description').val().length;
+                                        jQuery('#count_album_description').val(descriptionLeft);
+                                    });
+                                    
+                                    function CountLeft(field, count, max){
+                                         if (field.value.length > max)
+                                            field.value = field.value.substring(0, max);
+                                         else
+                                            count.value = max - field.value.length;
+                                    }
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    
+        <?php if ($albumDetails): // edit existing album ?>
+            <div id="existing-img" class="fieldset">
+                <h2 class="legend"><?php echo $this->__('Fotografiile albumului') ?> <?php echo $helper->countPhoto($albumId) ? '(' . $helper->countPhoto($albumId) . ')' : false; ?></h2>
+                <ul class="form-list">
+                    <li class="fields">
+                        <div id="existing-photos" class="wide">
+                            <?php if($photos->getSize()): ?>
+                            <label for="cover_image" id="album_cover">Prima fotografie din serie este coperta albumului.</label>
+                                <div class="input-box">
+                                    <div class="existing-images-wrapper">
+                                        <?php $i = 1; foreach($photos as $photo): ?>
+                                        <div class="image-holder existing">
+                                            <?php $photoUrl = $this->getBaseUrl() . 'media/albums/' . $customerID . '/' . $photo->getThumbUrl() ?>
+                                            <img alt="<?php echo $photo->getLabel() ?>" title="<?php echo $photo->getLabel() ?>" src="<?php echo $photoUrl ?>" class="thumb-img">
+                                            <div class="sort-order">
+                                                <label><?php echo $this->__('Pozitie') ?></label>
+                                                <input type="text" name="photo_order[<?php echo $photo->getId() ?>]" value="<?php echo $photo->getSortOrder() ?>" />
+                                            </div>
+                                            <span id="<?php echo $photo->getId() ?>" onclick="deleteSelectedImage(this)" class="dlt-img">sterge</span>
+                                        </div>
+                                        <?php $i++; endforeach ?>
+                                    </div>
+                                    <!-- <span onclick="removePhoto('<?php echo $photo->getPhotoId() ?>')" class="remove-img"><span>Sterge imaginea</span></span> -->
+                                </div>
+                            <?php else: ?>
+                                <p><?php echo $this->__('Acest album nu contine nicio fotografie.') ?></p>
+                            <?php endif; ?>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        <?php endif; ?>
+    
+        <div class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Adauga fotografii') ?></h2>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="wide">
+                        <label for="images" class=""><?php echo $this->__('Adaugă imagini (Format recomandat 900x600px, max. 1,5 MB, formate permise: .jpg sau .png).') ?></label>
+                        <?php if(!$helper->countPhoto($albumId)): ?>
+                            <label for="images" class=""><?php echo $this->__('Prima imagine va fi coperta albumului.') ?></label>
+                        <?php endif; ?>
+                        <div class="input-box">
+                            <div class="images-wrapper">
+                                <div id="added_img" class="image-holder">
+                                    <img class="placeholder" src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>catalog/product/placeholder/default/image.jpg" />
+                                    <span id="addimg" class="button add-image" onclick="changeSelectedImage(this)">+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    
+        <div class="buttons-set">
+            <button id="save_album" type="submit" title="<?php echo $this->__('Salveaza albumul') ?>" class="button">
+                <span><span><?php echo $this->__('Salveaza albumul') ?></span></span>
+            </button>
+            <span style="display: none; float: left" class="please-wait">
+                <img class="v-middle" title="<?php echo $this->__('Se salveaza datele...') ?>" alt="<?php echo $this->__('Se salveaza datele...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+                <?php echo $this->__('Se salveaza datele...') ?>
+            </span>
+            <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+        </div>
+    </form>
+    <?php echo $this->getChildHtml('ajaxuploader_form'); ?>
+    <script type="text/javascript">
+    //<![CDATA[
+        jQuery(document).ready(function()
+        {
+            jQuery(document).on('click', 'span.add-image', function(e){
+                //console.log(e);
+                var target = jQuery(this).closest('.image-holder').attr('id');
+                // reset the input
+                jQuery('#image-upload').find('input[type="file"]').val('').removeAttr('class');
+                // set desired attributes
+                jQuery('#image-upload').find('input[type="file"]').val('').attr('name', 'new_img').addClass(target);
+                jQuery('#input_addimg').click();
+            });
+            
+            jQuery(document).on('change', '#image-upload', function(e) {
+                console.log(jQuery(e.target).attr('class'));
+                target = jQuery(e.target).attr('class');
+                var imageUrl = getSkinImagesUrl('loader.gif');
+                jQuery('.image-holder .add-image').addClass('disabled', 'disabled');
+                
+                jQuery("#image-upload").ajaxForm({
+                    target: '#' + target
+                }).submit();
+            });
+        });
+        
+        function changeSelectedImage(el)
+        {
+            //console.log(jQuery(el));
+            var target = jQuery(el).closest('.image-holder').attr('id');
+            // reset the input
+            jQuery('#image-upload').find('input[type="file"]').val('').removeAttr('class');
+            // set desired attributes
+            jQuery('#image-upload').find('input[type="file"]').val('').attr('name', 'change_img').addClass(target);
+            jQuery('#input_addimg').click();
+        }
+        
+        function deleteSelectedImage(el)
+        {
+            var selectdImageHolder = jQuery(el).closest('.image-holder');
+            
+            if (selectdImageHolder.hasClass('existing')) {
+                var photoId = jQuery(el).attr('id');
+                selectdImageHolder.closest('.existing-images-wrapper').append('<input type="hidden" name="delete_existing[]" value="' + photoId + '" />');
+            }
+            selectdImageHolder.remove();
+        }
+        
+        function getSkinImagesUrl(img) {
+            return '<?php echo $this->getSkinUrl('images/') ?>' + img;
+        }
+    //]]>
+    </script>
+</div>
+
+

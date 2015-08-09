@@ -1,0 +1,107 @@
+<?php
+    $quote = $this->getQuote();
+    $methods = $this->getActivPaymentMethods();
+    //Zend_Debug::dump($methods);
+?>
+<form action="<?php echo $this->getAjaxUrl() ?>" method="post" id="form-payment-info">
+	<ul class="messages"><li class="error-msg"></li></ul>
+    <div class="fieldset">
+        <?php if (!$methods): ?>
+            <p><?php echo $this->__('Nu s-a gasit nicio metoda de plata disponibila momentan.') ?></p>
+            <p><?php echo $this->__('Va rugam incercati mai tarziu.') ?></p>
+            <div class="buttons-set">
+                <p class="back-link">
+                    <a href="javascript:void(0)" onclick="goBack('payment-info', 'billing-info')" class="back-link">
+                        <span class="ion-chevron-up"></span><?php echo $this->__('Inapoi') ?>
+                    </a>
+                </p>
+            </div>
+        <?php else: ?>
+            <ul class="form-list">
+                <?php $moreMethods = count($methods) - 1; ?>
+                <?php if ($moreMethods): ?>
+                    <li><label class="required" for="payment_method"><em>*</em><?php echo $this->__('Alege o metoda de plata:') ?></label></li>
+                <?php endif; ?>
+                <?php foreach ($methods as $_method): ?>
+                    <?php $_code = $_method->getCode(); ?>
+                    <li class="fields">
+                        <div class="radio-input">
+                            <input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment_method" title="<?php echo $this->escapeHtml($_method->getTitle()) ?>" class="radio validate-one-required-by-name" <?php echo  $moreMethods ? '' : 'checked="checked"'; echo $quote->getPayment()->getMethod() == $_code ? 'checked="checked"' : '' ?> />
+                            <label for="p_method_<?php echo $_code ?>"><?php echo $this->escapeHtml($_method->getTitle()) ?></label>
+                        </div>
+                        <?php if ($_method->getInstructions() || $_method->getMailingAddress()): ?>
+                            <div id="" class="payment-instructions">
+                                <div class="btn-close">
+                                    <a href="javascript:void(0)" class="payment-tool-tip-close" title="<?php echo $this->__('Close') ?>">&#39;</a>
+                                </div>
+                                <?php if ($_method->getInstructions()): ?>
+                                    <div class="tool-tip-content"><?php echo $_method->getInstructions() ?></div>
+                                <?php elseif ($_method->getMailingAddress()): ?>
+                                    <div class="tool-tip-content"><?php echo $_method->getMailingAddress() ?></div>
+                                <?php endif; ?>
+                            </div>
+                        <?php elseif ($_code == 'ep_initialize'): ?>
+                            <div id="" class="payment-instructions">
+                                 <div class="btn-close">
+                                    <a href="javascript:void(0)" class="payment-tool-tip-close" title="<?php echo $this->__('Close') ?>">&#39;</a>
+                                </div>
+                                <div class="tool-tip-content">
+                                    <?php echo $this->__('EuPlatesc.ro este un <strong>sistem de plata online securizata</strong>, bazat pe standardul <strong>3DSecure</strong>. Dupa plasarea comenzii veti fi redirectionat catre sistemul de plata online cu cardul bancar, unde veti introduce informatiile de indentificare a cardului pentru a putea finaliza tranzactia.') ?>
+                                    <br />
+                                    <?php /*
+                                    <span class="euplatesc-notice">
+                                        <?php echo $this->__('*In momentul acceptarii platii suma este blocata in contul dvs iar dupa efectuarea livrarii se face debitarea contului.') ?>
+                                    </span>
+                                    */ ?>
+                                    <br />
+                                    <img src="<?php echo $this->getSkinUrl('images/ep/banner_ep.gif') ?>" border="0" width="550" height="40" alt="EuPlatesc.ro - plati online" />
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                    </li>
+                <?php endforeach; ?>
+            </ul>    
+            <div class="buttons-set">
+                <p class="back-link">
+                    <a href="javascript:void(0)" onclick="goBack('payment-info', 'billing-info')" class="back-link">
+                        <span class="ion-chevron-up"></span><?php echo $this->__('Inapoi') ?>
+                    </a>
+                </p>
+                <button type="submit" title="<?php echo $this->__('Continuare') ?>" class="button load-next-step">
+                    <span><span><?php echo $this->__('Continuare') ?></span></span>
+                </button>
+                <span style="display: none; float: left" class="please-wait">
+                    <img class="v-middle" title="<?php echo $this->__('Se salveaza...') ?>" alt="<?php echo $this->__('Se salveaza...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+                    <?php echo $this->__('Se salveaza...') ?>
+                </span>
+                <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+            </div>
+        <?php endif; ?>
+        
+    </div>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+    jQuery(document).ready(function(){
+        jQuery('#form-payment-info input[type="radio"]').click(function(){
+            // find all opened payment instructions and close them
+            jQuery('#form-payment-info .payment-instructions').each(function(){
+                if (jQuery(this).is(':visible')) {
+                    jQuery(this).slideUp('fast');
+                }
+            });
+            // open clicked payment instructions
+            jQuery(this).closest('.fields').find('.payment-instructions').slideDown('fast');
+        });
+        // close clicked payment instructions
+        jQuery('.payment-tool-tip-close').click(function(){
+            jQuery(this).closest('.payment-instructions').slideUp('fast');
+        });
+        
+        <?php if (!$moreMethods): ?>
+            jQuery('#form-payment-info .payment-instructions').show();
+        <?php endif; ?>
+    });
+//]]>
+</script>

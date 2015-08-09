@@ -1,0 +1,150 @@
+<?php
+    $customer = $this->getCustomer();
+    $helper   = $this->helper('conturifurnizori');
+    $viewMessageId = $this->getRequest()->getParam('id');
+    $message  = $this->getMessageDetails();
+    $isFirst  = $message->getIsFirst();
+	
+	if ($isFirst) {
+		$firstMessageId = $message->getFirstMessageId() ? $message->getFirstMessageId() : $message->getid();
+		$conversation = $this->getConversation($firstMessageId); 
+	} else {
+		$conversation = $this->getConversation($message->getFirstMessageId()); 
+	}
+    
+    //$conversation = !$isFirst ? $this->getConversation($message->getFirstMessageId(), $message->getMessageId()) : false; 
+    //Zend_Debug::dump($conversation->getData());
+    //echo 'reply to ' . Mage::getSingleton('customer/session')->getReplyTo();
+    $mediaUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+?>
+
+<div class="my-account">
+    <div class="page-title">
+        <h1><?php echo $this->__('Detalii mesaj'); ?></h1>
+    </div>
+    <?php if (!is_object($message)): ?>
+        <div class="box-account box-info">
+            <?php echo $this->__('Mesajul care incerci sa-l citesti nu exista...') ?>
+        </div>
+    <?php else: ?>
+        <div class="box-account box-info">
+            <?php if ($conversation): // the message is part from a conversation ?>
+                
+                <?php foreach ($conversation as $msg): ?>
+                    <div class="message-header">
+                        <div class="dmsg-customerimage">
+                        	<?php if ($msg->getSenderId() != $customer->getId()): ?>
+                        		<?php $profilePicture = Mage::getModel('customer/customer')->load($msg->getSenderId())->getAvatar(); ?>
+                        	<?php else: ?>
+                                <?php $profilePicture = $customer->getAvatar(); ?>
+                            <?php endif; ?> 
+                            <?php $profilePicture = $profilePicture ? $profilePicture : 'default-profile-picture.png'; ?>
+                            <img src="<?php echo $mediaUrl ?>customer/<?php echo $profilePicture ?>" title="" />
+                        </div>
+                        <?php if ($customer->getId() == $msg->getReceverId()) {
+                            // set message is read
+                            $msg->setIsRead(1)->save();
+                        } ?>
+                        <div class="dmsg-fromname">
+                            <?php echo $this->__('Trimis de ') ?>
+                            <strong>
+                                <?php if ($msg->getSenderId() != $customer->getId()): ?>
+                                    <?php echo $this->getSenderFullName($msg->getSenderId(), $msg->getReplayTo()); ?>
+                                <?php else: ?>
+                                    <?php echo $this->__('mine') ?>
+                                <?php endif; ?>
+                            </strong> 
+                            | 
+                            <?php echo date('d.m.Y - H:i:s', strtotime($message->getCreatedTime())); ?>
+                        </div>
+                        <div class="dmsg-subject">
+                            <!-- <strong><?php echo $this->__('Subiect') ?></strong> -->
+                            <strong><?php echo $msg->getSubject() ?></strong>
+                        </div>
+                        <?php if ($msg->getMessageId() != $viewMessageId): ?>
+                            <span class="show-msg"></span>
+                        <?php else: ?>
+                            <span class="hide-msg"></span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="dmsg-message <?php echo $msg->getMessageId() == $viewMessageId ? 'visible' : false ?>">
+                        <p><?php echo $msg->getMessage(); ?></p>
+                    </div>
+                <?php endforeach; ?>
+                
+            <?php else: ?>
+                
+                <div class="message-header">
+                    <div class="dmsg-customerimage">
+                        <img src="<?php echo $mediaUrl ?>customer/default-profile-picture.png" title="" />
+                    </div>
+                    <div class="dmsg-fromname">
+                        <?php echo $this->__('Trimis de ') ?>
+                        <strong>
+                            <?php echo $this->getSenderFullName($message->getSenderId(), $message->getReplayTo()); ?>
+                        </strong> 
+                        | 
+                        <?php echo date('d.m.Y - H:i:s', strtotime($message->getCreatedTime())); ?>
+                    </div>
+                    <div class="dmsg-subject">
+                        <?php /* <strong><?php echo $this->__('Subiect') ?></strong> */ ?>
+                        <strong><?php echo $message->getSubject() ?></strong>
+                    </div>
+                </div>
+                <div class="dmsg-message <?php echo $message->getMessageId() == $viewMessageId ? 'visible' : false ?>">
+                    <p><?php echo $message->getMessage(); ?></p>
+                </div>
+                
+            <?php endif; ?>
+            
+        </div>
+        
+        <div class="dmsg-compose">
+            <form id="replytomessage" class="" action="<?php echo $this->getReplyAction() ?>" methode="post">
+                <textarea name="response_message"><?php echo $this->__('Clic aici pentru a raspunde...') ?></textarea>
+                <div class="buttons-set">
+                    <button class="button" title="Trimite"><span><span>Trimite</span></span></button>
+                </div>
+            </form>
+        </div>
+    <?php endif; ?>
+</div>
+
+<script type="text/javascript">
+    jQuery('.message-header span').click(function(){
+        jQuery(this).toggleClass('show-msg').toggleClass('hide-msg');
+        jQuery(this).closest('.message-header').next('.dmsg-message ').toggle('fast');
+    });
+    
+    var form = jQuery('#replytomessage');
+    
+    form.find('textarea').focus(function(){
+        var text = jQuery(this);
+        
+        if (text.val() == 'Clic aici pentru a raspunde...') {
+            text.val('');
+            form.find('.buttons-set').show();
+        }
+    });
+    
+    form.find('textarea').blur(function(){
+        var text = jQuery(this);
+        
+        if (text.val() == '') {
+            text.val('Clic aici pentru a raspunde...');
+            form.find('.buttons-set').hide();
+        } else {
+            
+        }
+        
+    });
+</script>
+
+
+
+
+
+
+
+
+

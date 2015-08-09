@@ -1,0 +1,67 @@
+<?php
+    $filters = $this->getFilterAttributes();
+    //Zend_Debug::dump($filters);
+?>
+
+<div class="providers-filter">
+    <div class="block block-layered-nav">
+        <div class="block-title">
+            <strong><span><?php echo $this->__('Filtrează Furnizorii') ?></span></strong>
+        </div>
+        <div class="block-content toggle-content">
+            <?php if ($this->isFiltered()): ?>
+                <?php $filteredAttributes = $this->getFilteredAttributes() ?>
+                <div class="currently">
+                    <p class="block-subtitle"><?php echo $this->__('Filtre active:') ?></p>
+                    <ol>
+                        <?php foreach ($filteredAttributes as $attribute => $value): ?>
+                            <?php $attribute = $this->getAttributeDetails($attribute); ?>
+                            <li>
+                                <?php $clearedUrl = $this->clearUrl(strtolower(str_replace(' ', '-', $attribute->getFrontendLabel())) . '=' . $value); ?>
+                                <a class="btn-remove" href="<?php echo $clearedUrl ?>" title="Elimina filtrul"><span class="ion-trash-a"></span></a>
+                                <span class="label"><?php echo $attribute->getFrontendLabel() ?></span> 
+                                <?php if ($attribute->getAttributeCode() == 'furnizor_account_level'): ?>
+                                    <span class="value"><?php echo Mage::helper('conturifurnizori')->getAccountTypeNameBylLevel('cont_level', $value)->getName() ?></span>
+                                <?php else: ?>
+                                    <span class="value"><?php echo $this->getAttributeText($attribute, $value) ?></span>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ol>
+                </div>
+                <div class="actions"><a href="<?php echo $this->removeAllFilterUrl() ?>"><?php echo $this->__('Elimina toate filtrele') ?></a></div>
+            <?php endif; ?>
+            
+            <dl id="narrow-by-list">
+                <?php $i = 0; foreach ($filters as $code => $attribute): ?>
+                    <?php $vizibleCode = strtolower(str_replace(' ', '-', $attribute->getFrontendLabel())) ?>
+                    <?php if (!$this->isCodeFiltered($vizibleCode)): ?>
+                        <dt class="<?php echo $i%2 == 0 ? 'even' : 'odd'; ?>"><?php echo $attribute->getFrontendLabel() ?></dt>
+                            <dd class="<?php echo $i%2 == 0 ? 'even' : 'odd'; ?>">
+                                <ol>
+                                    <li>
+                                        <?php $attributeOptions = $this->getAttributeOptions($attribute); ?>
+                                        <?php foreach ($attributeOptions as $option): ?>
+                                            <?php //Zend_Debug::dump($option) ?>
+                                            <?php if ($option['value'] != '' && $this->countProviders($code, $option['value'])): ?>
+                                                <a href="<?php echo $this->addFilterToCollection($vizibleCode, $option['value']) ?>">
+                                                    <?php if ($code == 'furnizor_account_level'): ?>
+                                                        <span class=""><?php echo Mage::helper('conturifurnizori')->getAccountTypeNameBylLevel('cont_level', $option['value'])->getName() ?></span>
+                                                    <?php else: ?>
+                                                        <span class=""><?php echo $option['label'] ?></span>
+                                                    <?php endif; ?>
+                                                    <span class="count"> (<?php echo $this->countProviders($code, $option['value']) ?>)</span>
+                                                </a>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </li>
+                                </ol>
+                            </dd>
+                        </dt>
+                    <?php endif; ?>
+                <?php $i++; endforeach; ?>
+            </dl>
+            <script type="text/javascript">decorateDataList('narrow-by-list')</script>
+        </div>
+    </div>
+</div>

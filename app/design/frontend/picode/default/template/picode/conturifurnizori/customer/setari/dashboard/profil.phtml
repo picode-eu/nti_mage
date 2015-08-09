@@ -1,0 +1,104 @@
+<?php
+    $furnizoriHelper = $this->helper('conturifurnizori');
+    $customer = $this->getCustomer();
+?>
+
+<div class="box-content">
+    <div class="table">
+        <?php /*
+        <div class="table-head">
+            <div class="head-row">
+                <div class="table-data attribute-name">
+                    <?php echo $this->__('Denumire') ?>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $this->__('Valoare') ?>
+                </div>
+                <div class="table-data attribute-name">
+                    <?php echo $this->__('Denumire') ?>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $this->__('Valoare') ?>
+                </div>
+            </div>
+        </div>
+        */ ?>
+        <div class="table-content">
+            <div class="table-row">
+                <?php $attrCode = 'business_descriptions_title' ?>
+                <?php $attr = $this->getAttributeDetailsByCode($attrCode); ?>
+                <div class="table-data attribute-name">
+                    <strong><?php echo $attr->getFrontendLabel(); ?></strong>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $customer->getData($attrCode); ?>
+                </div>
+                
+                <?php $attrCode = 'furnizor_company_type' ?>
+                <?php $attr = $this->getAttributeDetailsByCode($attrCode); ?>
+                <div class="table-data attribute-name">
+                    <strong><?php echo $attr->getFrontendLabel(); ?></strong>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $attr->getSource()->getOptionText($customer->getData($attrCode)); ?>
+                </div>
+            </div>
+            <div class="table-row">
+                <?php $attrCode = 'furnizor_company_services' ?>
+                <?php $attr = $this->getAttributeDetailsByCode($attrCode); ?>
+                <div class="table-data attribute-name">
+                    <strong><?php echo $attr->getFrontendLabel(); ?></strong>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $attr->getSource()->getOptionText($customer->getData($attrCode)); ?>
+                </div>
+            
+                <?php $attrCode = 'furnizor_account_online_status' ?>
+                <?php $attr = $this->getAttributeDetailsByCode($attrCode); ?>
+                <div class="table-data attribute-name">
+                    <strong><?php echo $attr->getFrontendLabel(); ?></strong>
+                </div>
+                <div class="table-data attribute-value <?php echo $customer->getFurnizorAccountOnlineStatus() ? '' : 'red' ?>">
+                    <?php echo $attr->getSource()->getOptionText($customer->getData($attrCode)); ?>
+                </div>
+            </div>
+            <div class="table-row">
+                <?php $attrCode = 'furnizor_location_province' ?>
+                <?php $attr = $this->getAttributeDetailsByCode($attrCode); ?>
+                <div class="table-data attribute-name">
+                    <strong>Sediu <?php echo $attr->getFrontendLabel(); ?></strong>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $attr->getSource()->getOptionText($customer->getData($attrCode)); ?>
+                </div>
+            
+                <?php $attrCode = 'furnizor_location_city' ?>
+                <?php $attr = $this->getAttributeDetailsByCode($attrCode); ?>
+                <div class="table-data attribute-name">
+                    <strong>Sediu <?php echo $attr->getFrontendLabel(); ?></strong>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $customer->getData($attrCode); ?>
+                </div>
+            </div>
+            <div class="table-row">
+                <div class="table-data attribute-name">
+                    <strong>Contact</strong>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $customer->getData('furnizor_contact_firstname') . ' ' . $customer->getData('furnizor_contact_lastname'); ?>
+                </div>
+            
+                <?php $attrCode = 'furnizor_contact_email' ?>
+                <?php $attr = $this->getAttributeDetailsByCode($attrCode); ?>
+                <div class="table-data attribute-name">
+                    <strong><?php echo $attr->getFrontendLabel(); ?></strong>
+                </div>
+                <div class="table-data attribute-value">
+                    <?php echo $customer->getData($attrCode); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

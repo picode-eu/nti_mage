@@ -1,0 +1,31 @@
+<?php
+	// $albumModel = Mage::getModel('portofoliu/albums');
+ 	
+	// $albumModel->setCustomerId('109');
+	// $albumModel->setAlbumName('Album Marcel Pavel');
+	// $albumModel->setAlbumDescription('Second Album Description');
+	// $albumModel->setIsVisible(1);
+	// $albumModel->save();
+?>
+portofoliu
+<?php
+	$albumsCollection = $this->getAlbumColection();
+	echo 'albume = <br />';
+	foreach($albumsCollection as $album){
+		Zend_Debug::dump($album);
+	}
+	
+	$videoCollection = $this->getVideoColection();
+	echo 'video = <br />';
+	foreach($videoCollection as $video){
+		Zend_Debug::dump($video);
+	}
+	
+	$photoCollection = $this->getPhotoColection();
+	echo 'poze = <br />';
+	foreach($photoCollection as $photo){
+		Zend_Debug::dump($photo);
+	}
+	
+	
+?>

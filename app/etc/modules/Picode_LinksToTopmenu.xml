@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Picode_LinksToTopmenu>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Picode_LinksToTopmenu>
+        <!-- <Mage_Catalog>
+            <depends>
+                <Picode_LinksToTopmenu />
+            </depends>
+        </Mage_Catalog> -->
+    </modules>
+</config>

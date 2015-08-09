@@ -1,0 +1,313 @@
+<?php
+    $quote = $this->getQuote();
+    $addressType = 'billing';
+    $countryId = 'RO';
+    $billingAddresses = $this->getAddress($addressType);
+    $customer = $this->getCustomer();
+    
+    if ($customer) {
+        // the checkout is an update
+        $quote->setCheckoutMethod('update')->save();
+        $customerAddressId = $customer->getDefaultBilling();
+        if ($customerAddressId){
+            $billingAddresses = Mage::getModel('customer/address')->load($customerAddressId);
+        }
+    }
+?>
+
+<form action="<?php echo $this->getAjaxUrl() ?>" method="post" id="form-billing-info">
+    <input type="hidden" name="save_in_address_book" value="1" id="save_in_address_book" />
+    <input type="hidden" name="country_id" value="<?php echo $countryId ?>" id="country_id" />
+    <ul class="messages"><li class="error-msg"></li></ul>
+    <div class="fieldset">
+        <ul class="form-list tip-facturare">
+            <li class="control">
+                <input type="radio" name="billing_tip" id="billing_tip_pj" value="1" title="<?php echo $this->__('Facturare Persoana Juridica') ?>" onclick="" class="radio validate-one-required-by-name">
+                <label for="billing_tip_pj"><?php echo $this->__('Persoana Juridica') ?></label>
+            </li>
+            <li class="control">
+                <input type="radio" name="billing_tip" id="billing_tip_pf" value="2" title="<?php echo $this->__('Facturare Persoana Fizica') ?>" onclick="" class="radio validate-one-required-by-name">
+                <label for="billing_tip_pf"><?php echo $this->__('Persoana Fizica') ?></label>
+            </li>
+        </ul>
+    </div>
+    
+    <div id="billing_tip_pj_selected" class="fieldset billing-tip-fields">
+        <h3 class="form-group"><?php echo $this->__('Detalii Firma / PFA:') ?></h3>
+        <ul class="form-list">
+            <li class="fields">
+                <div class="wide">
+                    <label for="company" class="required"><em>*</em><?php echo $this->__('Denumirea oficială (Așa cum apare în acte)') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="company" id="company" value="<?php echo $billingAddresses->getCompany() ?>" class="input-text required-entry" title="<?php echo $this->__('Denumire') ?>" />
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="billing_cui" class="required"><em>*</em><?php echo $this->__('Cod Unic de Inregistrare (CUI)') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="billing_cui" id="billing_cui" value="<?php echo $billingAddresses->getBillingCui() ?>" class="input-text required-entry" title="<?php echo $this->__('Cod Unic de Inregistrare') ?>" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="billing_nrc" class="required"><em>*</em><?php echo $this->__('Nr. Reg. Comertului') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="billing_nrc" id="billing_nrc" value="<?php echo $billingAddresses->getBillingNrc() ?>" class="input-text required-entry" title="<?php echo $this->__('Nr. Inregistrare la Registrul Comertului') ?>" />
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="billing_banca" class="required"><em>*</em><?php echo $this->__('Banca') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="billing_banca" id="billing_banca" value="<?php echo $billingAddresses->getBillingBanca() ?>" class="input-text required-entry" title="<?php echo $this->__('Banca') ?>" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="billing_iban" class=""><?php echo $this->__('IBAN') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="billing_iban" id="billing_iban" value="<?php echo $billingAddresses->getBillingIban() ?>" class="input-text" title="<?php echo $this->__('IBAN') ?>" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <?php /*
+        <div style="display: none">
+            <h3 class="form-group"><?php echo $this->__('Delegat:') ?></h3>
+            <ul class="form-list">
+                <li class="fields">
+                    <div class="field">
+                        <label for="firstname" class="required"><em>*</em><?php echo $this->__('Nume') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="firstname" id="firstname" value="<?php echo $billingAddresses->getFirstname() ?>" class="input-text required-entry" title="<?php echo $this->__('Nume') ?>" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="lastname" class="required"><em>*</em><?php echo $this->__('Prenume') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="lastname" id="lastname" value="<?php echo $billingAddresses->getLastname() ?>" class="input-text required-entry" title="<?php echo $this->__('Prenume') ?>" />
+                        </div>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="field">
+                        <label for="billing_ci" class=""><?php echo $this->__('Serie si numar CI') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="billing_ci" id="billing_ci" value="<?php echo $billingAddresses->getBillingCi() ?>" class="input-text" title="<?php echo $this->__('Serie si numar CI') ?>" placeholder="AZ 123456" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="billing_cnp" class=""><?php echo $this->__('CNP') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="billing_cnp" id="billing_cnp" value="<?php echo $billingAddresses->getBillingCnp() ?>" class="input-text" title="<?php echo $this->__('CNP') ?>" placeholder="1234567890123" />
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        */ ?>
+    </div>
+    
+    <div id="billing_tip_pf_selected" class="fieldset billing-tip-fields">
+        <ul class="form-list">
+            <li class="fields">
+                <div class="field">
+                    <label for="firstname_pf" class=""><em>*</em><?php echo $this->__('Nume') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="firstname" id="firstname_pf" value="<?php echo $billingAddresses->getFirstname() ?>" class="input-text" title="<?php echo $this->__('Nume') ?>" disabled="disabled" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="lastname_pf" class=""><em>*</em><?php echo $this->__('Prenume') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="lastname" id="lastname_pf" value="<?php echo $billingAddresses->getLastname() ?>" class="input-text" title="<?php echo $this->__('Prenume') ?>" disabled="disabled" />
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="billing_ci_pf" class=""><?php echo $this->__('Serie si numar CI') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="billing_ci" id="billing_ci_pf" value="<?php echo $billingAddresses->getBillingCi() ?>" class="input-text" title="<?php echo $this->__('Serie si numar CI') ?>" disabled="disabled" placeholder="AZ 123456" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="billing_cnp_pf" class=""><?php echo $this->__('CNP') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="billing_cnp" id="billing_cnp_pf" value="<?php echo $billingAddresses->getBillingCnp() ?>" class="input-text" title="<?php echo $this->__('CNP') ?>" disabled="disabled" placeholder="1234567890123" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="fieldset">
+        <h3 class="form-group"><?php echo $this->__('Adresa / Sediu:') ?></h3>
+        <ul class="form-list">
+            <li class="fields">
+                <div class="field">
+                    <label for="street" class="required"><em>*</em><?php echo $this->__('Strada, numar, apartament') ?></label>
+                    <div class="input-box">
+                        <?php foreach ($billingAddresses->getStreet() as $street): ?>
+                            <input type="text" name="street" id="street" value="<?php echo $street ?>" class="input-text required-entry" title="<?php echo $this->__('Strada, numar, apartament') ?>" />
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="street_other" class=""><?php echo $this->__('Alte detalii utile') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="street_other" id="street_other" value="<?php echo $billingAddresses->getStreetOther() ?>" class="input-text" title="<?php echo $this->__('Alte detalii utile') ?>" />
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="city" class="required"><em>*</em><?php echo $this->__('Localitate') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="city" id="city" value="<?php echo $billingAddresses->getCity() ?>" class="input-text required-entry" title="<?php echo $this->__('Localitate') ?>" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="region_id" class="required"><em>*</em><?php echo $this->__('Judet') ?></label>
+                    <div class="input-box">
+                        <?php $regionCollection = $this->getRegions($countryId) ?>
+                        <?php if ($regionCollection): ?>
+                            <select name="region_id" id="region_id" class="select validate-select">
+                                <option value=""><?php echo $this->__('Selcteaza') ?></option>
+                                <?php foreach ($regionCollection as $region): ?>
+                                    <option value="<?php echo $region->getRegionId() ?>" <?php echo $billingAddresses->getRegionId() == $region->getRegionId() ? 'selected="selected"' : '' ?> title="<?php echo $region->getDefaultName() ?>">
+                                        <?php echo $region->getDefaultName() ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                            <input type="hidden" name="region" id="region" value="" />
+                        <?php else: ?>
+                            <input type="text" name="region" id="region" value="<?php echo $billingAddresses->getRegion() ?>" class="input-text required-entry" title="<?php echo $this->__('Judet') ?>" />
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="postcode" class=""><?php echo $this->__('Cod postal') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="postcode" id="postcode" value="<?php echo $billingAddresses->getPostcode() ?>" class="input-text" title="<?php echo $this->__('Cod postal') ?>" placeholder="123456" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="telephone" class="required"><em>*</em><?php echo $this->__('Telefon') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="telephone" id="telephone" value="<?php echo $billingAddresses->getTelephone() ?>" class="required-entry input-text" title="<?php echo $this->__('Telefon') ?>" placeholder="0123.456.789" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="buttons-set">
+        <?php if (!$customer->getId()): ?>
+            <p class="back-link">
+                <a href="javascript:void(0)" onclick="goBack('billing-info', 'business-info')" class="back-link">
+                    <span class="ion-chevron-up"></span><?php echo $this->__('Inapoi') ?>
+                </a>
+            </p>
+        <?php endif; ?>
+        <button type="submit" title="<?php echo $this->__('Continuare') ?>" class="button load-next-step">
+            <span><span><?php echo $this->__('Continuare') ?></span></span>
+        </button>
+        <span style="display: none; float: left" class="please-wait">
+            <img class="v-middle" title="<?php echo $this->__('Se salveaza...') ?>" alt="<?php echo $this->__('Se salveaza...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+            <?php echo $this->__('Se salveaza...') ?>
+        </span>
+        <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+    </div>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+jQuery(document).ready(function()
+{
+    var directStep = '<?php echo $this->getRequest()->getParam('step') ?>';
+        
+    if (directStep != '') {
+        jQuery('#billing-info').hide(function(){
+            jQuery('#' + directStep).show();
+        });
+    }
+    
+    jQuery('#form-billing-info input[name="billing_tip"]').click(function()
+    {
+        var clicked = jQuery(this);
+        var selected = jQuery('#' + clicked.attr('id') + '_selected');
+        
+        jQuery('.billing-tip-fields').hide('fast', function(){
+            jQuery('.billing-tip-fields input').each(function(){
+                // remove required entries and disable the input
+                jQuery(this).closest('.fields').find('label').removeClass('required');
+                jQuery(this).removeClass('required-entry').removeClass('validation-failed').attr('disabled', 'disabled');
+                // remove validation advice div
+                jQuery(this).closest('.fields').find('.validation-advice').remove();
+                
+            });
+        });
+        
+        selected.show('fast', function(){
+            selected.find('input').each(function(){
+                jQuery(this).removeAttr('disabled');
+                var inputName = jQuery(this).attr('name');
+                
+                if (inputName != 'billing_iban' && inputName != 'billing_ci' && inputName != 'billing_cnp'){
+                    jQuery(this).addClass('required-entry');
+                    
+                    var parent = jQuery(this).closest('div').parent();
+                    parent.find('label').addClass('required');
+                }
+            });
+        });
+        
+        // // hide/show selected fields
+        // jQuery('.billing-tip-fields').hide('fast');
+        // selected.show('fast');
+//             
+        // selected.find('input').each(function(){
+//             
+            // jQuery(this).removeAttr('disabled', 'disabled');
+//             
+            // var wrapper = jQuery(this).closest('div').parent();
+            // var inputName = jQuery(this).attr('name');
+//             
+            // if (inputName != 'billing_cnp' || inputName != 'billing_ci') {
+                // wrapper.find('label').addClass('required');
+                // wrapper.find('input').addClass('required-entry');
+            // }
+        // });
+    });
+    
+    // autocomplete region from region_id
+    if (jQuery('#region_id').val().length) {
+        jQuery('#region').val(jQuery.trim(jQuery('#region_id option:selected').text()));
+    }
+    
+    jQuery('#region_id').change(function(){
+        jQuery('#region').val(jQuery.trim(jQuery('#region_id option:selected').text()));
+    });
+    
+    jQuery(function($){
+    	jQuery('#billing_ci, #billing_ci_pf').mask('aa 999999',{placeholder: 'x'});
+    	jQuery('#billing_cnp, #billing_cnp_pf').mask('9999999999999',{placeholder: 'x'});
+    	jQuery('#postcode').mask('999999',{placeholder: 'x'});
+	    jQuery('#telephone').mask('9999.999.999',{placeholder: 'x'});
+	});
+});
+//]]>
+</script>
+
+
+
+
+
+
+
+
+

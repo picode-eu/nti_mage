@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento
+ *
+ * @category    Picode
+ * @package     Picode_Overwrite
+ * @copyright   Copyright (c) 2014 piCode
+ * 
+**/
+-->
+<config>
+    <modules>
+        <Picode_Overwrite>
+            <active>true</active>
+            <codePool>local</codePool>
+            <version>0.0.1</version>
+        </Picode_Overwrite>
+    </modules>
+</config>

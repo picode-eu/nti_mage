@@ -1,0 +1,212 @@
+<?php
+    $quote = $this->getQuote();
+    // $oCoupon = Mage::getModel('salesrule/coupon')->load($quote->getCouponCode(), 'code');
+    // $oRule = Mage::getModel('salesrule/rule')->load($oCoupon->getRuleId());
+    //Zend_Debug::dump($quote->getData());
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<div class="account-create">
+    <!-- <ul id="error" class="messages"><li class="error-msg"></li></ul> -->
+    <div class="page-title">
+        <h1><?php echo $this->__('Creare Cont Furnizor') ?></h1>
+    </div>
+    
+    <?php if (!$quote->getCustomerId()): ?>
+        <h2 class="legend active"><?php echo $this->__('Informatii de autentificare') ?></h2>
+        <div id="personal-info" class="create-account-step" style="">
+            <?php echo $this->getChildHtml('conturi.personal.info') ?>
+        </div>
+    
+        <h2 class="legend next"><?php echo $this->__('Profil furnizor') ?></h2>
+        <div id="business-info" class="create-account-step" style="">
+            <?php echo $this->getChildHtml('conturi.business.info') ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if ($this->accountIsPaid() && $quote->getGrandTotal() != 0): ?>
+        <h2 class="legend next"><?php echo $this->__('Detalii facturare') ?></h2>
+        <div id="billing-info" class="create-account-step" style="<?php echo $quote->getCustomerId() ? 'display: block' : ''; ?>">
+            <?php echo $this->getChildHtml('conturi.billing.info') ?>
+        </div>
+        
+        <h2 class="legend next"><?php echo $this->__('Metoda de plata') ?></h2>
+        <div id="payment-info" class="create-account-step" style="">
+            <?php echo $this->getChildHtml('conturi.payment.info') ?>
+        </div>
+    <?php endif ?>
+    
+    <h2 class="legend next"><?php echo $this->__('Sumar Comanda') ?></h2>
+    <div id="review-info" class="create-account-step" style="<?php echo $quote->getCustomerId() && !$this->accountIsPaid() ? 'display: block' : ''; ?>">
+        <?php // echo $this->getMessagesBlock()->getGroupedHtml() ?>
+        <?php echo $this->getChildHtml('conturi.review.info') ?>
+    </div>
+    
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+    jQuery(document).ready(function(){
+        
+        jQuery(document).on('click', '.discount-form button', function(){
+            jQuery(this).closest('.discount-form').find('.please-wait').show();
+        });
+        
+        var directStep = '<?php echo $this->getRequest()->getParam('step') ?>';
+        
+        if (directStep != '') {
+            jQuery('#personal-info').hide(function(){
+                jQuery('#' + directStep).show();
+            });
+        }
+        
+        jQuery('.load-next-step').click(function(){
+            var currentForm = jQuery(this).closest('form');
+            
+            jQuery(currentForm).submit(function(e){
+                e.preventDefault();
+                doAjax(currentForm);
+            });
+        });
+    });
+    
+    function doAjax(form)
+    {
+        var formId = form.attr('id');
+        var myForm = new VarienForm(formId, false);
+        var currentStep = form.parent();
+        
+        if (myForm.validator.validate())
+        {
+            // get input value + current step element id
+            var formData = form.serialize() + '&current_step=' + currentStep.attr('id');
+            var formUrl = form.attr('action');
+            // ajax call
+            var request = jQuery.ajax({
+                url: formUrl,
+                type: 'POST',
+                data: formData,
+                // disable continue button
+                beforeSend: function(){
+                    form.find('button.load-next-step').attr('disabled', 'disabled');
+                    form.find('.please-wait').show();
+                }
+            });
+            
+            request.done(function(result){
+                var responseMessage = result.split('~');
+                if (responseMessage[0] != 'error') {
+                    // load next step
+                    var nextStep = jQuery('#' + result);
+                    currentStep.slideUp(function(){
+                        nextStep.slideDown();
+                    });
+                    // change steps status
+                    currentStep.prev().removeClass('active').addClass('completed');
+                    nextStep.prev().removeClass('next').addClass('active');
+                    // remove disabled button and hide loading image
+                    form.find('button.load-next-step').removeAttr('disabled');
+                    form.find('.please-wait').hide();
+                    // update progress sidebar
+                    updateSidebar(formData);
+                    // reset error message
+                    jQuery('.error-msg').html('');
+                } else {
+                    form.find('.error-msg').html('<ul><li><span>' + responseMessage[1] + '</span></li></ul>');
+                    form.find('button.load-next-step').removeAttr('disabled');
+                    form.find('.please-wait').hide();
+                }
+            });
+        }
+    }
+    
+    function updateSidebar(formData)
+    {
+        var data = unserialize(formData);
+        
+        jQuery.each(data, function(e) {
+            
+            if (e == 'current_step') {
+                jQuery('#' + data[e] + '-progress').show();
+            }
+            
+            var value = '';
+            
+            if (jQuery('#' + e).attr('type') == 'text' || jQuery('#' + e).attr('type') == 'email' || jQuery('#' + e).attr('type') == 'password') {
+                value = jQuery('#' + e).val();
+            } else if (jQuery('#' + e).prop('type') == 'select-one') {
+                value = jQuery('#' + e + ' option:selected').text();
+            } else if (e == 'payment_method') {
+                var selected = jQuery("input[name='" + e + "']:checked");
+                value = selected.closest('.radio-input').find('label').text();
+            }
+            
+            if (value.length) {
+                jQuery('#progress_' + e).text(value.replace('%40', '@'));
+            }
+            
+        });
+    }
+    
+    
+    function unserialize(serializedString)
+    {
+        var str = serializedString;
+        var pairs = str.split('&');
+        var obj = {}, p, idx, val;
+        for (var i=0, n=pairs.length; i < n; i++) {
+            p = pairs[i].split('=');
+            idx = p[0];
+ 
+            if (idx.indexOf("[]") == (idx.length - 2)) {
+                // Eh um vetor
+                var ind = idx.substring(0, idx.length-2)
+                if (obj[ind] === undefined) {
+                    obj[ind] = [];
+                }
+                obj[ind].push(p[1]);
+            }
+            else {
+                obj[idx] = p[1];
+            }
+        }
+        return obj;
+    };
+    
+    function goBack(currentStep, prevStep)
+    {
+        var currentStep = jQuery('#' + currentStep);
+        var prevStep    = jQuery('#' + prevStep);
+        // slide up and down current/prev steps
+        currentStep.slideUp(function(){
+            prevStep.slideDown();
+            // change steps status
+            currentStep.prev().removeClass('active').addClass('next');
+            prevStep.prev().removeClass('completed').addClass('active');
+        });
+    }
+    
+    function autocompleteInput(ids, input)
+    {
+        var idArr = ids.split(',');
+        idArr.each(function(id){
+            var trimmedId = jQuery.trim(id);
+            
+            if (jQuery('#' + trimmedId).val() == '') {
+                if (jQuery('#' + trimmedId).getType() != 'select') {
+                	// text type input
+                    jQuery('#' + trimmedId).val(jQuery(input).val());
+                } else {
+                	// select type input
+                    jQuery('#' + trimmedId + ' option[value="' + jQuery(input).val() + '"]').attr('selected','selected');
+                    var region = jQuery('#' + trimmedId + ' option:selected').text();
+                    jQuery('#region').val(jQuery.trim(region));
+                }
+            }
+        });
+    }
+    
+    jQuery.fn.getType = function(){
+        return this[0].tagName == "INPUT" ? this[0].type.toLowerCase() : this[0].tagName.toLowerCase();
+    }
+//]]>
+</script>

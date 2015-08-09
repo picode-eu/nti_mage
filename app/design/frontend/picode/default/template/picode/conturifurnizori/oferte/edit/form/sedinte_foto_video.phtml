@@ -1,0 +1,89 @@
+<?php
+    $product = $this->getProductForEdit();
+    $customer = $this->getCustomer();
+    $attributeSource = Mage::getSingleton('eav/config');
+    $serviciiPrestate = $customer->getFurnizorCompanyServices();
+?>
+
+<li class="fields">
+    <div class="field">
+        <label for="ofg_nr_sedinte" class="required"><em>*</em><?php echo $this->__('Nr. maxim sedinte programate') ?></label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_nr_sedinte')->getSource()->getAllOptions(false); ?>
+            <select name="ofg_nr_sedinte" id="ofg_nr_sedinte" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgNrSedinte() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_sedinta_logodna" class="required"><em>*</em><?php echo $this->__('Sedinta logodna (inainte de nunta)') ?></label>
+        <div class="input-box">
+            <select name="ofg_sedinta_logodna" id="ofg_sedinta_logodna" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgSedintaLogodna() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgSedintaLogodna() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofg_sedinte_inainte_biserica" class="required"><em>*</em><?php echo $this->__('Sedinta inainte de biserica') ?></label>
+        <div class="input-box">
+            <select name="ofg_sedinte_inainte_biserica" id="ofg_sedinte_inainte_biserica" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgSedinteInainteBiserica() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgSedinteInainteBiserica() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_sedinte_dupa_biserica" class="required"><em>*</em><?php echo $this->__('Sedinta dupa biserica') ?></label>
+        <div class="input-box">
+            <select name="ofg_sedinte_dupa_biserica" id="ofg_sedinte_dupa_biserica" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgSedinteDupaBiserica() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgSedinteDupaBiserica() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofg_trash_the_dress" class="required"><em>*</em><?php echo $this->__('Sedinta "Trash the Dress" (dupa nunta)') ?></label>
+        <div class="input-box">
+            <select name="ofg_trash_the_dress" id="ofg_trash_the_dress" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgTrashTheDress() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgTrashTheDress() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_sedinte_suplimentara" class=""><?php echo $this->__('Alte sedinte foto/video (separate prin virgula)') ?></label>
+        <div class="input-box">
+            <input type="text" id="ofg_sedinte_suplimentara" class="input-text" name="ofg_sedinte_suplimentara" value="<?php echo $product->getOfgSedinteSuplimentara() ?>" />
+        </div>
+    </div>
+</li>

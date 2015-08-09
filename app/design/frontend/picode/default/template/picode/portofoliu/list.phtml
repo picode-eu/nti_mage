@@ -1,0 +1,98 @@
+<?php
+	$portofoliuCollection = $this->requestedCollection();
+	$_helper = $this->helper('portofoliu');
+    //echo $portofoliuCollection->getSelect();
+	//Zend_Debug::dump($portofoliuCollection); die();
+?>
+<div class="page-title category-title">
+	<h1>Portofolii foto / video</h1>
+</div>
+<?php if(is_object($portofoliuCollection) && $portofoliuCollection->getSize()): ?>
+    <div class="toolbar">
+        <?php echo $this->getPagerHtml(); ?>
+    </div>
+	<div class="album-collection">
+        <div id="masonry-container" style="padding-bottom:10px">
+			<?php foreach($portofoliuCollection as $album): ?>
+			    
+				<?php $_provider = $_helper->getProviderDetails($album->getCustomerId()); ?>
+			    <div class="masonry-item img-holder" style="padding-bottom: 10px;">
+			    	<?php /*
+			    	<div class="album-summary-top">
+			    		<a href="<?php echo $this->getBaseUrl().$_helper->getFurnizorLink($album->getCustomerId()) ?>" title="<?php echo $furnizorName ?>">
+			  	    		<img class="avatar" src="<?php echo $_helper->getFurnizorLogo($album->getCustomerId()) ?>" title="<?php echo $furnizorName ?>" alt="Logo furnizor <?php echo $furnizorName ?>" />
+			  	    		<p><?php echo $furnizorName ?></p>
+			  	    	</a> 
+			  	    	<p><?php echo date('d.m.Y',strtotime($album->getCreatedAt())) ?></p>
+			  	    </div>
+			  	    */ ?>
+			    	<a href="<?php echo $this->getBaseUrl() ?>portofoliu/foto/view/id/<?php echo $album->getAlbumId() ?>" title="<?php echo $album->getAlbumName() ?>">
+				  	    <img class="masonry-img" src="<?php echo $this->getBaseUrl() . $_helper->resizeImg($album->getAlbumCover(), '270', false, $album->getCustomerId()) ?>" width="270" title="<?php echo $album->getAlbumName() ?>" alt="Coperta album <?php echo $album->getAlbumName() ?>" />
+				  	</a>
+				  	
+			  	    <div class="album-summary">
+		  	    		<h2>
+				  	    	<a href="<?php echo $this->getBaseUrl() ?>portofoliu/foto/view/id/<?php echo $album->getAlbumId() ?>" title="<?php echo $album->getAlbumName() ?>">
+				  	    		<?php echo $this->shortenString($album->getAlbumName(), 60, true) ?>
+			  	    		</a>
+			  	    	</h2>
+			  	    	<!-- <p><?php echo $this->shortenString($album->getAlbumDescription(), 90, true) ?> <a href="<?php echo $this->getBaseUrl() ?>portofoliu/foto/view/id/<?php echo $album->getAlbumId() ?>">mai mult<small> &raquo;</small></a></p> -->
+			  	    	<!-- <div class="separator"></div> -->
+			  	    	
+			  	    	<p><?php echo $this->shortenString($album->getAlbumDescription(), 150, true) ?></p>
+			  	    	
+			  	    	<?php /* if($album->getViews()): ?>
+			  	    	    <p><span>Afisari </span><?php echo $album->getAlbumViewed() ?> <span>din care</span> <?php echo $album->getUnicVisits() ?> vizitator unic.</p>
+			  	    	<?php else: ?>
+			  	    		<p>Albumul <span>nu a fost afisat</span> niciodata.</p>
+			  	    	<?php endif */ ?>
+			  	    	
+			  	    	<?php /*
+			  	    	<?php if($album->getLikes()): ?>
+			  	    		<?php if($album->getLikes() > 1): ?>
+			  	    			<p><span>Apreciat</span> de <?php echo $album->getLikes() ?> vizitatori.</p>
+			  	    		<?php else: ?>
+			  	    			<p><span>Apreciat</span> de <?php echo $album->getLikes() ?> vizitator.</p>
+			  	    		<?php endif; ?>
+			  	    	<?php else: ?>
+			  	    		<p>Acest album inca <span>nu a fost evaluat</span>.</p>
+			  	    	<?php endif ?>
+			  	    	*/ ?>
+			  	    	<div class="separator"></div>
+			  	    	<?php /*
+			  	    	<a href="<?php echo $this->getBaseUrl().$_helper->getFurnizorLink($album->getCustomerId()) ?>" title="<?php echo $furnizorName ?>">
+			  	    		<img class="avatar" src="<?php echo $_helper->getFurnizorLogo($album->getCustomerId()) ?>" title="<?php echo $furnizorName ?>" alt="Logo furnizor <?php echo $furnizorName ?>" />
+			  	    		<p><?php echo $furnizorName ?></p>
+			  	    	</a>
+			  	    	*/ ?>
+			  	    	<div class="item-bottom">
+			  	    	     <p>
+                                <span class="name ion-briefcase">&nbsp;<?php echo $_provider->getBusinessDescriptionsTitle() ?></span>
+                                <span class="date ion-calendar">&nbsp;<?php echo date('d.m.Y', strtotime($album->getCreatedAt())) ?></span>
+			  	    	     </p>
+			  	    	</div>
+			  	    	
+			  	    </div>
+			    </div>
+				
+			<?php endforeach; ?>
+		</div>
+	</div>
+	<div class="toolbar">
+        <?php echo $this->getPagerHtml(); ?>
+    </div>
+<?php else: ?>
+	<?php echo $this->__('Momentan nu avem niciun portofoliu de afisat.') ?>
+<?php endif ?>
+
+
+<script type="text/javascript">
+
+    var container = document.querySelector('#masonry-container');
+    var msnry = new Masonry( container );
+    // layout Masonry again after all images have loaded
+    imagesLoaded( container, function() {
+      msnry.layout();
+    });
+    
+</script>

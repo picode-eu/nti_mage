@@ -1,0 +1,198 @@
+<?php
+    // Picode_Portofoliu_Block_Edit
+    $videoId = $this->getRequest()->getParam('id');
+	$videoDetails = $this->getVideoToEdit($videoId);
+	$helper = $this->helper('portofoliu');
+    $customerID = $this->getCustomer()->getId();
+	//Zend_Debug::dump($videoDetails->getData());die();
+?>
+
+<div class="my-account editable-form portofoliu-form">
+    <div class="page-title">
+        <?php if ($videoDetails): ?>
+            <h1><?php echo $this->__('Editezi videoclipul: ') . $videoDetails->getVideoName() ?></h1>
+        <?php else: ?>
+            <h1><?php echo $this->__('Videoclip nou '); ?></h1>
+        <?php endif; ?>
+    </div>
+    
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    
+    <form id="form-validate" action="<?php echo $this->getUrl('portofoliu/edit/savevideo/') ?>" onsubmit="checkRequiredFields()" method="post" enctype="multipart/form-data">
+    	<div id="informatii-generale-wrapper" class="fieldset">
+            <h2 class="legend"><?php echo $this->__('Setari generale') ?></h2>
+            <ul id="informatii-generale" class="form-list">
+            	<input type="hidden" name="video_id" value="<?php echo $videoDetails ? $videoDetails->getId() : ''; ?>" />
+                <?php echo $this->getBlockHtml('formkey')?>
+                <li class="fields">
+                    <div class="field">
+                        <label for="video_name" class="required"><em>*</em><?php echo $this->__('Titlu videoclip') ?></label>
+                        <div class="input-box">
+                            <input type="text" name="video_name" id="video_name" value="<?php echo $videoDetails ? $videoDetails->getVideoName() : '' ?>" title="<?php echo $this->__('Titlu videoclip') ?>" class="input-text required-entry" />
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="is_visible" class="required"><em>*</em><?php echo $this->__('Vizibilitate') ?></label>
+                        <div class="input-box">
+                                <select name="is_visible" id="is_visible" title="<?php echo $this->__('Vizibilitate') ?>" class="validate-select custom-required">
+                                    <?php if ($videoDetails): ?>
+                                        <option value="0" <?php if($videoDetails->getIsVisible() == 0) echo 'selected="selected"' ?>>
+                                            <?php echo $this->__('Vizibil doar pentru mine'); ?>
+                                        </option>
+                                        <option value="1" <?php if($videoDetails->getIsVisible() == 1) echo 'selected="selected"' ?>>
+                                            <?php echo $this->__('Vizibil pentru toti'); ?>
+                                        </option>
+                                    <?php else: ?>
+                                        <option value="" selected="selected"><?php echo $this->__('Selecteaza'); ?></option>
+                                        <option value="0"><?php echo $this->__('Vizibil doar pentru mine'); ?></option>
+                                        <option value="1"><?php echo $this->__('Vizibil pentru toti'); ?></option>
+                                    <?php endif; ?>
+                                </select>
+                            </select>
+                        </div>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="wide">
+                        <label for="video_description" class="required"><em>*</em><?php echo $this->__('Descriere videoclip') ?></label>
+                        <div class="input-box">
+                            <textarea 
+                                name="video_description" 
+                                id="video_description" 
+                                title="Descriere videoclip" 
+                                class="input-textarea required-entry" 
+                                onKeyDown="CountLeft(this.form.video_description,this.form.count_video_description,750);" 
+                                onKeyUp="CountLeft(this.form.video_description,this.form.count_video_description,750);"><?php echo $videoDetails ? $videoDetails->getVideoDescription() : ''; ?></textarea>
+                            <div class="ch-count">
+                                Caractere rămase: 
+                                <input readonly type="text" id="count_video_description" name="count_video_description" size="1" maxlength="3" value="" style="background:transparent; border:0 none;">
+                            </div>
+                            <script type="text/javascript">
+                                //<![CDATA[
+                                    jQuery(document).ready(function(){
+                                        var descriptionLeft = 750 - jQuery('#video_description').val().length;
+                                        jQuery('#count_video_description').val(descriptionLeft);
+                                    });
+                                    
+                                    function CountLeft(field, count, max){
+                                         if (field.value.length > max)
+                                            field.value = field.value.substring(0, max);
+                                         else
+                                            count.value = max - field.value.length;
+                                    }
+                                //]]>
+                            </script>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+                
+		<div id="videoclip-wrapper" class="fieldset">
+            <h2 class="legend"><?php echo $this->__('URL / ID videoclip') ?></h2>
+            <p><?php echo $this->__('Adauga aici link-ul videoclipului de pe <strong>YouTube</strong> sau <strong>Vimeo</strong>') ?></p>
+            <ul id="video-link" class="form-list">
+                <li class="fields">
+                    <div class="wide">
+                        <label for="video_url" class="required"><em>*</em><?php echo $this->__('Link videoclip') ?></label>
+                        <div class="input-box">
+                            <?php $rebuildedVideoUrl = $videoDetails ? $this->rebuildVideoUrl($videoDetails->getVideoUrl(), $videoDetails->getUrlType()) : ''; ?>
+                            <input type="text" name="video_url" id="video_url" value="<?php echo $rebuildedVideoUrl ?>" title="<?php echo $this->__('Link videoclip') ?>" class="input-text required-entry" />
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <?php if ($videoDetails): ?>
+                <div id="video_iframe" class="video-iframe">
+                    <?php if ($helper->checkVideoExists($videoDetails->getVideoUrl(), $videoDetails->getUrlType())): ?>
+    				    <?php echo $this->getEmbedCode($videoDetails->getUrlType(), $videoDetails->getVideoUrl()); ?>
+                    <?php else: ?>
+                        <p class="video-error"><?php echo $this->__('Videoclipul nu exista sau linkul nu este corect.') ?></p>
+                    <?php endif; ?>
+    			</div>
+            <?php endif; ?>
+       </div>
+       
+       <div class="buttons-set">
+            <button id="save_video" type="submit" title="<?php echo $this->__('Salveaza videoclipul') ?>" class="button">
+                <span><span><?php echo $this->__('Salveaza videoclipul') ?></span></span>
+            </button>
+            <span style="display: none; float: left" class="please-wait">
+                <img class="v-middle" title="<?php echo $this->__('Se salveaza datele...') ?>" alt="<?php echo $this->__('Se salveaza datele...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+                <?php echo $this->__('Se salveaza datele...') ?>
+            </span>
+            <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+        </div>
+	</form>
+    
+</div>
+<?php //echo $videoDetails->getVideoUrl() . $videoDetails->getUrlType() ?>
+<?php /* if($videoDetails): ?>
+	<div class="page-title">
+        <h1><?php echo $this->__('Editezi videoclipul: ').$videoDetails->getVideoName() ?></h1>
+    </div>
+    <form id="form-validate" action="<?php echo $this->getUrl('portofoliu/edit/savevideo/action/existing') ?>" onsubmit="checkRequiredFields()" method="post" enctype="multipart/form-data">
+    	<input type="hidden" name="video_id" value="<?php echo $videoDetails->getVideoId() ?>" />
+		<?php echo $this->getBlockHtml('formkey')?>
+		<div class="fieldset">
+			<h2 class="legend"><?php echo $this->__('URL videoclipului') ?></h2>
+			<p>Adauga aici link-ul videoclipului de pe YouTube sau Vimeo</p>
+			<ul class="form-list">
+				<li class="fields">
+					<div class="field">
+		            	<label for="video_url" class="required">
+		                	<em>*</em> <?php echo $this->__('Link videoclip') ?>
+		                </label>
+		                <div class="input-box">
+		                	<?php $rebuildedVideoUrl = $this->rebuildVideoUrl($videoDetails->getVideoUrl(), $videoDetails->getUrlType()) ?>
+							<input type="text" name="video_url" id="video_url" value="<?php echo $rebuildedVideoUrl ?>" title="<?php echo $this->__('Link videoclip') ?>" class="input-text required-entry" />
+						</div>
+					</div>
+				</li>
+			</ul>
+			<!-- <p><?php  echo $this->__('Urmareste Videoclipul')?></p> -->
+			<!-- <div class="video-thumb">
+				<img src="<?php echo $this->getVideoThumb() ?>" width="120" height="90" alt="" />
+			</div> -->
+			<!-- <div id="video_iframe" class="video-iframe">
+				<?php //echo $this->getEmbedCode($videoDetails->getUrlType(), $videoDetails->getVideoUrl()) ?>
+			</div> -->
+			
+		</div>
+		<div class="buttons-set">
+            <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+            <p class="back-link"><a href="<?php echo $this->escapeUrl($this->getBackUrl()) ?>" class="back-link"><small>&laquo; </small><?php echo $this->__('Back') ?></a></p>
+            <button id="save_video" type="submit" title="<?php echo $this->__('Salveaza videoclipul') ?>" class="button"><span><span><?php echo $this->__('Salveaza videoclipul') ?></span></span></button>
+        </div>
+        
+	</form>
+<?php endif; */ ?>
+
+<script type="text/javascript">
+//<![CDATA[
+
+	var dataForm = new VarienForm('form-validate', true);
+	
+	/* stop submiting form */
+	jQuery("#form-validate").submit(function(e){
+	    if(!passed){
+	    	e.preventDefault(e);
+	    	passed = true;
+	    }
+	});
+	
+    // Select input field contents
+	jQuery("#video_url").focus(function(){
+	    this.select();
+	});
+	
+	// remove embed video
+	jQuery('#video_url').change(function(){
+		jQuery('#video_iframe').addClass('light-gray');
+		jQuery('#video_iframe').html('<p>Salveaza modificarile pentru a reincarca videoclipul.</p>');
+	});
+	
+
+//]]>
+</script>

@@ -1,0 +1,148 @@
+<?php
+	$quote = $this->getQuote();
+    //Zend_Debug::dump($quote->getData());
+    $prevStep = $this->accountIsPaid() && $quote->getGrandTotal() > 0 ? 'payment-info' : 'business-info';
+	$_items = $quote->getAllVisibleItems();
+    if ($quote->getCustomerId() && !$this->accountIsPaid()) {
+        // the checkout is an update
+        $quote->setCheckoutMethod('update')->save();
+    }
+?>
+
+<form action="<?php echo $this->getRegisterActionUrl() ?>" method="post" id="form-review-info">
+    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+    <input type="hidden" name="success_url" value="<?php echo $this->getSuccessUrl() ?>" />
+    <input type="hidden" name="failure_url" value="<?php echo $this->getFailureUrl() ?>" />
+    <div id="checkout-review-table-wrapper">
+	    <table class="data-table linearize-table" id="checkout-review-table">
+	        <?php if ($this->helper('tax')->displayCartBothPrices()): $colspan = $rowspan = 2; else: $colspan = $rowspan = 1; endif; ?>
+	        <col />
+	        <col width="1" />
+	        <col width="1" />
+	        <thead>
+	            <tr>
+	                <th rowspan=""><?php echo $this->__('Tip Cont') ?></th>
+	                <?php /* <th colspan="" class="a-center"><?php echo $this->__('Pret') ?></th> */?>
+	                <th rowspan="<?php echo $rowspan ?>" class="a-center"><?php echo $this->__('Qty') ?></th>
+	                <th colspan="" class="a-center"><?php echo $this->__('Subtotal') ?></th>
+	            </tr>
+	            <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+	                <tr>
+	                    <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+	                    <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+	                    <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+	                    <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+	                </tr>
+	            <?php endif; ?>
+	        </thead>
+
+	        <tbody>
+	        	<?php foreach ($_items as $_item): ?>
+		        	<td>
+		        		<h3 class="product-name"><?php echo $this->escapeHtml($_item->getName()) ?></h3>
+		        		<?php $_options = $_item->getProduct()->getTypeInstance(true)->getOrderOptions($_item->getProduct()); ?>
+				        <?php if (isset($_options['options'])): ?>
+					        <dl class="item-options">
+					            <?php foreach ($_options['options'] as $_option) : ?>
+					            	<dt><?php echo $this->escapeHtml($_option['label']) ?></dt>
+									<dd><?php echo $this->escapeHtml($_option['value']) ?></dd>
+					            <?php endforeach; ?>
+					        </dl>
+				        <?php endif; ?>
+				    </td>
+				    <?php /*
+				    <td class="a-right">
+	                    <span class="cart-price">
+	                    	<span class="price"><?php echo $this->helper('checkout')->formatPrice($_item->getPrice()) ?></span>
+	        			</span>
+		            </td>
+		            */ ?>
+					<td class="a-center"><?php echo $_item->getQty() ?></td>
+
+					<td class="a-right last">
+	                    <span class="cart-price">
+	                    	<span class="price"><?php echo $this->helper('checkout')->formatPrice($_item->getRowTotal()) ?></span>
+	       				 </span>
+	            	</td>
+			    <?php endforeach; ?>
+	        </tbody>
+
+	        <tfoot>
+		        <tr class="first">
+				    <td style="" class="a-right" colspan="2"><?php echo $this->__('Subtotal') ?></td>
+				    <td style="" class="a-right first">
+				        <span class="price"><?php echo $this->helper('checkout')->formatPrice($quote->getSubtotal()) ?></span>
+				    </td>
+				</tr>
+				<?php
+				$appliedRule = $quote->getAppliedRuleIds();
+				if (!is_array($appliedRule)) $rule = Mage::getModel('salesrule/rule')->load($appliedRule);
+				//Zend_Debug::dump($rule->getDAta());
+				?>
+				<?php if ($quote->getCouponCode() || $quote->getAppliedRuleIds()): ?>
+				    <?php //Zend_Debug::dump($quote->getCouponCode()); ?>
+				    <tr class="">
+                        <?php $discountTitle = $rule->getName(); ?>
+                        <td style="" class="a-right" colspan="2"><?php echo $this->__('Discount (%s)', $discountTitle) ?></td>
+                        <td style="" class="a-right">
+                            <?php $discount = $quote->getSubtotalWithDiscount() - $quote->getSubtotal() ?>
+                            <span class="price"><?php echo $this->helper('checkout')->formatPrice($discount) ?></span>
+                        </td>
+                    </tr>
+				<?php endif; ?>
+				<tr class="last">
+				    <td style="" class="a-right" colspan="2"><?php echo $this->__('Total General') ?></td>
+				    <td style="" class="a-right last">
+				        <strong><span class="price"><?php echo $this->helper('checkout')->formatPrice($quote->getGrandTotal()) ?></span></strong>
+				    </td>
+				</tr>
+	       </tfoot>
+
+	    </table>
+	</div>
+    <div class="buttons-set">
+        <p class="back-link">
+            <a href="javascript:void(0)" onclick="goBack('review-info', '<?php echo $prevStep ?>')" class="back-link">
+                <span class="ion-chevron-up"></span><?php echo $this->__('Inapoi') ?>
+            </a>
+        </p>
+        <div class="input-box terms">
+            <label class="required" for="accept_terms"><em>*</em>Sunt de acord cu <a href="<?php echo $this->getBaseUrl() ?>termeni-si-conditii-de-utilizare/" target="_blank">Termenii si Conditiile</a> de utilizare</label>
+            <input class="required-entry" id="accept_terms" type="checkbox" name="accept_terms" title="<?php echo $this->__('Termeni si Conditii de utilizare') ?>" value="1" class="checkbox" />
+        </div>
+        <button type="submit" title="<?php echo $this->__('Plasază comanda') ?>" class="button place-order" disabled="disabled">
+            <span><span><?php echo $this->__('Plasază comanda') ?></span></span>
+        </button>
+        <span class="please-wait">
+            <img class="v-middle loading" title="<?php echo $this->__('Se salvează...') ?>" alt="<?php echo $this->__('Se salvează...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+            <?php echo $this->__('Se salveaza...') ?>
+        </span>
+        <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+    </div>
+</form>
+<?php if ($appliedRule === NULL): ?>
+	<?php echo $this->getChildHtml('coupon'); ?>
+<?php endif; ?>
+
+<script type="text/javascript">
+//<![CDATA[
+    jQuery(document).ready(function(){
+        jQuery('.place-order').click(function(){
+            jQuery(this).closest('.buttons-set').find('.please-wait').show();
+        });
+        
+        if (jQuery('#accept_terms').is(':checked')) {
+            jQuery('#accept_terms').closest('.buttons-set').find('button').removeAttr('disabled');
+        }
+        
+        jQuery(document).on('click', '#accept_terms', function(){
+            if (jQuery(this).is(':checked') == 1) {
+                jQuery(this).closest('.buttons-set').find('button').removeAttr('disabled');
+            } else {
+                jQuery(this).closest('.buttons-set').find('button').attr('disabled', 'disabled');
+            }
+        });
+    });
+//]]>
+</script>
+

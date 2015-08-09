@@ -1,0 +1,31 @@
+<?php
+    $loadedEntityType = $this->getLoadEdentityType();
+    $loadedEntityId = $this->getLoadedEntityId();
+?>
+
+<form id="contactViewForm"></form>
+
+<script type="text/javascript">
+    //<![CDATA[
+    jQuery(document).ready(function()
+    {
+        jQuery(document).on('click', '#update-contact, #tab-contact', function(){
+            jQuery('#contactViewForm').ajaxForm({
+                data: { entity_id: '<?php echo $loadedEntityId ?>', entity_type: '<?php echo $loadedEntityType ?>', update: 'ctcview'},
+                method: 'post',
+                url: '<?php echo $this->getBaseUrl() ?>reputationpoints/update/contactview',
+                beforeSubmit: function(){
+                    jQuery('#contact-loading').show();
+                },
+                success: function(response) {
+                    jQuery('#contactViewForm, #update-contact, .ion-chevron-down, #contact-loading').remove();
+                    var response = jQuery.parseJSON(response);
+                    jQuery.each(response, function(id, value) {
+                        jQuery('#' + id).html(value);
+                    });
+                }
+            }).submit();
+        });
+    });
+    //]]>
+</script>

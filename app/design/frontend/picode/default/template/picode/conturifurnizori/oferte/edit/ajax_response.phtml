@@ -1,0 +1,13 @@
+<?php
+    $action = $this->getRequest()->getActionName();
+    
+    switch ($action) {
+        case 'imageupload':
+            echo $this->ajaxUploadImage();
+            break;
+            
+        case 'ajaxform':
+            echo $this->storeFormData();
+            break;
+    }
+?>

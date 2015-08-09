@@ -1,0 +1,16 @@
+<?php
+/**
+ * @category    Magebit
+ * @package     Magebit_Cms
+ * @author      Kos Rafał <rafal.k@flexishore.com>
+ * @copyright  Copyright (c) 2011 Flexishore http://flexishore.com
+ */
+
+$installer = $this;
+$installer->startSetup();
+ 
+$installer->run("
+  ALTER TABLE  `cms_page` ADD  `show_page_on_date` date NULL;
+");
+ 
+$installer->endSetup();

@@ -1,0 +1,141 @@
+<?php
+    $customer       = $this->getCustomer();
+    $helper         = $this->helper('conturifurnizori');
+    $accountOptions = $this->getAccountOptions($customer, 'ac_op');
+    //Zend_Debug::dump($accountOptions);
+?>
+
+<div class="col-1">
+    <div class="box">
+        <div class="box-title">
+            <h3><?php echo $this->__('Optiunile contului') ?></h3>
+            <a href="<?php echo $this->getUrl('conturifurnizori/setari/optiuni/',array('_secure'=>true)) ?>"><?php echo $this->__('Detalii') ?></a>
+        </div>
+        <div class="box-content">
+            <ul class="account-options-list">
+                <?php if ($accountOptions): ?>
+                    <li class="odd">
+                        <?php  ?>
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_profil')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_afisare_profil']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_profil')->getNote(); ?></p>
+                    </li>
+                    <li class="even">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_preferentiala')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_afisare_preferentiala']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_preferentiala')->getNote(); ?></p>
+                    </li>
+                    <li class="odd">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_oferte')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_afisare_oferte']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_oferte')->getNote(); ?></p>
+                    </li>
+                    <li class="even">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_max_oferte_active')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            Maxim <?php echo $accountOptions['ac_op_max_oferte_active'] ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_max_oferte_active')->getNote(); ?></p>
+                    </li>
+                    <li class="odd">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_eticheta_oferta_speciala')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_eticheta_oferta_speciala']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_eticheta_oferta_speciala')->getNote(); ?></p>
+                    </li>
+                    <li class="even">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_link_restul_ofertelor')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_link_restul_ofertelor']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_link_restul_ofertelor')->getNote(); ?></p>
+                    </li>
+                    <li class="odd">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_link_alte_oferte')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_link_alte_oferte']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_link_alte_oferte')->getNote(); ?></p>
+                    </li>
+                    <li class="even">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_album_prezentare')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_afisare_album_prezentare']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_album_prezentare')->getNote(); ?></p>
+                    </li>
+                    <li class="odd">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_max_album_active')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            Maxim <?php echo $accountOptions['ac_op_max_album_active'] ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_max_album_active')->getNote(); ?></p>
+                    </li>
+                    <li class="even">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_spatiu_disc')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $accountOptions['ac_op_spatiu_disc'] ?>MB
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_spatiu_disc')->getNote(); ?></p>
+                    </li>
+                    <li class="odd">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_video_prezentare')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_afisare_video_prezentare']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_video_prezentare')->getNote(); ?></p>
+                    </li>
+                    <li class="even">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_max_video_active')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            Maxim <?php echo $accountOptions['ac_op_max_video_active'] ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_max_video_active')->getNote(); ?></p>
+                    </li>
+                    <li class="odd">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_retele')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_afisare_retele']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_afisare_retele')->getNote(); ?></p>
+                    </li>
+                    <li class="even">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_link_direct_website')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_link_direct_website']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_link_direct_website')->getNote(); ?></p>
+                    </li>
+                    <li class="odd">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_notificari_email')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_notificari_email']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_notificari_email')->getNote(); ?></p>
+                    </li>
+                    <li class="even">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_notificari_sms')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_notificari_sms']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_notificari_sms')->getNote(); ?></p>
+                    </li>
+                    <li class="odd">
+                        <strong><?php echo $this->getAttributeDetailsByCode('ac_op_rapoarte_avansate')->getFrontendLabel(); ?></strong> 
+                        <span class="attr-value">
+                            <?php echo $this->getYesNo($accountOptions['ac_op_rapoarte_avansate']) ?>
+                        </span>
+                        <p class="attr-description"><?php echo $this->getAttributeDetailsByCode('ac_op_rapoarte_avansate')->getNote(); ?></p>
+                    </li>
+                 <?php endif ?>
+            </ul>
+        </div>
+    </div>
+</div>

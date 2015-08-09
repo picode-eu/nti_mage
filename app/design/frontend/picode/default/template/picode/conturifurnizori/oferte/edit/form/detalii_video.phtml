@@ -1,0 +1,209 @@
+<?php
+    $product = $this->getProductForEdit();
+    $customer = $this->getCustomer();
+    $attributeSource = Mage::getSingleton('eav/config');
+    $serviciiPrestate = $customer->getFurnizorCompanyServices();
+?>
+
+<li class="fields">
+    <div class="field">
+        <label for="ofv_format_filmare" class="required"><em>*</em><?php echo $this->__('Format filmare') ?></label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofv_format_filmare')->getSource()->getAllOptions(false); ?>
+                <select name="ofv_format_filmare" id="ofv_format_filmare" class="select validate-select" onchange="updateNextField(this, 'ofv_format_definit')">
+                    <option value=""><?php echo $this->__('') ?></option>
+                    <?php foreach ($options as $option): ?>
+                        <option value="<?php echo $option['value'] ?>" <?php echo $product->getData('ofv_format_filmare') == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                            <?php echo $option['label'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofv_format_definit" class="<?php echo $this->isRequiredLabel($product, 'ofv_format_filmare', 'alt-format') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'ofv_format_filmare', 'alt-format'); ?></em>
+            <?php echo $this->__('Alt format filmare (defineste)') ?>
+        </label>
+        <div class="input-box">
+            <input 
+                type="text" 
+                name="ofv_format_definit" 
+                id="ofv_format_definit" 
+                class="input-text <?php echo $this->isRequired($product, 'ofv_format_filmare', 'alt-format', 'text') ?>" 
+                value="<?php echo $product->getData('ofv_format_definit') ?>" 
+                <?php echo $this->isDisabled($product, 'ofv_format_filmare', 'alt-format') ?> 
+                />
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofv_montaj_dvd" class="required"><em>*</em><?php echo $this->__('Filmarea livrata pe DVD') ?></label>
+        <div class="input-box">
+            <select name="ofv_montaj_dvd" id="ofv_montaj_dvd" class="select validate-select" onchange="updateNextField(this, 'ofv_montaj_dvd_nrcopii')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getData('ofv_montaj_dvd') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getData('ofv_montaj_dvd') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofv_montaj_dvd_nrcopii" class="<?php echo $this->isRequiredLabel($product, 'ofv_montaj_dvd', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'ofv_montaj_dvd', '1'); ?></em>
+            <?php echo $this->__('Nr. copii DVD (seturi)') ?>
+        </label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofv_montaj_dvd_nrcopii')->getSource()->getAllOptions(false); ?>
+                <select 
+                    name="ofv_montaj_dvd_nrcopii" 
+                    id="ofv_montaj_dvd_nrcopii" 
+                    class="select <?php echo $this->isRequired($product, 'ofv_montaj_dvd', '1', 'select') ?>"
+                    <?php echo $this->isDisabled($product, 'ofv_montaj_dvd', '1') ?> 
+                >
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getData('ofv_montaj_dvd_nrcopii') == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofv_montaj_blu_ray" class="required"><em>*</em><?php echo $this->__('Filmarea livrata pe Blu-Ray') ?></label>
+        <div class="input-box">
+            <select name="ofv_montaj_blu_ray" id="ofv_montaj_blu_ray" class="select validate-select" onchange="updateNextField(this, 'ofv_montaj_blu_ray_nrcopii')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getData('ofv_montaj_blu_ray') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getData('ofv_montaj_blu_ray') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofv_montaj_blu_ray_nrcopii" class="<?php echo $this->isRequiredLabel($product, 'ofv_montaj_blu_ray', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'ofv_montaj_blu_ray', '1'); ?></em>
+            <?php echo $this->__('Nr. copii Blu-Ray (seturi)') ?>
+        </label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofv_montaj_blu_ray_nrcopii')->getSource()->getAllOptions(false); ?>
+                <select 
+                    name="ofv_montaj_blu_ray_nrcopii" 
+                    id="ofv_montaj_blu_ray_nrcopii" 
+                    class="select <?php echo $this->isRequired($product, 'ofv_montaj_blu_ray', '1', 'select') ?>"
+                    <?php echo $this->isDisabled($product, 'ofv_montaj_blu_ray', '1') ?> 
+                >
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getData('ofv_montaj_blu_ray_nrcopii') == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofv_montaj_film" class="required"><em>*</em><?php echo $this->__('Montaj video (filmul nuntii)') ?></label>
+        <div class="input-box">
+            <select name="ofv_montaj_film" id="ofv_montaj_film" class="select validate-select" onchange="updateNextField(this, 'ofv_montaj_durata')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getData('ofv_montaj_dvd') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getData('ofv_montaj_dvd') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofv_montaj_durata" class="<?php echo $this->isRequiredLabel($product, 'ofv_montaj_film', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'ofv_montaj_film', '1'); ?></em>
+            <?php echo $this->__('Durata montaj video (filmul nuntii)') ?>
+        </label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofv_montaj_durata')->getSource()->getAllOptions(false); ?>
+                <select 
+                    name="ofv_montaj_durata" 
+                    id="ofv_montaj_durata" 
+                    class="select <?php echo $this->isRequired($product, 'ofv_montaj_film', '1', 'select') ?>"
+                    <?php echo $this->isDisabled($product, 'ofv_montaj_film', '1') ?> 
+                >
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getData('ofv_montaj_durata') == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofv_videoclip" class="required"><em>*</em><?php echo $this->__('Videoclip intro (rezumat)') ?></label>
+        <div class="input-box">
+            <select name="ofv_videoclip" id="ofv_videoclip" class="select validate-select" onchange="updateNextField(this, 'ofv_videoclip_durata')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getData('ofv_videoclip') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getData('ofv_videoclip') ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofv_videoclip_durata" class="<?php echo $this->isRequiredLabel($product, 'ofv_videoclip', '1') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'ofv_videoclip', '1'); ?></em>
+            <?php echo $this->__('Durata videoclip intro (minute)') ?>
+        </label>
+        <div class="input-box">
+            <input 
+                type="text" 
+                name="ofv_videoclip_durata" 
+                id="ofv_videoclip_durata" 
+                class="input-text <?php echo $this->isRequired($product, 'ofv_videoclip', '1', 'text') ?>" 
+                value="<?php echo $product->getData('ofv_videoclip_durata') ?>" 
+                <?php echo $this->isDisabled($product, 'ofv_videoclip', '1') ?> 
+                />
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="wide">
+        <label for="ofv_detalii_suplimentare" class="required"><em>*</em><?php echo $this->__('Detalii suplimentare') ?></label>
+        <div class="input-box">
+            <textarea id="ofv_detalii_suplimentare" name="ofv_detalii_suplimentare"><?php echo $product->getData('ofv_detalii_suplimentare') ?></textarea>
+        </div>
+    </div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+<?php
+    $_helper = $this->helper('reputationpoints');
+    $entityType  = $this->getLoadedEntityType();
+    $isEnabled   = $_helper->getModuleConfig('rpp_settings', 'enabled_' . $entityType);
+?>
+
+<?php if ($isEnabled): ?>
+    <div class="reputationpoints">
+        <div class="reputationpoints-wrapper">
+            <div class="reputationpoints-group rpf">
+                <label class="rpf"><?php echo $this->__('RPF') ?></label>
+                <span id="reputation_count" class="value"><?php echo $_helper->convertReputationPoints($this->getRppReputation()->getEarnedPoints()); ?></span>
+            </div>
+            <div class="reputationpoints-group afisari">
+                <label class="afisari"><?php echo $this->__('Afisari') ?></label>
+                <span id="view_count" class="value"><?php echo $_helper->convertReputationPoints($this->getRppViewCount()); ?></span>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

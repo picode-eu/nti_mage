@@ -1,0 +1,225 @@
+<?php
+	/*
+     * @block Picode_ConturiFurnizori_Block_Conturi_List
+     * 
+	 * Se poate transmite ca si parametru nr. de zile in spate (int, required)
+	 * astefel putem limita colectia la o perioada exacta
+	 * pentru nelimitat = false
+	 * Se poate transmite ca si parametru un integer la care sa fie limitata colectia (int, optional)
+	 * default este false (toata colectia)
+	 * Ex. $this->getProvidersLastAdded(7, 14);
+	 */
+    $providersCollection = $this->getProvidersLastAdded(false);
+    $helper = $this->helper('conturifurnizori');
+	//Zend_Debug::dump(get_class_methods($helper));
+?>
+
+<?php if ($providersCollection->getSize()): ?>
+    <div class="newest-providers">
+        <h2><?php echo $this->__('FURNIZORI') ?></h2>
+        <p><?php echo $this->__('ultimii înscrişi') ?></p>
+        <ul class="bxslider-newest">
+            <?php foreach ($providersCollection as $provider): ?>
+                <?php $provider = $this->getProviderDetails($provider->getId()); ?>
+                <li>
+                	<?php if ($provider->getBusinessImagesLogo()): ?>
+                	    <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                	       <img src="<?php echo $helper->resizeImage($provider->getBusinessImagesLogo(), 200); ?>" alt="<?php echo $provider->getBusinessDescriptionsTitle() ?>" />
+	            		</a>
+	           		<?php endif; ?>
+                    <h3 class="provider-name">
+                        <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                            <?php echo $provider->getBusinessDescriptionsTitle() ?>
+                        </a>    
+                    </h3>
+                    <div class="provider-info">
+                        <p><?php echo $provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($provider); ?></p>
+                        <p class="experienta">Experienta <?php echo $provider->getResource()->getAttribute('business_descriptions_exp')->getFrontend()->getValue($provider); ?></p>
+                        <p class="location"><?php echo $provider->getFurnizorLocationCity() ?></p>
+                    </div>
+                    <?php if ($provider->getFurnizorAccountType() == '2'): ?>
+                        <img class="label gold" src="<?php echo $this->getBaseUrl() ?>media/wysiwyg/gold-corner-120.png" />
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+            <?php foreach ($providersCollection as $provider): ?>
+                <?php $provider = $this->getProviderDetails($provider->getId()); ?>
+                <li>
+                    <?php if ($provider->getBusinessImagesLogo()): ?>
+                        <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                           <img src="<?php echo $helper->resizeImage($provider->getBusinessImagesLogo(), 200); ?>" alt="<?php echo $provider->getBusinessDescriptionsTitle() ?>" />
+                        </a>
+                    <?php endif; ?>
+                    <h3 class="provider-name">
+                        <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                            <?php echo $provider->getBusinessDescriptionsTitle() ?>
+                        </a>    
+                    </h3>
+                    <div class="provider-info">
+                        <p><?php echo $provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($provider); ?></p>
+                        <p class="experienta">Experienta <?php echo $provider->getResource()->getAttribute('business_descriptions_exp')->getFrontend()->getValue($provider); ?></p>
+                        <p class="location"><?php echo $provider->getFurnizorLocationCity() ?></p>
+                    </div>
+                    <?php if ($provider->getFurnizorAccountType() == '2'): ?>
+                        <img class="label gold" src="<?php echo $this->getBaseUrl() ?>media/wysiwyg/gold-corner-120.png" />
+                    <?php endif; ?>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    
+    <div class="newest-providers">
+        <h2><?php echo $this->__('OFERTE DE TOP') ?></h2>
+        <!-- <div class="block-content">
+            <label for="">Selecteza judetul</label>
+            <div class="input-box">
+                <select name="">
+                    <option value="">Option 1</option>
+                    <option value="">Option 2</option>
+                    <option value="">Option 3</option>
+                    <option value="">Option 4</option>
+                </select>
+            </div>
+        </div> -->
+        <ul class="bxslider-newest">
+            <?php foreach ($providersCollection as $provider): ?>
+                <?php $provider = $this->getProviderDetails($provider->getId()); ?>
+                <li>
+                    <?php if ($provider->getBusinessImagesLogo()): ?>
+                        <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                           <img src="<?php echo $helper->resizeImage($provider->getBusinessImagesLogo(), 200); ?>" alt="<?php echo $provider->getBusinessDescriptionsTitle() ?>" />
+                        </a>
+                    <?php endif; ?>
+                    <h3 class="provider-name">
+                        <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                            <?php echo $provider->getBusinessDescriptionsTitle() ?>
+                        </a>    
+                    </h3>
+                    <div class="provider-info">
+                        <p><?php echo $provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($provider); ?></p>
+                        <p class="experienta">Experienta <?php echo $provider->getResource()->getAttribute('business_descriptions_exp')->getFrontend()->getValue($provider); ?></p>
+                        <p class="location"><?php echo $provider->getFurnizorLocationCity() ?></p>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+            <?php foreach ($providersCollection as $provider): ?>
+                <?php $provider = $this->getProviderDetails($provider->getId()); ?>
+                <li>
+                    <?php if ($provider->getBusinessImagesLogo()): ?>
+                        <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                           <img src="<?php echo $helper->resizeImage($provider->getBusinessImagesLogo(), 200); ?>" alt="<?php echo $provider->getBusinessDescriptionsTitle() ?>" />
+                        </a>
+                    <?php endif; ?>
+                    <h3 class="provider-name">
+                        <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                            <?php echo $provider->getBusinessDescriptionsTitle() ?>
+                        </a>    
+                    </h3>
+                    <div class="provider-info">
+                        <p><?php echo $provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($provider); ?></p>
+                        <p class="experienta">Experienta <?php echo $provider->getResource()->getAttribute('business_descriptions_exp')->getFrontend()->getValue($provider); ?></p>
+                        <p class="location"><?php echo $provider->getFurnizorLocationCity() ?></p>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+    
+    <script type="text/javascript">
+    //<![CDATA[
+        jQuery(document).ready(function(){
+            jQuery('.bxslider-newest').bxSlider({
+                auto: true,
+                pause: 4500,
+                autoHover: true,
+                swipeThreshold: 100,
+                preloadImages: 'all',
+                // minSlides: 2,
+                // maxSlides: 7,
+                // slideWidth: 156,
+                // slideMargin: 15,
+                minSlides: 2,
+                maxSlides: 5,
+                slideWidth: 200,
+                slideMargin: 20,
+                controls: false,
+            });
+        }); 
+    //]]>
+    </script>
+    
+<?php endif; ?>
+
+<?php /*
+array(69) {
+  ["entity_id"] => string(2) "96"
+  ["entity_type_id"] => string(1) "1"
+  ["attribute_set_id"] => string(1) "0"
+  ["website_id"] => string(1) "1"
+  ["email"] => string(33) "fred.flintstone@nuntainimagini.ro"
+  ["group_id"] => string(1) "4"
+  ["increment_id"] => NULL
+  ["store_id"] => string(1) "1"
+  ["created_at"] => string(25) "2014-10-16T20:26:49+03:00"
+  ["updated_at"] => string(19) "2014-10-16 21:20:03"
+  ["is_active"] => string(1) "1"
+  ["disable_auto_group_change"] => string(1) "0"
+  ["furnizor_account_status"] => string(1) "1"
+  ["furnizor_account_type"] => string(1) "1"
+  ["furnizor_company_type"] => string(1) "1"
+  ["furnizor_company_services"] => string(1) "2"
+  ["furnizor_location_province"] => string(3) "291"
+  ["ac_op_afisare_profil"] => string(1) "1"
+  ["ac_op_afisare_preferentiala"] => string(1) "0"
+  ["ac_op_afisare_oferte"] => string(1) "1"
+  ["ac_op_eticheta_oferta_speciala"] => string(1) "0"
+  ["ac_op_link_restul_ofertelor"] => string(1) "1"
+  ["ac_op_link_alte_oferte"] => string(1) "1"
+  ["ac_op_afisare_album_prezentare"] => string(1) "1"
+  ["ac_op_afisare_video_prezentare"] => string(1) "1"
+  ["ac_op_notificari_sms"] => string(1) "0"
+  ["ac_op_notificari_email"] => string(1) "0"
+  ["ac_op_link_direct_website"] => string(1) "1"
+  ["ac_op_afisare_retele"] => string(1) "1"
+  ["ac_op_rapoarte_avansate"] => string(1) "0"
+  ["created_in"] => string(18) "Default Store View"
+  ["prefix"] => NULL
+  ["firstname"] => string(4) "Fred"
+  ["middlename"] => NULL
+  ["lastname"] => string(10) "Flintstone"
+  ["suffix"] => NULL
+  ["password_hash"] => string(32) "88c865a9f873c0ba01545c841d34a587"
+  ["taxvat"] => NULL
+  ["furnizor_location_city"] => string(11) "Cluj-Napoca"
+  ["furnizor_location_address"] => NULL
+  ["furnizor_location_zip"] => NULL
+  ["furnizor_contact_firstname"] => string(4) "Fred"
+  ["furnizor_contact_lastname"] => string(10) "Flintstone"
+  ["furnizor_contact_email"] => string(33) "fred.flintstone@nuntainimagini.ro"
+  ["furnizor_contact_phone"] => string(12) "0745.698.563"
+  ["business_descriptions_title"] => string(13) "FF Production"
+  ["furnizor_company_name"] => string(13) "FF Production"
+  ["business_descriptions_slogan"] => NULL
+  ["business_descriptions_exp"] => string(1) "9"
+  ["furnizor_account_level"] => string(1) "1"
+  ["furnizor_account_trial_level"] => string(1) "0"
+  ["ac_op_max_oferte_active"] => string(1) "2"
+  ["ac_op_max_album_active"] => string(1) "2"
+  ["ac_op_spatiu_disc"] => string(3) "100"
+  ["ac_op_max_video_active"] => string(1) "2"
+  ["furnizor_account_online_status"] => string(1) "1"
+  ["business_networks_website"] => NULL
+  ["business_networks_skype"] => NULL
+  ["business_networks_messenger"] => NULL
+  ["business_networks_facebook"] => NULL
+  ["business_networks_tweeter"] => NULL
+  ["business_networks_gplus"] => NULL
+  ["business_networks_linkedin"] => NULL
+  ["business_networks_youtube"] => NULL
+  ["business_networks_vimeo"] => NULL
+  ["business_descriptions_desc"] => string(0) ""
+  ["business_descriptions_aparat"] => string(0) ""
+  ["business_networks_webshortdesc"] => string(0) ""
+  ["furnizor_account_expiration"] => string(19) "2015-10-16 00:00:00"
+}
+*/ ?>

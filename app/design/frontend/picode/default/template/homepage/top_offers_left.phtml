@@ -1,0 +1,68 @@
+<?php
+    /*
+     * @block Picode_ConturiFurnizori_Block_Conturi_List
+     *
+     * Se poate transmite ca si parametru nr. de zile in spate (int, required)
+     * astefel putem limita colectia la o perioada exacta
+     * pentru nelimitat = false
+     * Se poate transmite ca si parametru un integer la care sa fie limitata colectia (int, optional)
+     * default este false (toata colectia)
+     * Ex. $this->getProvidersLastAdded(7, 14);
+     */
+    $limit = 14;
+    $offersCollection = $this->getLastAddedOffers(false, $limit);
+    $helper = $this->helper('conturifurnizori');
+    //Zend_Debug::dump($offersCollection->getData());
+?>
+
+<div class="latest-products-container">
+    <div class="latest-products">
+        <ul class="latest-products-grid">
+            <?php foreach ($offersCollection as $_product): ?>
+                <?php //$_provider = $this->getProviderFromOffer($_product->getOfgCustomerId()); ?>
+                <?php $price = $finalPrice = 0; ?>
+                <?php  //Zend_Debug::dump($_product->getData()); die(); ?>
+                <li class="item">
+                    <?php //echo $_provider->getId(); ?>
+                    <div class="offer-image">
+                        <?php /* $_provider = Mage::getModel('customer/customer')->load($_product->getOfgCustomerId()); ?>
+                        <?php if ($_provider->getFurnizorAccountLevel() == '2'): ?>
+                            <div class="ribbon-wrapper">
+                                <div class="ribbon">
+                                    <p><?php echo $this->__('Oferta<br />PREMIUM'); ?></p>
+
+                                </div>
+                            </div>
+                        <?php endif; */ ?>
+                        <a href="<?php echo $_product->getProductUrl(); ?>" title="<?php echo $_product->getName(); ?>">
+                            <img src="<?php echo Mage::helper('catalog/image')->init($_product, 'image')->resize(163); ?>" alt="<?php echo $_product->getName(); ?>">
+                        </a>
+                    </div>
+                    <div class="offer-info">
+                        <h4>
+                            <a href="<?php echo $_product->getProductUrl(); ?>" title="<?php echo $_product->getName(); ?>">
+                                <?php echo $_product->getName(); ?>
+                            </a>
+                        </h4>
+                        <div class="offer-details">
+                            <span class="type">
+                                <?php //echo $this->__('Oferta ') ?>
+                                <?php echo strtoupper($_product->getResource()->getAttribute('ofg_tip_oferta')->getFrontend()->getValue($_product)); ?>
+                            </span>
+                            <?php $price = $_product->getPrice(); $finalPrice = $_product->getFinalPrice(); ?>
+                            <?php if ($finalPrice < $price): ?>
+                                <span class="old-price"><?php echo Mage::helper('core')->currency($price, true, false); ?></span>
+                                <span class="price"><?php echo Mage::helper('core')->currency($finalPrice, true, false); ?></span>
+                            <?php else: ?>
+                                <span class="price"><?php echo Mage::helper('core')->currency($finalPrice, true, false); ?></span>
+                            <?php endif; ?>
+                            <a class="details" href="<?php echo $_product->getProductUrl(); ?>" title="Vezi oferta">
+                                <span class="button">Vezi oferta</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</div>

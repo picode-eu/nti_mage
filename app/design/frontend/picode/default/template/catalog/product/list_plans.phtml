@@ -1,0 +1,324 @@
+<?php
+    $_helper = $this->helper('conturifurnizori');
+    $_productCollection = $this->getConturiCollection();
+    $accountDetails = $_helper->getAttributesFromGroup(25); // 25 is for "Detalii Cont"
+    
+    // $customers = Mage::getModel('customer/customer')->getCollection()
+        // ->addAttributeToSelect('furnizor_account_online_status')
+        // ->addAttributeToSelect('ac_op_max_oferte_active')
+        // ->addAttributeToSelect('provider_reputation')
+        // ->addAttributeToSelect('provider_views');
+//         
+    // $i = 0;    
+    // foreach ($customers as $_customer) {
+        // if ($_customer->getId() == 217) continue;
+        // $_customer->setData('furnizor_account_online_status', 1);
+        // $_customer->setData('ac_op_max_oferte_active', 3);
+        // $_customer->setData('provider_reputation', 495);
+        // $_customer->setData('provider_views', 0);
+        // $_customer->save();
+        // $i++;
+    // }
+//     
+    // echo $i;
+?>
+
+<div class="plans-list">
+    <div class="intro">
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('conturifurnizori-intro')->toHtml() ?>
+    </div>
+    <?php if (!$_productCollection->getSize()): ?>
+        <p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+    <?php else: ?>
+        <ul class="plans-grid">
+            <?php foreach ($_productCollection as $_product): ?>
+                <?php //$_product = Mage::getModel('catalog/product')->load($_product->getId()) ?>
+                <?php //Zend_Debug::dump($_product->getData()); ?>
+                <li id="<?php echo $_product->getUrlKey() ?>" class="plan-item">
+                    <h2 class="plan-name"><?php echo $_product->getName(); ?></h2>
+                    <div class="plan-price">
+                        <?php if (!$_product->getHasOptions()): ?>
+                            <span class="price-wrapper">
+                                <?php echo $this->__('Gratuit') ?>
+                            </span>
+                        <?php else: ?>
+                            <?php echo $this->__('De la') ?>
+                            <span class="price-wrapper">
+                                <?php echo number_format(min($this->getPriceAverage($_product)), 2, ',', '') . ' RON'; ?>
+                            </span>
+                            <?php echo $this->__('lunar') ?>
+                        <?php endif; ?>
+                    </div>
+                    <div class="plan-options">
+                        <?php $optionsCount = 0; ?>
+                        <div class="option-set">
+                            <?php if ($_product->getContAcordareRpf() == '58'): // percent ?>
+                                <?php $optionsCount++; ?>
+                                <?php if ($_product->getHasOptions()): ?>
+                                    <?php $rpfPoints = $_product->getContPuncteRpf() * min($this->getOptionPrices($_product)) / 10; ?>
+                                <?php else: ?>
+                                    <?php $rpfPoints = $_product->getContPuncteRpf() * $_product->getFinalPrice() / 10; ?>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <?php $rpfPoints = $_product->getContPuncteRpf(); ?>
+                            <?php endif; ?>
+                            <span class="value">
+                                <?php echo $this->__('BONUS') ?>
+                                <?php echo $rpfPoints ?>
+                            </span>
+                            <span class="label">
+                                <?php echo $this->__('Puncte RPF') ?>
+                                <!-- <span class="ion-help-circled"></span>
+                                <span class="tooltip"><?php echo $this->__('') ?></span> -->
+                            </span>
+                        </div>
+                        <?php if ($_product->getContAfisareProfil()): ?>
+                            <div class="option-set">
+                                <?php $optionsCount++; ?>
+                                <span class="value">
+                                    <?php //echo $_product->getContMaxOferteActive() ?>
+                                </span>
+                                <span class="label">
+                                    <?php echo $this->__('Afisare profil furnizor') ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
+                        <div class="option-set">
+                            <?php $optionsCount++; ?>
+                            <span class="value">
+                                <?php echo $_product->getContMaxOferteActive() ?>
+                            </span>
+                            <span class="label">
+                                <?php if ($_product->getContMaxOferteActive() > 1): ?>
+                                    <?php echo $this->__('oferte active') ?>
+                                <?php else: ?>
+                                    <?php echo $this->__('oferta activa') ?>
+                                <?php endif; ?>
+                            </span>
+                        </div>
+                        <?php if ($_product->getContAfisareAlbumPrezentare()): ?>
+                            <div class="option-set">
+                                <?php $optionsCount++; ?>
+                                <span class="value">
+                                    <?php echo $_product->getContMaxAlbumActive() ?>
+                                </span>
+                                <span class="label">
+                                    <?php echo $this->__('albume prezentare') ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($_product->getContAfisareVideoPrezentare()): ?>
+                            <div class="option-set">
+                                <?php $optionsCount++; ?>
+                                <span class="value">
+                                    <?php echo $_product->getContMaxVideoActive() ?>
+                                </span>
+                                <span class="label">
+                                    <?php echo $this->__('videoclipuri') ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
+                        <?php if ($_product->getContSpatiuDisc()): ?>
+                            <div class="option-set middle <?php echo $optionsCount == 5 ? 'middle' : ''; ?>">
+                                <?php $optionsCount++; ?>
+                                <span class="value">
+                                    <?php echo $_product->getContSpatiuDisc() ?>MB
+                                </span>
+                                <span class="label">
+                                    <?php echo $this->__('stocare') ?>
+                                </span>
+                            </div>
+                        <?php endif; ?>
+                        <?php $dif = 6 - $optionsCount; ?>
+                        <?php /* for ($i = 1; $i < $dif; $i++): ?>
+                            <div class="option-set <?php echo $dif == $i + 1 ? 'middle' : ''; ?>">
+                                <span class="value">&nbsp;</span>
+                                <span class="label">&nbsp;</span>
+                            </div>
+                        <?php endfor; */ ?>
+                        <div class="option-set">
+                            <span class="value"></span>
+                            <span class="label">
+                                <?php echo $this->__('Afisare') ?>
+                                <?php echo $_product->getResource()->getAttribute('cont_promovare')->getFrontend()->getValue($_product); ?>
+                            </span>
+                        </div>
+                        <div class="option-set">
+	                        <?php if ($_product->getContAfisarePreferentiala()): ?>
+                                <span class="value"></span>
+                                <span class="label"><?php echo $this->__('Afisare preferenţială în liste') ?></span>
+    	                    <?php else: ?>
+	                        	<span class="value"></span>
+	                            <span class="label">---</span>
+	                        <?php endif; ?>
+                        </div>
+                        <div class="option-set">
+                            <?php if ($_product->getContLocalSearch()): ?>
+                                <span class="value"></span>
+                                <span class="label"><?php echo $this->__('Optimizat pt. căutări locale') ?></span>
+                            <?php else: ?>
+                                <span class="value"></span>
+                                <span class="label">---</span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="option-set">
+	                        <?php if ($_product->getContEtichetaOfertaSpeciala()): ?>
+                                <span class="value"></span>
+                                <span class="label"><?php echo $this->__('Etichetare oferte speciale') ?></span>
+    	                    <?php else: ?>
+	                        	<span class="value"></span>
+	                            <span class="label">---</span>
+	                        <?php endif; ?>
+                        </div>
+                        <?php $linkOferte = $_product->getContLinkRestulOfertelor() ? 'Link activ către restul ofertelor' : 'Link către oferte asemănătoare'; ?>
+                        <div class="option-set">
+                            <span class="value"></span>
+                            <span class="label"><?php echo $linkOferte ?></span>
+                        </div>
+                        <?php /*
+                        <div class="option-set">
+	                        <?php if ($_product->getContAfisareRetele()): ?>
+                                <span class="value"></span>
+                                <span class="label"><?php echo $this->__('Promovare pe reţele de socializare') ?></span>
+    	                    <?php else: ?>
+	                        	<span class="value"></span>
+	                            <span class="label">---</span>
+	                        <?php endif; ?>
+                        </div>
+                        */ ?>
+                        <div class="option-set">
+	                        <?php if ($_product->getContNotificariEmail()): ?>
+                                <span class="value"></span>
+                                <span class="label"><?php echo $this->__('Notificări prin email') ?></span>
+    	                    <?php else: ?>
+	                        	<span class="value"></span>
+	                            <span class="label">---</span>
+	                        <?php endif; ?>
+                        </div>
+                        <?php /*
+                        <div class="option-set">
+	                        <?php if ($_product->getContNotificariSms()): ?>
+                                <span class="value"></span>
+                                <span class="label"><?php echo $this->__('Notificări prin SMS') ?></span>
+    	                    <?php else: ?>
+	                        	<span class="value"></span>
+	                            <span class="label">---</span>
+	                        <?php endif; ?>
+                        </div>
+                        */ ?>
+                        <div class="option-set">
+	                        <?php if ($_product->getContRapoarteAvansate()): ?>
+                                <span class="value"></span>
+                                <span class="label"><?php echo $this->__('Rapoarte Avansate') ?></span>
+    	                    <?php else: ?>
+	                        	<span class="value"></span>
+	                            <span class="label"><?php echo $this->__('Rapoarte Standard') ?></span>
+	                        <?php endif; ?>
+                        </div>
+                    </div>
+                    <?php //Zend_Debug::dump($_product->getData()); ?>
+                    <div class="plan-actions">
+                        <?php if (!$_product->getHasOptions()): ?>
+                            <button class="button" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')" title="<?php echo $this->__('Crează ') . $_product->getName() ?>" type="submit">
+                                <span><span><?php echo $this->__('Crează ') . $_product->getName() ?></span></span>
+                            </button>
+                        <?php else: ?>
+                            <?php if ($_product->getStatus() == 1): ?>
+                                <button class="button" onclick="setLocation('<?php echo $this->getBaseUrl() . $_product->getUrlPath() ?>')" title="<?php echo $this->__('Comandă ') . $_product->getName() ?>" type="submit">
+                                     <span><span><?php echo $this->__('Comandă ') . $_product->getName() ?></span></span>
+                                </button>
+                            <?php else: ?>
+                                <button disabled="disabled" class="button" title="<?php echo $this->__('Se va lanseaza în curând') ?>">
+                                    <span><span><?php echo $this->__('In curând') ?></span></span>
+                                </button>
+                            <?php endif; ?>
+                            <?php if ($_product->getContActiveazaTestare() && !Mage::getSingleton('customer/session')->isLoggedIn()): ?>
+                                <?php
+                                    $_productDetails = Mage::getModel('catalog/product')->load($_product->getId());
+                                    foreach ($_productDetails->getOptions() as $option) {
+                                        $optionId = $option->getOptionId();
+                                    }
+                                    $viewBlock = new Mage_Catalog_Block_Product_View;
+                                    $url = $viewBlock->getSubmitUrl($_product);
+                                    switch ($_product->getContPerioadaTestare()) {
+                                        case '6':
+                                            $optionValue = 6;
+                                            break;
+                                        case '3':
+                                            $optionValue = 8;
+                                            break;
+
+                                    }
+                                ?>
+                                <form action="<?php echo $url ?>" method="post">
+                                    <input type="hidden" name="product" value="1" />
+                                    <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+                                    <input type="hidden" name="options[<?php echo $optionId ?>]" value="<?php echo $optionValue ?>" />
+                                    <input type="hidden" name="qty" value="1" />
+
+                                    <button id="free-trial" class="button" title="<?php echo $this->__('Testează GRATUIT ') . $_product->getName() ?>" type="submit">
+                                         <span class="free-trial"><span><?php echo $this->__('Testează GRATUIT') ?></span></span>
+                                    </button>
+                                </form>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                        <?php /*
+    	                <div class="more">
+                            <?php if ($_product->getStatus() == 1): ?>
+    	                    	<a href="<?php echo $_product->getProductUrl() ?>">
+    	                        	<?php echo $this->__('Detalii complete') ?>
+    	                        </a>
+    	                    <?php else: ?>
+    	                        <a href="javascript:void(0)">
+                                    &nbsp;
+                                </a>
+        	                <?php endif; ?>
+	                    </div>
+	                    */ ?>
+                    </div>
+                </li>
+           <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+    <?php /*
+    <div class="single-tab">
+        <h3><?php echo $this->__('Testimoniale') ?></h3>
+        <div class="intro">
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('testimoniale-intro')->toHtml() ?>
+        </div>
+        <ul class="">
+            <li>
+                <span class="name ion-person">Lorem ipsum</span>
+                <span class="date ion-calendar">01.01.2015</span>
+                <span class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ante ante, ultricies et quam in, feugiat tincidunt ligula. Vestibulum convallis ultrices ipsum, suscipit volutpat libero gravida commodo. Cras sagittis libero vel facilisis dictum. Vestibulum dignissim aliquam tortor. Aenean auctor magna nec odio scelerisque...</span>
+                <span class="more"><?php echo $this->__('Citește tot') ?></span>
+            </li>
+            <li>
+                <span class="name ion-person">Lorem ipsum</span>
+                <span class="date ion-calendar">01.01.2015</span>
+                <span class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ante ante, ultricies et quam in, feugiat tincidunt ligula. Vestibulum convallis ultrices ipsum, suscipit volutpat libero gravida commodo. Cras sagittis libero vel facilisis dictum...</span>
+                <span class="more"><?php echo $this->__('Citește tot') ?></span>
+            </li>
+            <li>
+                <span class="name ion-person">Lorem ipsum</span>
+                <span class="date ion-calendar">01.01.2015</span>
+                <span class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ante ante, ultricies et quam in, feugiat tincidunt ligula. Vestibulum convallis ultrices ipsum, suscipit volutpat libero gravida commodo. Cras sagittis libero vel facilisis dictum. Vestibulum dignissim aliquam tortor...</span>
+                <span class="more"><?php echo $this->__('Citește tot') ?></span>
+            </li>
+        </ul>
+    </div>
+    */ ?>
+</div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery('.ion-help-circled').on('mouseover', function(){
+            jQuery(this).parent().find('.tooltip').show();
+        });
+        
+        jQuery('.ion-help-circled').on('mouseleave', function(){
+            jQuery(this).parent().find('.tooltip').hide();
+        });
+    });
+    
+</script>

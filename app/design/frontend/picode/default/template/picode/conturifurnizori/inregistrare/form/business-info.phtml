@@ -1,0 +1,201 @@
+<?php
+    $quote = $this->getQuote();
+    $attributeSource = Mage::getSingleton("eav/config");
+    $mediaUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+    $earlyBird = Mage::getSingleton('customer/session')->getIsEarlyBird() ? true : false;
+?>
+
+<?php if ($earlyBird): ?>
+    <form id="image-form-logo" method="post" enctype="multipart/form-data" action="<?php echo $this->getLogoUploadUrl(); ?>">
+        <div id="upload-logo" class="input-box">
+            <input type="file" name="logoimage" id="logoimage" />
+            <p class="note"><?php echo $this->__('Formatul imagini recomandat 512/285px (.jpg, .jpeg, .png).') ?></p>
+        </div>
+        <script type="text/javascript" >
+            jQuery(document).ready(function() {
+                jQuery('#image-form-logo').on('change', function() {
+                    jQuery('#account-logo').hide();
+                    jQuery('#uploaded-logo').show().html('<img class="logo-upload-loader" src="<?php echo $this->getSkinUrl('images/loader.gif') ?>" />');
+                    jQuery("#image-form-logo").ajaxForm({
+                        target:'#uploaded-logo'
+                    }).submit();
+                });
+            });
+        </script>
+    </form>
+<?php endif; ?>
+
+<form action="<?php echo $this->getAjaxUrl() ?>" method="post" id="form-business-info">
+	<ul class="messages"><li class="error-msg"></li></ul>
+    <div>
+        <p><?php echo $this->__('Datele furnizate în acestă secțiune <strong>vor fi vizibile (publice)</strong> potențialilor voștrii clienți. Pe baza acestor informatii ei isi vor  putea face o idee despre activitatea și experiența voastră.') ?></p>
+    </div>
+
+    <div class="fieldset">
+        <ul class="form-list">
+            <?php if ($earlyBird): ?>
+                <li class="fields">
+                    <h3 class="form-group"><?php echo $this->__('Logo / Carte de vizita:') ?></h3>
+                    <div id="account-logo" class="account-logo">
+                        <img src="<?php echo $mediaUrl . 'catalog/product/placeholder/default/logo-placeholder.jpg' ?>" alt="" title="" />
+                    </div>
+                    <div id="uploaded-logo" class="account-logo"></div>
+                </li>
+            <?php endif; ?>
+            <li class="fields">
+                <h3 class="form-group"><?php echo $this->__('Detalii activitate:') ?></h3>
+
+                <div class="field">
+                    <label for="business_descriptions_title" class="required"><em>*</em><?php echo $this->__('Denumire comercială') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="business_descriptions_title" id="business_descriptions_title" value="<?php echo $quote->getBusinessDescriptionsTitle() ?>" title="<?php echo $this->__('Denumire Firma/PFA') ?>" class="input-text required-entry" />
+                    </div>
+                    <div class="comment"><?php echo $this->__('Așa cum vrei să apară pe website.') ?></div>
+                </div>
+                <div class="field">
+                    <label for="furnizor_company_type" class="required"><em>*</em><?php echo $this->__('Forma de organizare') ?></label>
+                    <div class="input-box">
+                        <?php $options = $attributeSource->getAttribute('customer', 'furnizor_company_type')->getSource()->getAllOptions(false); ?>
+                        <select name="furnizor_company_type" id="furnizor_company_type" class="select validate-select">
+                            <?php foreach ($options as $option): ?>
+                                <option value="<?php echo $option['value'] ?>" <?php echo $quote->getFurnizorCompanyType() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                                    <?php echo $option['label'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="furnizor_company_services" class="required"><em>*</em><?php echo $this->__('Servicii prestate') ?></label>
+                    <div class="input-box">
+                        <?php $options = $attributeSource->getAttribute('customer', 'furnizor_company_services')->getSource()->getAllOptions(false); ?>
+                        <select name="furnizor_company_services" id="furnizor_company_services" class="select validate-select">
+                            <?php foreach ($options as $option): ?>
+                                <option value="<?php echo $option['value'] ?>" <?php echo $quote->getFurnizorCompanyServices() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                                    <?php echo $option['label'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="business_descriptions_exp" class="required"><em>*</em><?php echo $this->__('Experiență') ?></label>
+                    <div class="input-box">
+                        <?php $options = $attributeSource->getAttribute('customer', 'business_descriptions_exp')->getSource()->getAllOptions(false); ?>
+                        <select name="business_descriptions_exp" id="business_descriptions_exp" class="select validate-select">
+                            <?php foreach ($options as $option): ?>
+                                <option value="<?php echo $option['value'] ?>" <?php echo $quote->getBusinessDescriptionsExp() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                                    <?php echo $option['label'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <?php if ($earlyBird): ?>
+                <li class="fields">
+                    <div class="wide">
+                        <label for="business_descriptions_desc" class=""><?php echo $this->__('Descriere activitate') ?></label>
+                        <div class="input-box">
+                            <textarea name="business_descriptions_desc" id="business_descriptions_desc"><?php echo $quote->getBusinessDescriptionsDesc() ?></textarea>
+                        </div>
+                    </div>
+                </li>
+            <?php endif; ?>
+            <li class="fields">
+                <h3 class="form-group"><?php echo $this->__('Sediul:') ?></h3>
+                <div class="field">
+                    <label for="furnizor_location_city" class="required"><em>*</em><?php echo $this->__('Localitate') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="furnizor_location_city" id="furnizor_location_city" value="<?php echo $quote->getFurnizorLocationCity() ?>" class="input-text required-entry" title="<?php echo $this->__('Localitate') ?>" onchange="autocompleteInput('city', this)" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="furnizor_location_province" class="required"><em>*</em><?php echo $this->__('Județ') ?></label>
+                    <div class="input-box">
+                        <?php $options = $attributeSource->getAttribute('customer', 'furnizor_location_province')->getSource()->getAllOptions(false); ?>
+                        <select name="furnizor_location_province" id="furnizor_location_province" class="select validate-select" onchange="autocompleteInput('region_id', this)">
+                            <?php foreach ($options as $option): ?>
+                                <option value="<?php echo $option['value'] ?>" <?php echo $quote->getFurnizorLocationProvince() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                                    <?php echo $option['label'] ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="furnizor_location_address" class=""><?php echo $this->__('Strada') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="furnizor_location_address" id="furnizor_location_address" value="<?php echo $quote->getFurnizorLocationAddress() ?>" class="input-text" title="<?php echo $this->__('Strada') ?>" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="furnizor_location_number" class=""><?php echo $this->__('Număr') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="furnizor_location_number" id="furnizor_location_number" value="<?php echo $quote->getFurnizorLocationNumber() ?>" class="input-text" title="<?php echo $this->__('Numar') ?>" />
+                    </div>
+                </div>
+                <div class="comment"><?php echo $this->__('O adresă completă şi exactă ajută la o mai bună localizare pe Google Maps.') ?></div>
+            </li>
+            <li class="fields">
+                <h3 class="form-group"><?php echo $this->__('Detalii de contact:') ?></h3>
+                <div class="field">
+                    <label for="furnizor_contact_firstname" class=""><?php echo $this->__('Nume') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="furnizor_contact_firstname" id="furnizor_contact_firstname" value="<?php echo $quote->getFurnizorContactFirstname() ?>" title="<?php echo $this->__('Nume') ?>" class="input-text" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="furnizor_contact_lastname" class=""><?php echo $this->__('Prenume') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="furnizor_contact_lastname" id="furnizor_contact_lastname" value="<?php echo $quote->getFurnizorContactLastname() ?>" title="<?php echo $this->__('Prenume') ?>" class="input-text" />
+                    </div>
+                </div>
+            </li>
+            <li class="fields">
+                <div class="field">
+                    <label for="furnizor_contact_email" class="required"><em>*</em><?php echo $this->__('Email') ?></label>
+                    <div class="input-box">
+                        <input type="email" name="furnizor_contact_email" id="furnizor_contact_email" value="<?php echo $quote->getFurnizorContactEmail() ?>" title="<?php echo $this->__('Email') ?>" class="input-text required-entry validate-email validation-passed" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label for="furnizor_contact_phone" class=""><?php echo $this->__('Telefon') ?></label>
+                    <div class="input-box">
+                        <input type="text" name="furnizor_contact_phone" id="furnizor_contact_phone" value="<?php echo $quote->getFurnizorContactPhone() ?>" title="<?php echo $this->__('Telefon') ?>" class="input-text" placeholder="0123.456.789" />
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="buttons-set">
+        <p class="back-link">
+            <a href="javascript:void(0)" onclick="goBack('business-info', 'personal-info')" class="back-link">
+                <span class="ion-chevron-up"></span><?php echo $this->__('Inapoi') ?>
+            </a>
+        </p>
+        <button type="submit" title="<?php echo $this->__('Continuare') ?>" class="button load-next-step">
+            <span><span><?php echo $this->__('Continuare') ?></span></span>
+        </button>
+        <span style="display: none; float: left" class="please-wait">
+            <img class="v-middle" title="<?php echo $this->__('Se salvează...') ?>" alt="<?php echo $this->__('Se salvează...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+            <?php echo $this->__('Se salvează...') ?>
+        </span>
+        <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+    </div>
+</form>
+
+<script type="text/javascript">
+//<![CDATA[
+jQuery(document).ready(function(){
+    jQuery(function($){
+        jQuery('#furnizor_contact_phone').mask('9999.999.999',{placeholder: 'x'});
+    });
+});
+//]]>
+</script>

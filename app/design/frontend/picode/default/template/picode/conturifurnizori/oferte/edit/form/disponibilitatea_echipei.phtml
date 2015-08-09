@@ -1,0 +1,189 @@
+<?php
+    $product = $this->getProductForEdit();
+    $customer = $this->getCustomer();
+    $attributeSource = Mage::getSingleton('eav/config');
+    $serviciiPrestate = $product->getOfgTipOferta();
+?>
+
+<?php if (!$this->fotoIsHidden($serviciiPrestate) || !$this->videoIsHidden($serviciiPrestate)): ?>
+    <li class="fields">
+        <div class="field <?php echo $this->fotoIsHidden($serviciiPrestate) ?>">
+            <?php $requiredInput = !$this->fotoIsHidden($serviciiPrestate) ? 'validate-select' : ''; ?>
+            <?php $disabled = $this->fotoIsHidden($serviciiPrestate) ? 'disabled="disabled"' : ''; ?>
+            <label for="ofg_nr_fotografi" class="required"><em>*</em><?php echo $this->__('Nr. fotografi') ?></label>
+            <div class="input-box">
+                <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_nr_fotografi')->getSource()->getAllOptions(false); ?>
+                <select name="ofg_nr_fotografi" id="ofg_nr_fotografi" class="select <?php echo $requiredInput ?>" <?php echo $disabled; ?>>
+                    <option value=""><?php echo $this->__('') ?></option>
+                    <?php foreach ($options as $option): ?>
+                        <?php if ($option['value'] != '0'): ?>
+                            <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgNrFotografi() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                                <?php echo $option['label'] ?>
+                            </option>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="field <?php echo $this->videoIsHidden($serviciiPrestate) ?>">
+            <?php $requiredInput = !$this->videoIsHidden($serviciiPrestate) ? 'validate-select' : ''; ?>
+            <?php $disabled = $this->videoIsHidden($serviciiPrestate) ? 'disabled="disabled"' : ''; ?>
+            <label for="ofg_nr_cameramani" class="required"><em>*</em><?php echo $this->__('Nr. cameramani') ?></label>
+            <div class="input-box">
+                <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_nr_cameramani')->getSource()->getAllOptions(false); ?>
+                <select name="ofg_nr_cameramani" id="ofg_nr_cameramani" class="select <?php echo $requiredInput ?>" <?php echo $disabled ?>>
+                    <option value=""><?php echo $this->__('') ?></option>
+                    <?php foreach ($options as $option): ?>
+                        <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgNrCameramani() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                            <?php echo $option['label'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </li>
+<?php endif; ?>
+
+<li class="fields">
+    <div class="field">
+        <label for="ofg_disponibilitate" class="required"><em>*</em><?php echo $this->__('Timp alocat evenimentului') ?></label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_disponibilitate')->getSource()->getAllOptions(false); ?>
+            <?php //Zend_Debug::dump($options); ?>
+            <select name="ofg_disponibilitate" id="ofg_disponibilitate" class="select validate-select">
+                <option value=""><?php $this->__('Selecteaza') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgDisponibilitate() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_cununie_civila_alta_zi" class="required"><em>*</em><?php echo $this->__('Cununia civila poate fi si in alta zi?') ?></label>
+        <div class="input-box">
+            <select name="ofg_cununie_civila_alta_zi" id="ofg_cununie_civila_alta_zi" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgCununieCivilaAltaZi() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgCununieCivilaAltaZi() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <h3 class="inner-legend"><?php echo $this->__('Prezenta echipei') ?></h3>
+    <div class="field">
+        <label for="ofg_pregatiri_nunta" class="required"><em>*</em><?php echo $this->__('Pregatiri nunta') ?></label>
+        <div class="input-box">
+            <select name="ofg_pregatiri_nunta" id="ofg_pregatiri_nunta" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgPregatiriNunta() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgPregatiriNunta() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_cununie_civila" class="required"><em>*</em><?php echo $this->__('Cununie civila') ?></label>
+        <div class="input-box">
+            <select name="ofg_cununie_civila" id="ofg_cununie_civila" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgCununieCivila() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgCununieCivila() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofg_cununie_religioasa" class="required"><em>*</em><?php echo $this->__('Cununie religioasa') ?></label>
+        <div class="input-box">
+            <select name="ofg_cununie_religioasa" id="ofg_cununie_religioasa" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgCununieReligioasa() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgCununieReligioasa() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_restaurant" class="required"><em>*</em><?php echo $this->__('Restaurant') ?></label>
+        <div class="input-box">
+            <select name="ofg_restaurant" id="ofg_restaurant" class="select validate-select">
+                <option value=""><?php echo $this->__('') ?></option>
+                <option value="0" <?php echo !$product->getOfgRestaurant() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Nu') ?>">
+                    <?php echo $this->__('Nu') ?>
+                </option>
+                <option value="1" <?php echo $product->getOfgRestaurant() ? 'selected="selected"' : '' ?> title="<?php echo $this->__('Da') ?>">
+                    <?php echo $this->__('Da') ?>
+                </option>
+            </select>
+        </div>
+    </div>
+</li>
+<li class="fields">
+    <div class="field">
+        <label for="ofg_restaurant_panala" class="required"><em>*</em><?php echo $this->__('Disponibilitate la restaurant') ?></label>
+        <div class="input-box">
+            <?php $options = $attributeSource->getAttribute('catalog_product', 'ofg_restaurant_panala')->getSource()->getAllOptions(false); ?>
+            <select name="ofg_restaurant_panala" id="ofg_restaurant_panala" class="select validate-select" onchange="updateNextField(this, 'ofg_restaurant_definit')">
+                <option value=""><?php echo $this->__('') ?></option>
+                <?php foreach ($options as $option): ?>
+                    <option value="<?php echo $option['value'] ?>" <?php echo $product->getOfgRestaurantPanala() == $option['value'] ? 'selected="selected"' : '' ?> title="<?php echo $option['label'] ?>">
+                        <?php echo $option['label'] ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label for="ofg_restaurant_definit" class="<?php echo $this->isRequiredLabel($product, 'ofg_restaurant_panala', 'alt-moment') ?>">
+            <em><?php echo $product->getLabelAsterix($product, 'ofg_restaurant_panala', 'alt-moment'); ?></em>
+            <?php echo $this->__('Alt moment (defineste)') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="ofg_restaurant_definit"
+                class="input-text <?php echo $this->isRequired($product, 'ofg_restaurant_panala', 'alt-moment', 'text') ?>"
+                name="ofg_restaurant_definit"
+                value="<?php echo $product->getOfgRestaurantDefinit() ?>"
+                <?php echo $this->isDisabled($product, 'ofg_restaurant_panala', 'alt-moment') ?>
+            />
+        </div>
+    </div>
+</li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

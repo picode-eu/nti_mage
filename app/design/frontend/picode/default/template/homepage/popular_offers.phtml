@@ -1,0 +1,82 @@
+<?php
+    /*
+     * @block Picode_ConturiFurnizori_Block_Conturi_List
+     *
+     * Se poate transmite ca si parametru nr. de zile in spate (int, required)
+     * astefel putem limita colectia la o perioada exacta
+     * pentru nelimitat = false
+     * Se poate transmite ca si parametru un integer la care sa fie limitata colectia (int, optional)
+     * default este false (toata colectia)
+     * Ex. $this->getProvidersLastAdded(7, 14);
+     */
+    $providersCollection = $this->getProvidersLastAdded(false);
+    $helper = $this->helper('conturifurnizori');
+    //Zend_Debug::dump(get_class_methods($helper));
+?>
+
+<div class="">
+    <div class="single-tab">
+        <h3><?php echo $this->__('Oferte Populare') ?></h3>
+        <div class="intro">
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('furnizori-noi-intro')->toHtml() ?>
+        </div>
+    </div>
+</div>
+test
+<?php /* if ($providersCollection->getSize()): ?>
+    <div class="home-content">
+        <div class="content-heading">
+            <h2><?php echo $this->__('OFERTE DE TOP') ?></h2>
+            <p>cele mai vizualizate</p>
+        </div>
+        <div class="content-middle">
+            <ul class="bxslider-newest">
+                <?php foreach ($providersCollection as $provider): ?>
+                    <?php $provider = $this->getProviderDetails($provider->getId()); ?>
+                    <li>
+                        <?php if ($provider->getBusinessImagesLogo()): ?>
+                            <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                               <img src="<?php echo $helper->resizeImage($provider->getBusinessImagesLogo(), 200); ?>" alt="<?php echo $provider->getBusinessDescriptionsTitle() ?>" />
+                            </a>
+                        <?php endif; ?>
+                        <h3 class="provider-name">
+                            <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                                <?php echo $provider->getBusinessDescriptionsTitle() ?>
+                            </a>
+                        </h3>
+                        <div class="provider-info">
+                            <p><?php echo $provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($provider); ?></p>
+                            <p class="experienta">Experienta <?php echo $provider->getResource()->getAttribute('business_descriptions_exp')->getFrontend()->getValue($provider); ?></p>
+                            <p class="location"><?php echo $provider->getFurnizorLocationCity() ?></p>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+                <?php foreach ($providersCollection as $provider): ?>
+                    <?php $provider = $this->getProviderDetails($provider->getId()); ?>
+                    <li>
+                        <?php if ($provider->getBusinessImagesLogo()): ?>
+                            <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                               <img src="<?php echo $helper->resizeImage($provider->getBusinessImagesLogo(), 200); ?>" alt="<?php echo $provider->getBusinessDescriptionsTitle() ?>" />
+                            </a>
+                        <?php endif; ?>
+                        <h3 class="provider-name">
+                            <a href="" title="<?php echo $provider->getBusinessDescriptionsTitle() ?>">
+                                <?php echo $provider->getBusinessDescriptionsTitle() ?>
+                            </a>
+                        </h3>
+                        <div class="provider-info">
+                            <p><?php echo $provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($provider); ?></p>
+                            <p class="experienta">Experienta <?php echo $provider->getResource()->getAttribute('business_descriptions_exp')->getFrontend()->getValue($provider); ?></p>
+                            <p class="location"><?php echo $provider->getFurnizorLocationCity() ?></p>
+                        </div>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+    </script>
+
+<?php endif; */ ?>

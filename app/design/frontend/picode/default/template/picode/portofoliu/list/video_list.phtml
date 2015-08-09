@@ -1,0 +1,58 @@
+<?php
+	/*
+	 * @controller Picode_Furnizori_ContController
+	 * @block Picode_Furnizori_Block_Cont_Edit_Portofoliu
+	*/ 
+	$portofoliuCollection = $this->getRequestedCollection();
+	//Zend_Debug::dump($portofoliuCollection->getData());
+?>
+<div class="my-account">
+	<div class="dashboard">
+	    <div class="portofoliu-container">
+	    	<div class="page-title">
+		        <h1><?php echo $this->__('Portofoliu video') ?></h1>
+		    </div>
+	    	<?php if($portofoliuCollection): ?>
+		    	<?php if(!$portofoliuCollection->count()): ?>
+		    		<p class="alert"><?php echo $this->__('Nu ai niciun videoclip in portofoliu.'); ?></p>
+		    		<button type="submit" onclick="window.location='<?php echo $this->getBaseUrl() ?>portofoliu/edit/video/'" title="Adaugă videoclip nou" class="button">
+						<span>
+							<span>Adaugă unul acum</span>
+						</span>
+					</button>
+				<?php else: ?>
+				    <?php $_iterator = 0; ?>
+					<ol class="videos-list" id="videos-list">
+					<?php foreach($portofoliuCollection as $collection): ?>
+						<li class="item<?php if( ++$_iterator == sizeof($portofoliuCollection) ): ?> last<?php endif; ?>">
+							<?php $imgPath = $collection->getVideoCover(); ?>
+							<a href="<?php echo $this->getBaseUrl() ?>furnizori/cont/edit/portofoliu-foto-video/video/view/<?php echo $collection->getVideoId() ?>" title="<?php echo $collection->getVideoName() ?>" class="video-image">
+								<!-- test video http://www.youtube.com/watch?v=bU44sFXTU70 -->
+								<!-- <img src="http://img.youtube.com/vi/bU44sFXTU70/1.jpg" alt="Coperta album <?php //echo $collection->getAlbumName() ?>" /> -->
+								<img src="http://img.youtube.com/vi/<?php echo $collection->getVideoUrl() ?>/1.jpg" width="120" height="90" alt="Coperta videoclip <?php echo $collection->getVideoName() ?>" />
+							</a>
+							<div class="video-details">
+				                <div class="f-fix">
+				                    <h2 class="video-name">
+				                    	<a href="<?php echo $this->getBaseUrl() ?>furnizori/cont/edit/portofoliu-foto-video/video/view/<?php echo $collection->getVideoId() ?>" title="<?php echo $collection->getVideoName() ?>"><?php echo $collection->getVideoName() ?></a>
+				                    </h2>
+				                    <p>
+				                    	<span><?php echo $this->__('Adaugat in: ') ?></span><?php echo date('d.m.Y',strtotime($collection->getCreatedAt())) ?> | 
+				                    	<span><?php echo $this->__('Vizibilitate: ') ?></span><?php echo($collection->getIsVisible() ? 'public' : 'privat') ?>
+				                    </p>
+					                <p>
+					                	<?php echo $this->shortenString($collection->getVideoDescription(), 180, true) ?>
+					                	<a href="<?php echo $this->getBaseUrl() ?>furnizori/cont/edit/portofoliu-foto-video/video/view/<?php echo $collection->getVideoId() ?>">Vezi detalii complete</a>
+					                </p>
+					                <p><span><?php echo $this->__('Durata videoclip: ') ?></span></p>
+				                </div>
+				            </div>
+						</li>
+					<?php endforeach; ?>
+					</ol>
+		    	<?php endif; ?>
+		    <?php endif; ?>
+	    </div>
+	</div>
+</div>
+

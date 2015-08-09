@@ -1,0 +1,104 @@
+<?php
+    $customer = $this->getCustomer();
+    $helper   = $this->helper('conturifurnizori');
+    $messages = $this->getFirstMessages();
+?>
+
+<div class="table">
+    <div class="table-head">
+        <div class="head-row">
+            <div class="table-data msg-subject">
+                <?php echo $this->__('Subiect') ?>
+            </div>
+            <div class="table-data msg-from">
+                <?php echo $this->__('Exp. / Dest.') ?>
+            </div>
+            <div class="table-data msg-date">
+                <?php echo $this->__('Data') ?>
+            </div>
+            <div class="table-data msg-msg">
+                <?php echo $this->__('Mesaj') ?>
+            </div>
+            <div class="table-data msg-action">
+                <?php echo $this->__('') ?>
+            </div>
+        </div>
+    </div>
+    <div class="table-content">
+        <?php if (!$messages->getSize()): ?>
+            <div class="table-row">
+                <div class="table-data no-message">
+                    <?php echo $this->__('Nu ai niciun mesaj.') ?>
+                </div>
+            </div>
+        <?php else: ?>
+            <?php $messageCount = 0; ?>
+            <?php foreach ($messages as $message): ?>
+                
+                <?php if ($this->isConversation($message->getId())): ?>
+                    <?php $lastMessage = $this->getLastMessageFromConversation($message->getId()); ?>
+                    <?php if ($lastMessage): ?>
+                        <?php $message = $lastMessage; ?>
+                    <?php else: ?>
+                        <?php continue; ?>
+                    <?php endif; ?>
+                <?php endif; ?>
+                
+                <?php if ($message->getReceverId() == $customer->getId() && !$message->getIsRead()): ?>
+                    <?php continue; ?>
+                <?php endif; ?>
+                
+                <div class="table-row">
+                    <div class="table-data msg-subject">
+                        <a href="<?php echo $this->getReadAction($message->getId()); ?>" title="<?php echo $this->__('Citeste mesajul') ?>">
+                            <?php echo $helper->stringTruncate($message->getSubject(), 30); ?>
+                        </a>
+                        <?php if ($this->countConversation($message->getFirstMessageId())): ?>
+                            <span class="msg-count">(<?php echo $this->countConversation($message->getFirstMessageId()); ?>)</span>
+                        <?php endif; ?>
+                    </div>
+                    <div class="table-data msg-from">
+                        <?php if ($message->getSenderId() == $customer->getId()): ?>
+                            <?php echo $this->__('Eu'); ?>
+                        <?php else: ?>
+                            <?php echo $this->getSenderFullName($message->getSenderId(), $message->getReplayTo()) ?>
+                        <?php endif; ?>
+                        
+                        <?php echo $this->__(' / ') ?>
+                        
+                        <?php if ($message->getReceverId()): ?>
+                            <?php if ($customer->getId() == $message->getReceverId()): ?>
+                                <?php echo $this->__('Eu') ?>
+                            <?php else: ?>
+                                <?php echo $this->getSenderFullName($message->getReceverId(), $message->getReplayTo()) ?>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <?php echo $this->getReceiverEmail($message->getFirstMessageId()); ?>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="table-data msg-date">
+                        <?php echo date('d.m.Y', strtotime($message->getCreatedTime())); ?>
+                    </div>
+                    <div class="table-data msg-msg">
+                        <?php echo $helper->stringTruncate($message->getMessage(), 70); ?>
+                    </div>
+                    <div class="table-data msg-action">
+                        <a href="<?php echo $this->getReadAction($message->getId()); ?>" title="<?php echo $this->__('Citeste') ?>">
+                            <?php echo isset($lastMessage) ? $this->__('Vezi conversatia') : $this->__('Detalii') ?>
+                        </a>
+                    </div>
+                </div>
+                <?php $messageCount++; ?>
+            <?php endforeach; ?>
+            
+            <?php if (!$messageCount): ?>
+                <div class="table-row">
+                    <div class="table-data no-message">
+                        <?php echo $this->__('Nimic de afisat...') ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+        <?php endif; ?>
+    </div>
+</div>

@@ -1,0 +1,167 @@
+<?php
+	$_album = $this->requestedCollection();
+	$_provider = $this->geProviderById($_album->getCustomerId());
+	$_helper = $this->helper('portofoliu');
+	// Zend_Debug::dump($_album->getData());
+	/*
+	array(12) {
+	  ["album_id"] => string(2) "34"
+	  ["customer_id"] => string(3) "216"
+	  ["album_name"] => string(41) "Vestibulum vel ante a nunc rhoncus blandi"
+	  ["album_description"] => string(253) "Vestibulum vel ante a nunc rhoncus blandit. Pellentesque molestie malesuada viverra. Pellentesque sed iaculis nulla, tempor congue sapien. Ut sapien nisl, pellentesque vel magna in, volutpat porttitor metus. Etiam tincidunt malesuada mi nec consectetur."
+	  ["album_cover"] => string(65) "1436905945-florist-wedding-flowers-photo-gallery-120718122205.jpg"
+	  ["is_visible"] => string(1) "1"
+	  ["visitor_count"] => string(1) "0"
+	  ["created_at"] => string(19) "2015-07-14 21:13:05"
+	  ["updated_at"] => string(19) "0000-00-00 00:00:00"
+	  ["views"] => NULL
+	  ["cur_page"] => int(1)
+		["page_size"] => int(24)
+	}
+	*/
+?>
+
+<div class="portofoliu-holder">
+	<?php if (!$_album->getId()): ?>
+		<div class="album-wrapper">
+			<p><?php echo $this->__('Albumul foto nu mai exista.') ?> <a href="<?php echo $this->getBaseUrl() ?>portofoliu/foto/">Inapoi</a></p>
+		</div>
+	<?php else: ?>
+		<div class="portofoliu-wrapper">
+<!--			<div class="portofoliu-main-media">-->
+<!--				--><?php
+//				$img = $_album->getAlbumCover() ?
+//					$_helper->resizeImg($_album->getAlbumCover(), 750, false, $_provider->getId()) :
+//					$this->getBaseUrl() . 'media/catalog/product/placeholder/default/logo-placeholder.jpg';
+//				?>
+<!--				<img src="--><?php //echo $img; ?><!--" title="" />-->
+<!--			</div>-->
+			<?php $photoCollection = $this->getPhotosByAlbumId($_album->getId()); ?>
+			<?php if ($photoCollection->getSize()): ?>
+				<div id="barousel_thslide" class="portofoliu-main-media portofoliu-additional-media barousel">
+					<div class="barousel_image">
+						<?php $i = 0; foreach($photoCollection as $_photo): ?>
+							<?php
+							$img = $_helper->resizeImg($_photo->getFullImgUrl(), 738, false, $_provider->getId());
+							?>
+							<img class="<?php echo $i == 0 ? 'default' : ''; ?>" src="<?php echo $img; ?>" title="" />
+							<?php //Zend_Debug::dump($_photo->getData()); ?>
+							<?php $i++; ?>
+						<?php endforeach ?>
+					</div>
+
+					<div class="barousel_content">
+						<?php $i = 0; foreach($photoCollection as $_photo): ?>
+							<div class="<?php echo $i == 0 ? 'default' : ''; ?>">
+
+							</div>
+							<?php $i++; ?>
+						<?php endforeach; ?>
+					</div>
+
+					<div id="thslide_barousel_nav" class="thslide">
+						<div class="thslide_nav_previous">
+							<a href="#"><span class="ion-chevron-left"></span></a>
+						</div>
+						<div class="thslide_list">
+							<ul>
+								<?php $i = 0; foreach($photoCollection as $_photo): ?>
+									<?php $thumb = $_helper->resizeImg($_photo->getThumbUrl(), 100, false, $_provider->getId()) ?>
+									<li><a href="#"><img src="<?php echo $thumb ?>" alt=""><span></span></a></li>
+									<?php $i++; ?>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+						<div class="thslide_nav_next">
+							<a href="#"><span class="ion-chevron-right"></span></a>
+						</div>
+					</div>
+
+					<script type="text/javascript">
+//						jQuery(document).ready(function(){
+//							jQuery('#portofoliu_photos').barousel({
+//								navType: 2
+//							});
+//						});
+						jQuery('#barousel_thslide').barousel({
+							navWrapper: '#thslide_barousel_nav .thslide_list',
+							manualCarousel: 0,
+							navType: 3
+						});
+
+						jQuery('#thslide_barousel_nav').thslide({
+							itemOffset: 102,
+							scrollOver: 0,
+							itemVisible: 5,
+							infiniteScroll: 1,
+						});
+					</script>
+				</div>
+			<?php endif; ?>
+		</div>
+
+		<div class="description-wrapper">
+			<div class="portofoliu-details">
+				<h1><?php echo strip_tags($_album->getAlbumName()); ?></h1>
+				<p><?php echo strip_tags($_album->getAlbumDescription()); ?></p>
+			</div>
+		</div>
+
+		<?php if ($_provider): ?>
+			<div class="provider-wrapper">
+				<?php $friendlyProviderName = $_helper->seoFriendlyUrl(strip_tags($_provider->getBusinessDescriptionsTitle())) . '/'; ?>
+				<?php $fiendlyUrl = $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $friendlyProviderName . $_provider->getId(); ?>
+				<div class="provider-details">
+					<div class="provider-logo">
+						<?php
+						$img = $_provider->getBusinessImagesLogo() ?
+							Mage::helper('conturifurnizori')->resizeImage($_provider->getBusinessImagesLogo(), 220, false, true) :
+							$this->getBaseUrl() . 'media/catalog/product/placeholder/default/logo-placeholder.jpg';
+						?>
+						<a href="<?php echo $fiendlyUrl ?>" title="<?php strip_tags($_provider->getBusinessDescriptionsTitle()); ?>">
+							<img src="<?php echo $img ?>" title="<?php echo strip_tags($_provider->getBusinessDescriptionsTitle()); ?>" />
+						</a>
+					</div>
+					<div class="provider-right">
+						<h2>
+							<a href="<?php echo $fiendlyUrl ?>" title="<?php strip_tags($_provider->getBusinessDescriptionsTitle()) ?>">
+								<?php echo strip_tags($_provider->getBusinessDescriptionsTitle()); ?> | <?php echo $_provider->getFurnizorLocationCity() ?>
+							</a>
+						</h2>
+						<p class="services">
+							Servicii: <?php echo strtoupper($_provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($_provider)); ?>
+						</p>
+						<p><?php echo $_helper->stringTruncate($_provider->getBusinessDescriptionsDesc(), 220); ?></p>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
+	<?php endif; ?>
+</div>
+
+<form id="contactViewForm"></form>
+
+<script type="text/javascript">
+	//<![CDATA[
+	jQuery(document).ready(function()
+	{
+		jQuery(document).on('click', '#update-contact, #tab-contact', function(){
+			jQuery('#contactViewForm').ajaxForm({
+				data: { entity_id: '<?php echo $_album->getCustomerId() ?>', entity_type: 'furnizori', update: 'ctcview'},
+				method: 'post',
+				url: '<?php echo $this->getBaseUrl() ?>reputationpoints/update/contactview',
+				beforeSubmit: function(){
+					jQuery('#contact-loading').show();
+				},
+				success: function(response) {
+					jQuery('#contactViewForm, #update-contact, .ion-chevron-down, #contact-loading').remove();
+					var response = jQuery.parseJSON(response);
+					jQuery.each(response, function(id, value) {
+						jQuery('#' + id).html(value);
+					});
+				}
+			}).submit();
+		});
+	});
+	//]]>
+</script>

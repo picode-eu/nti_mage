@@ -1,0 +1,233 @@
+<?php
+    /**
+     * @see Picode_ConturiFurnizori_Block_Oferte_Edit
+    */
+    
+    $product = $this->getProductForEdit();
+	//echo $this->helper('catalog/image')->init($product, 'image')->resize(210);
+    $customer = $this->getCustomer();
+	$attributeSource = Mage::getSingleton("eav/config");
+    $serviciiPrestate = $product->getOfgTipOferta();
+?>
+
+<div class="my-account editable-form">
+    <div class="page-title">
+        <h1><?php echo $this->getPageTitle() ?> <?php echo Mage::getSingleton('customer/session')->getData('current_status'); ?></h1>
+    </div>
+    <form style="display: none" id="image-upload" action="<?php echo $this->getAjaxUploadUrl() ?>" enctype="multipart/form-data" method="post">
+        <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+        <input type="file" id="input_main_img" name="main_img" />
+        <input type="file" id="input_addimg_1" name="addimg_1" />
+        <input type="file" id="input_addimg_2" name="addimg_2" />
+        <input type="file" id="input_addimg_3" name="addimg_3" />
+    </form>
+        
+    <div id="informatii-generale-wrapper" class="step-wrapper visible">
+	    <h2 class="legend"><?php echo $this->__('Informatii generale') ?></h2>
+	    <ul id="informatii-generale" class="form-list" style="display: block;">
+	        <form id="informatii_generale_form" action="<?php echo $this->getAjaxFormAction() ?>" class="oferta-form" method="post">
+	            <div class="form-error"></div>
+	            <input type="hidden" name="first_step" value="informatii-generale" />
+	            <input type="hidden" name="next_step" value="disponibilitatea-echipei" />
+	            <input type="hidden" name="sku" value="<?php echo $product->getSku(); ?>" />
+	            <?php echo $this->getChildHtml('informatii_generale'); ?>
+	            <div class="buttons-set">
+	                <button type="submit" class="button next-step" title="<?php echo $this->__('Pasul urmator') ?>">
+	                    <span><span><?php echo $this->__('Pasul urmator') ?></span></span>
+	                </button>
+	                <span style="display: none; float: left" class="please-wait">
+                        <img class="v-middle" title="<?php echo $this->__('Se salveaza datele...') ?>" alt="<?php echo $this->__('Se salveaza datele...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+                        <?php echo $this->__('Se salveaza datele...') ?>
+                    </span>
+                    <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+	            </div>
+	        </form>
+	    </ul>
+    </div>
+    
+    <div id="disponibilitatea-echipei-wrapper" class="step-wrapper">
+        <h2 class="legend"><?php echo $this->__('Disponibilitatea echipei') ?></h2>
+        <ul id="disponibilitatea-echipei" class="form-list">
+            <form id="disponibilitatea_echipei_form" action="<?php echo $this->getAjaxFormAction() ?>" class="oferta-form" method="post">
+                <div class="form-error"></div>
+                <input type="hidden" name="next_step" value="sedinte-foto-video" />
+                <?php echo $this->getChildHtml('disponibilitatea_echipei'); ?>
+                <div class="buttons-set">
+                    <p class="back-link">
+                        <span class="ion-chevron-up"></span>
+                        <a class="back-one-step" href="javascript:void(0)" title="<?php echo $this->__('Inapoi') ?>">
+                            <?php echo $this->__('Inapoi') ?>
+                        </a>
+                    </p>
+                    <button class="button next-step" title="<?php echo $this->__('Pasul urmator') ?>">
+                        <span><span><?php echo $this->__('Pasul urmator') ?></span></span>
+                    </button>
+                    <span style="display: none; float: left" class="please-wait">
+                        <img class="v-middle" title="<?php echo $this->__('Se salveaza datele...') ?>" alt="<?php echo $this->__('Se salveaza datele...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+                        <?php echo $this->__('Se salveaza datele...') ?>
+                    </span>
+                    <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+                </div>
+            </form>
+        </ul>
+    </div>
+    
+    <div id="sedinte-foto-video-wrapper" class="step-wrapper">
+        <?php
+            if ($this->fotoIsHidden($serviciiPrestate)) {
+                $stepTitle = 'Sedinte VIDEO programate';
+            } elseif ($this->videoIsHidden($serviciiPrestate)) {
+                $stepTitle = 'Sedinte FOTO programate';
+            } else {
+                $stepTitle = 'Sedinte FOTO-VIDEO programate';
+            }
+        ?>
+        <h2 class="legend"><?php echo $stepTitle; ?></h2>
+        <ul id="sedinte-foto-video" class="form-list">
+            <form id="sedinte_foto_video_form" action="<?php echo $this->getAjaxFormAction() ?>" class="oferta-form" method="post">
+                <div class="form-error"></div>
+                <?php if ($this->fotoIsHidden($serviciiPrestate)): ?>
+                    <input type="hidden" name="next_step" value="detalii-video" />
+                <?php else: ?>
+                    <input type="hidden" name="next_step" value="detalii-foto" />
+                <?php endif; ?>
+                <?php echo $this->getChildHtml('sedinte_foto_video'); ?>
+                <div class="buttons-set">
+                    <p class="back-link">
+                        <a class="back-one-step" href="javascript:void(0)" title="<?php echo $this->__('Inapoi') ?>">
+                            <!-- <small>« </small> -->
+                            <?php echo $this->__('Inapoi') ?>
+                        </a>
+                    </p>
+                    <button class="button next-step" title="<?php echo $this->__('Pasul urmator') ?>">
+                        <span><span><?php echo $this->__('Pasul urmator') ?></span></span>
+                    </button>
+                    <span style="display: none; float: left" class="please-wait">
+                        <img class="v-middle" title="<?php echo $this->__('Se salveaza datele...') ?>" alt="<?php echo $this->__('Se salveaza datele...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+                        <?php echo $this->__('Se salveaza datele...') ?>
+                    </span>
+                    <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+                </div>
+            </form>
+        </ul>
+    </div>
+    
+    <div id="detalii-foto-wrapper" class="step-wrapper <?php echo $this->fotoIsHidden($serviciiPrestate); ?>">
+        <?php //$formUrl = $this->videoIsHidden($serviciiPrestate) ? $this->getSaveFormAction() : $this->getAjaxFormAction(); ?>
+        <?php $formUrl = $this->getAjaxFormAction(); ?>
+        <?php $nextStep = $this->videoIsHidden($serviciiPrestate) ? '' : 'detalii-video'; ?>
+        <?php $buttonText = $this->videoIsHidden($serviciiPrestate) ? 'Salveaza oferta' : 'Pasul urmator'; ?>
+        <h2 class="legend"><?php echo $this->__('Detalii servicii foto') ?></h2>
+        <ul id="detalii-foto" class="form-list">
+            <form id="detalii_foto_form" action="<?php echo $formUrl ?>" class="oferta-form" method="post">
+                <div class="form-error"></div>
+                <input type="hidden" name="next_step" value="<?php echo $nextStep ?>" />
+                <?php echo $this->getChildHtml('detalii_foto'); ?>
+                <div class="buttons-set">
+                    <p class="back-link">
+                        <a class="back-one-step" href="javascript:void(0)" title="<?php echo $this->__('Inapoi') ?>">
+                            <!-- <small>« </small> -->
+                            <?php echo $this->__('Inapoi') ?>
+                        </a>
+                    </p>
+                    <button class="button next-step" title="<?php echo $buttonText ?>"><span><span><?php echo $buttonText ?></span></span></button>
+                    <?php /* if ($this->videoIsHidden($serviciiPrestate)): ?>
+                        <a href="<?php echo $this->goBack() ?>" class="button cancel"><?php echo $this->__('Anuleaza editarea') ?></a>
+                    <?php endif; */ ?>
+                    <span style="display: none; float: left" class="please-wait">
+                        <img class="v-middle" title="<?php echo $this->__('Se salveaza datele...') ?>" alt="<?php echo $this->__('Se salveaza datele...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+                        <?php echo $this->__('Se salveaza datele...') ?>
+                    </span>
+                    <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+                </div>
+            </form>
+        </ul>
+    </div>
+    
+    <div id="detalii-video-wrapper" class="step-wrapper <?php echo $this->videoIsHidden($serviciiPrestate); ?>">
+        <h2 class="legend"><?php echo $this->__('Detalii servicii Video') ?></h2>
+        <ul id="detalii-video" class="form-list">
+            <!-- <form id="detalii_video_form" action="<?php echo $this->getSaveFormAction() ?>" class="oferta-form" method="post"> -->
+            <form id="detalii_video_form" action="<?php echo $this->getAjaxFormAction(); ?>" class="oferta-form" method="post">
+                <div class="form-error"></div>
+                <input type="hidden" name="form_key" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+                <?php echo $this->getChildHtml('detalii_video'); ?>
+            
+                <div class="buttons-set">
+                    <p class="back-link">
+                        <a class="back-one-step" href="javascript:void(0)" title="<?php echo $this->__('Inapoi') ?>">
+                            <!-- <small>« </small> -->
+                            <?php echo $this->__('Inapoi') ?>
+                        </a>
+                    </p>
+                    
+                    <button class="button next-step" title="<?php echo $this->__('Salveaza oferta') ?>"><span><span><?php echo $this->__('Salveaza oferta') ?></span></span></button>
+                    <?php /* <a href="<?php echo $this->goBack() ?>" class="button cancel"><?php echo $this->__('Anuleaza editarea') ?></a> */ ?>
+                    <span style="display: none; float: left" class="please-wait">
+                        <img class="v-middle" title="<?php echo $this->__('Se salveaza datele...') ?>" alt="<?php echo $this->__('Se salveaza datele...') ?>" src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>">
+                        <?php echo $this->__('Se salveaza datele...') ?>
+                    </span>
+                    <p class="required"><?php echo $this->__('* Campuri obligatorii') ?></p>
+                </div>
+            </form>
+        </ul>
+    </div>
+</div>
+
+<?php
+    $zonaPersonalizataProcessed = false;
+    $zonaPersonalizata = explode(',', $product->getOfgZonaPersonalizata());
+    foreach ($zonaPersonalizata as $key => $zona) {
+        if ($zona != '') {
+            $zonaPersonalizataProcessed[$zona] = $zona;
+            unset($key);
+        }
+    }
+    
+    $isPersZones = $zonaPersonalizataProcessed ? '1' : '';
+?>
+    
+
+<script type="text/javascript">
+//<![CDATA[
+jQuery(document).ready(function(){
+    jQuery('#special_from_date, #special_to_date').datepicker({
+        minDate: new Date(),
+        firstDay: 1,
+        autoSize: true,
+        dateFormat: 'dd.mm.yy'
+    });
+});
+
+function getSaveFormAction() {
+    return '<?php echo $this->getSaveFormAction() ?>';
+}
+    
+function getSkinImagesUrl(img) {
+	return '<?php echo $this->getSkinUrl('images/') ?>' + img;
+}
+
+function getMediaUrl() {
+    return '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA); ?>';
+}
+
+function getPersonalizedZones()
+{
+    return '<?php echo $isPersZones ?>';
+}
+//]]>
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

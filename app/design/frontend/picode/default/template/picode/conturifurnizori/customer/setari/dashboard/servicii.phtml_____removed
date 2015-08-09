@@ -1,0 +1,11 @@
+<div class="col-1">
+    <div class="box">
+        <div class="box-title">
+            <h3><?php echo $this->__('Servicii prestate') ?></h3>
+            <a href="<?php echo $this->getUrl('conturifurnizori/setari/servicii/',array('_secure'=>true)) ?>"><?php echo $this->__('Editeaza') ?></a>
+        </div>
+        <div class="box-content">
+            Detalii servicii prestate
+        </div>
+    </div>
+</div>

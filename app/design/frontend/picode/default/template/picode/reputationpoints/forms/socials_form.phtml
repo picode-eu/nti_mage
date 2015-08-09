@@ -1,0 +1,50 @@
+<?php
+    $loadedEntityType = $this->getLoadEdentityType();
+    $loadedEntityId = $this->getLoadedEntityId();
+?>
+
+<form class="reputationpoints" id="socialForm"></form>
+
+<script type="text/javascript">
+    //<![CDATA[
+    jQuery(document).ready(function()
+    {
+        // share pop up click event
+        jQuery('.share-popup').click(function(event) {
+
+            var width  = jQuery(window).width() / 2,
+                height = jQuery(window).height() / 2,
+                left   = (jQuery(window).width()  - width)  / 2,
+                top    = (jQuery(window).height() - height) / 2,
+                url    = this.href,
+                opts   = 'status=1' +
+                    ',width='  + width  +
+                    ',height=' + height  +
+                    ',top='    + top    +
+                    ',left='   + left;
+
+            window.open(url, 'share', opts);
+
+            var shareId = jQuery(this).attr('id');
+
+            jQuery('#socialForm').ajaxForm({
+                data: { entity_id: '<?php echo $loadedEntityId ?>', entity_type: '<?php echo $loadedEntityType ?>'},
+                method: 'post',
+                url: '<?php echo $this->getBaseUrl() ?>reputationpoints/update/social/update/' + shareId,
+                beforeSubmit: function(){
+                    // do something
+                    // if returns false then the form will not be submitted
+                },
+                success: function(response) {
+                    var response = jQuery.parseJSON(response);
+                    jQuery.each(response, function(id, value) {
+                        jQuery('#' + id).text(value);
+                    });
+                }
+            }).submit();
+
+            return false;
+        });
+    });
+    //]]>
+</script>

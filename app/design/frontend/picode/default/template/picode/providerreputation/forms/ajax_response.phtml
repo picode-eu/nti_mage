@@ -1,0 +1,19 @@
+<?php
+    $action = $this->getRequest()->getActionName();
+    Mage::log($action, false, 'debug.log');
+    
+    switch ($action) {
+        case 'reputation':
+            echo $this->updateReputation();
+            break;
+        case 'contacts':
+            echo $this->getContactResponse();
+            break;
+        case 'loves':
+            echo $this->getLoveResponse();
+            break;
+        case 'sendemail':
+            echo $this->getSendemailResponse();
+            break;
+    }
+?>

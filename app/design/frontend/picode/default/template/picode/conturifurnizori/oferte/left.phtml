@@ -1,0 +1,66 @@
+<?php
+    /**
+     * @see Picode_ConturiFurnizori_Block_Oferte_Left
+    */
+    
+    $_oferteActive   = $this->getActiveProducts();
+    $_oferteInactive = $this->getInactiveProducts();
+    $_helper         = $this->helper('conturifurnizori');
+?>
+<?php //echo $_helper->countActiveOffers() ?>
+<div class="block block-account oferte-left">
+    <div class="block-title">
+        <strong><span><?php echo $this->__('Ofertele mele') ?></span></strong>
+    </div>
+    <div class="block-content">
+        <ul class="">
+            <li>
+                <span class="subtitle">
+                    <strong><?php echo $this->__('Oferte publice') ?></strong>
+                </span>
+                <ul>
+                    <?php if (!count($_oferteActive)): ?>
+                        <li class="no-products"><?php echo $this->__('Nu ai nicio ofertă activă') ?></li>
+                    <?php else: ?>
+                        <?php foreach ($_oferteActive as $_product): ?>
+                            <?php $isCurrent = $this->getIsCurrentLink($_product) ?>
+                            <li class="<?php echo $isCurrent ? 'current' : ''; ?>">
+                                <a href="<?php echo $this->getEditUrl($_product) ?>" title="<?php echo 'Editează ' . $this->htmlEscape($_product->getName()) ?>">
+                                    <?php echo $isCurrent ? '<strong>' : ''; ?>
+                                    <?php echo $this->htmlEscape($_product->getName()) ?>
+                                    <?php echo $isCurrent ? '</strong>' : ''; ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </ul>
+            </li>
+            
+            <li class="last">
+                <span class="subtitle">
+                    <strong><?php echo $this->__('Oferte inactive') ?></strong>
+                </span>
+                <ul>
+                    <?php if (!count($_oferteInactive)): ?>
+                        <li class="no-products"><?php echo $this->__('Nu ai nicio ofertă inactivă') ?></li>
+                    <?php else: ?>
+                        <?php foreach ($_oferteInactive as $_product): ?>
+                            <?php $isCurrent = $this->getIsCurrentLink($_product) ?>
+                            <li class="<?php echo $isCurrent ? 'current' : ''; ?>">
+                                <a href="<?php echo $this->getEditUrl($_product) ?>" title="<?php echo 'Editează ' . $this->htmlEscape($_product->getName()) ?>">
+                                    <?php echo $isCurrent ? '<strong>' : ''; ?>
+                                    <?php echo $this->htmlEscape($_product->getName()) ?>
+                                    <?php echo $isCurrent ? '</strong>' : ''; ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        </ul>
+        
+        <div class="buttons-set">
+            <button onclick="window.location='<?php echo $this->getEditUrl() ?>'" title="<?php echo $this->__('Adauga oferta noua') ?>" class="button"><span><span><?php echo $this->__('Adauga oferta noua') ?></span></span></button>
+        </div>
+    </div>
+</div>

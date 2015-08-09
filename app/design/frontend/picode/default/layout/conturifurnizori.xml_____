@@ -1,0 +1,527 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <!-- <action method="addCss"><name>css/conturifurnizori.css</name><params>media="all"</params></action> -->
+        </reference>
+    </default>
+    
+    <customer_group_general>
+        <reference name="customer_account_navigation">
+        	<action method="addLink" translate="label" module="conturifurnizori">
+        		<name>mesaje_notificari</name><path>conturifurnizori/mesaje/casutapostala/</path><label>Mesaje / Notificari</label><params><_secure>true</_secure></params>
+        	</action>
+            <action method="addLink" translate="label" module="wishlist" ifconfig="wishlist/general/active">
+            	<name>wishlist</name><path>wishlist/</path><label>My Wishlist</label></action>
+            <action method="addLink" translate="label" module="review">
+            	<name>reviews</name><path>review/customer</path><label>My Product Reviews</label>
+            </action>
+            <action method="addLink" translate="label" module="customer">
+            	<name>address_book</name><path>customer/address/</path><label>Addrese salvate</label>
+            </action>
+            <action method="addLink" translate="label" module="newsletter">
+            	<name>newsletter</name><path>newsletter/manage/</path><label>Newsletter Subscriptions</label>
+            </action>
+        </reference>
+    </customer_group_general>
+    
+    <!-- updates for customer left navigation -->
+    <customer_group_furnizori>
+        <remove name="sale.reorder.sidebar" />
+        <remove name="catalog.compare.sidebar" />
+        
+        <reference name="left_first">
+            <block type="conturifurnizori/oferte_left" name="oferte" template="picode/conturifurnizori/oferte/left.phtml" />
+            <!-- <block type="conturifurnizori/portofoliu_left" name="portofoliu" template="picode/conturifurnizori/portofoliu/left.phtml" /> -->
+        </reference>
+        
+        <reference name="customer_account_navigation">
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>cont_furnizor</name>
+                <path>conturifurnizori/setari/optiuni/</path>
+                <label>Optiunile contului</label>
+                <params><_secure>true</_secure></params>
+            </action>
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>profil_furnizor</name>
+                <path>conturifurnizori/setari/profil/</path>
+                <label>Profil furnizor</label>
+                <params><_secure>true</_secure></params>
+            </action>
+            <!-- removed
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>detalii_servicii</name>
+                <path>conturifurnizori/setari/servicii/</path>
+                <label>Detalii servicii</label>
+                <params><_secure>true</_secure></params>
+            </action>
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>website_retele</name>
+                <path>conturifurnizori/setari/retele/</path>
+                <label>Retele socializare</label>
+                <params><_secure>true</_secure></params>
+            </action>
+            -->
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>mesaje_notificari</name>
+                <path>conturifurnizori/mesaje/casutapostala/</path>
+                <label>Mesaje / Notificari</label>
+                <params><_secure>true</_secure></params>
+            </action>
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>repoarte_avansate</name>
+                <path>conturifurnizori/rapoarte/avansate/</path>
+                <label>Rapoarte avansate</label>
+                <params><_secure>true</_secure></params>
+            </action>
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>address</name>
+                <path>customer/address/</path>
+                <label>Adrese salvate</label>
+                <params><_secure>true</_secure></params>
+            </action>
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>orders</name>
+                <path>sales/order/history/</path>
+                <label>Comenzile mele</label>
+                <params><_secure>true</_secure></params>
+            </action>
+            <action method="addLink" translate="label" module="conturifurnizori">
+                <name>newsletter_subscription</name>
+                <path>newsletter/manage/</path>
+                <label>Newsletter</label>
+                <params><_secure>true</_secure></params>
+            </action>
+        </reference>
+    </customer_group_furnizori>
+    
+    <!-- Replace customer dashboard page -->
+    <customer_account_index>
+        <reference name="customer_account_dashboard">
+        	<action method="setTemplate">
+          		<template>picode/conturifurnizori/customer/dashboard.phtml</template>
+        	</action>
+        	<!-- <block type="conturifurnizori/conturi_setari" name="optiuni" before="-" template="picode/conturifurnizori/customer/setari/dashboard/optiuni.phtml" /> -->
+        	<block type="conturifurnizori/conturi_setari" name="profil" before="-" template="picode/conturifurnizori/customer/setari/dashboard/profil.phtml" />
+        	<!-- <block type="conturifurnizori/conturi_setari" name="servicii" before="-" template="picode/conturifurnizori/customer/setari/dashboard/servicii.phtml" /> -->
+        	<!-- <block type="conturifurnizori/conturi_setari" name="retele" before="-" template="picode/conturifurnizori/customer/setari/dashboard/retele.phtml" /> -->
+        	<block type="conturifurnizori/conturi_mesaje" name="mesaje_single" before="-" template="picode/conturifurnizori/customer/mesaje/dashboard/casutapostala_single.phtml" />
+            <block type="conturifurnizori/conturi_mesaje" name="mesaje" before="-" template="picode/conturifurnizori/customer/mesaje/dashboard/casutapostala.phtml" />
+            <block type="conturifurnizori/conturi_rapoarte" name="rapoarte" before="-" template="picode/conturifurnizori/customer/rapoarte/dashboard/rapoarte.phtml" />
+        </reference>
+    </customer_account_index>
+    
+    <!-- Setari optiuni page -->
+    <conturifurnizori_setari_optiuni>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_setari" name="setari_list" template="picode/conturifurnizori/customer/setari/optiuni.phtml" />
+        </reference>
+    </conturifurnizori_setari_optiuni>
+    
+    <!-- Setari profil page -->
+    <conturifurnizori_setari_profil>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/jquery/jquery.form.js</name></action>
+        </reference>
+        
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_setari" name="setari_list" template="picode/conturifurnizori/customer/setari/profil.phtml" />
+        </reference>
+    </conturifurnizori_setari_profil>
+    
+    <!-- Detalii servicii page -->
+    <!-- removed
+    <conturifurnizori_setari_servicii>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+                <action method="addLink" translate="label" module="customer"><name>address_book</name><path>customer/address/</path><label>Address Book</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_setari" name="setari_list" template="picode/conturifurnizori/customer/setari/servicii.phtml" />
+        </reference>
+    </conturifurnizori_setari_servicii>
+    -->
+    
+    <!-- Setari retele socializare page -->
+    <!-- removed
+    <conturifurnizori_setari_retele>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+                <action method="addLink" translate="label" module="customer"><name>address_book</name><path>customer/address/</path><label>Address Book</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_setari" name="setari_list" template="picode/conturifurnizori/customer/setari/retele.phtml" />
+        </reference>
+    </conturifurnizori_setari_retele>
+    -->
+    
+    <!-- Rapoarte avansate page -->
+    <conturifurnizori_rapoarte_avansate>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_rapoarte" name="setari_list" template="picode/conturifurnizori/customer/rapoarte/avansate.phtml" />
+        </reference>
+    </conturifurnizori_rapoarte_avansate>
+    
+    <!-- mesaje -->
+    <conturifurnizori_mesaje_detalii>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_mesaje" name="casutapostala" template="picode/conturifurnizori/customer/mesaje/detalii_mesaj.phtml" />
+        </reference>
+    </conturifurnizori_mesaje_detalii>
+        
+    <conturifurnizori_mesaje_casutapostala>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_mesaje" name="casutapostala" template="picode/conturifurnizori/customer/mesaje/casutapostala.phtml">
+                <block type="conturifurnizori/conturi_mesaje" name="mesaje_noi" template="picode/conturifurnizori/customer/mesaje/mesaje_noi.phtml" />
+                <block type="conturifurnizori/conturi_mesaje" name="mesaje_trimise" template="picode/conturifurnizori/customer/mesaje/mesaje_trimise.phtml" />
+                <block type="conturifurnizori/conturi_mesaje" name="conversatii" template="picode/conturifurnizori/customer/mesaje/conversatii.phtml" />
+            </block>
+        </reference>
+    </conturifurnizori_mesaje_casutapostala>
+    
+    <conturifurnizori_produse_list translate="label">
+    	<reference name="root">
+    		<action method="setTemplate"><template>page/1column.phtml</template></action>
+    	</reference>
+    	<reference name="left_first">
+    		
+    	</reference>
+    	
+    	<reference name="content">
+    		<block type="conturifurnizori/conturi_list" name="conturi.list" template="catalog/product/list_plans.phtml" />
+    	</reference>
+    </conturifurnizori_produse_list>
+
+    <PRODUCT_TYPE_conturifurnizori translate="label" module="catalog">
+        <label>Catalog Product View (Any)</label>
+        <!-- Mage_Catalog -->
+        <reference name="product.info">
+            <action method='setTemplate'><template>catalog/product/view_plan.phtml</template></action>
+            <block type="reports/product_viewed" name="right.reports.product.viewed" template="reports/product_viewed.phtml" />
+            <block type="catalog/product_compare_sidebar" name="catalog.compare.sidebar" template="catalog/product/compare/sidebar.phtml"/>
+        </reference>
+    </PRODUCT_TYPE_conturifurnizori>
+    
+    <conturifurnizori_inregistrare_index>
+    	<reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        
+        <reference name="head">
+        	<action method="addItem"><type>skin_js</type><name>js/jquery/jquery.masked.input.js</name></action>
+        </reference>
+        
+        <reference name="right">
+        	<remove name="right.reports.product.viewed" />
+        	<remove name="catalog.compare.sidebar" />
+        	<block type="conturifurnizori/conturi_inregistrare" name="conturi.inregistrare.progress" template="picode/conturifurnizori/inregistrare/progress.phtml" />
+        </reference>
+        
+        <reference name="content">
+    		<block type="conturifurnizori/conturi_inregistrare" name="conturi.inregistrare" template="picode/conturifurnizori/inregistrare/inregistrare.phtml">
+    		    <block type="conturifurnizori/conturi_inregistrare" name="conturi.personal.info" template="picode/conturifurnizori/inregistrare/form/personal-info.phtml" />
+    		    <block type="conturifurnizori/conturi_inregistrare" name="conturi.business.info" template="picode/conturifurnizori/inregistrare/form/business-info.phtml" />
+    		    <block type="conturifurnizori/conturi_inregistrare" name="conturi.billing.info" template="picode/conturifurnizori/inregistrare/form/billing-info.phtml" />
+    		    <block type="conturifurnizori/conturi_inregistrare" name="conturi.payment.info" template="picode/conturifurnizori/inregistrare/form/payment-info.phtml" />
+    		    <block type="conturifurnizori/conturi_inregistrare" name="conturi.review.info" template="picode/conturifurnizori/inregistrare/form/review-info.phtml" />
+    		</block>
+    	</reference>
+    </conturifurnizori_inregistrare_index>
+    
+    <conturifurnizori_inregistrare_processajaxdata>
+        <reference name="root">
+            <action method="setTemplate">
+                <template>page/empty.phtml</template>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_inregistrare" name="root" output="toHtml" template="picode/conturifurnizori/inregistrare/result.phtml" />
+        </reference>
+    </conturifurnizori_inregistrare_processajaxdata>
+    
+    <conturifurnizori_inregistrare_succes>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_inregistrare" name="success" template="picode/conturifurnizori/inregistrare/success.phtml" />
+        </reference>
+    </conturifurnizori_inregistrare_succes>
+    
+    <conturifurnizori_inregistrare_eroare>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_inregistrare" name="error" template="picode/conturifurnizori/inregistrare/error.phtml" />
+        </reference>
+    </conturifurnizori_inregistrare_eroare>
+    
+    <conturifurnizori_setari_coverupload>
+        <reference name="root">
+            <action method="setTemplate"><template>page/empty.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_setari" name="cover_response" template="picode/conturifurnizori/customer/setari/ajax_response.phtml" />
+        </reference>
+    </conturifurnizori_setari_coverupload>
+    
+    <conturifurnizori_setari_logoupload>
+        <reference name="root">
+            <action method="setTemplate"><template>page/empty.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_setari" name="logo_response" template="picode/conturifurnizori/customer/setari/ajax_response.phtml" />
+        </reference>
+    </conturifurnizori_setari_logoupload>
+    
+    <conturifurnizori_update_retrimitecererea>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_update" name="update" template="picode/conturifurnizori/update/update_account.phtml" />
+        </reference>
+    </conturifurnizori_update_retrimitecererea>
+    
+    <!--
+    <conturifurnizori_update_sendaprovelemail>
+        <reference name="root">
+            <action method="setTemplate"><template>page/empty.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_update" name="update_response" template="picode/conturifurnizori/update/response.phtml" />
+        </reference>
+    </conturifurnizori_update_sendaprovelemail>
+    -->
+    
+    <conturifurnizori_update_deblocheaza>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_update" name="update" template="picode/conturifurnizori/update/update_account.phtml" />
+        </reference>
+    </conturifurnizori_update_deblocheaza>
+    
+    <conturifurnizori_update_reactiveaza>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_update" name="update" template="picode/conturifurnizori/update/update_account.phtml" />
+        </reference>
+    </conturifurnizori_update_reactiveaza>
+    
+    <!-- oferte foto-video -->
+    
+    <conturifurnizori_oferte_list>
+    	<reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/oferte_list" name="update" template="picode/conturifurnizori/oferte/list.phtml" />
+        </reference>
+    </conturifurnizori_oferte_list>
+    
+    <conturifurnizori_oferte_editeaza>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/jquery-ui/jquery-ui.min.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/jquery/jquery.form.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/jquery/jquery.edit.offer.js</name></action>
+            <!-- <action method="addItem"><type>skin_js</type><name>js/jquery/jquery.masked.input.js</name></action> -->
+            <action method="addItem"><type>skin_css</type><name>css/jquery-ui/jquery-ui.css</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/jquery-ui/jquery-ui.structure.css</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/jquery-ui/jquery-ui.theme.css</name></action>
+        </reference>
+        <reference name="left_first">
+            <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+                <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+                <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            </block>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/oferte_edit" name="edit_form" template="picode/conturifurnizori/oferte/edit/form.phtml">
+                <block type="conturifurnizori/oferte_edit" name="informatii_generale" template="picode/conturifurnizori/oferte/edit/form/informatii_generale.phtml" />
+                <block type="conturifurnizori/oferte_edit" name="disponibilitatea_echipei" template="picode/conturifurnizori/oferte/edit/form/disponibilitatea_echipei.phtml" />
+                <block type="conturifurnizori/oferte_edit" name="sedinte_foto_video" template="picode/conturifurnizori/oferte/edit/form/sedinte_foto_video.phtml" />
+                <block type="conturifurnizori/oferte_edit" name="detalii_foto" template="picode/conturifurnizori/oferte/edit/form/detalii_foto.phtml" />
+                <block type="conturifurnizori/oferte_edit" name="detalii_video" template="picode/conturifurnizori/oferte/edit/form/detalii_video.phtml" />
+            </block>
+        </reference>
+    </conturifurnizori_oferte_editeaza>
+    
+    <conturifurnizori_oferte_imageupload>
+        <reference name="root">
+            <action method="setTemplate"><template>page/empty.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/oferte_edit" name="image_response" template="picode/conturifurnizori/oferte/edit/ajax_response.phtml" />
+        </reference>
+    </conturifurnizori_oferte_imageupload>
+    
+    <conturifurnizori_oferte_ajaxform>
+        <reference name="root">
+            <action method="setTemplate"><template>page/blank.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/oferte_edit" name="form_response" template="picode/conturifurnizori/oferte/edit/ajax_response.phtml" />
+        </reference>
+    </conturifurnizori_oferte_ajaxform>
+    
+    <conturifurnizori_furnizori_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_furnizori" name="furnizori_list" template="picode/conturifurnizori/furnizori/list.phtml" />
+        </reference>
+    </conturifurnizori_furnizori_index>
+    
+    <conturifurnizori_furnizori_foto>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_furnizori" name="furnizori_list" template="picode/conturifurnizori/furnizori/list.phtml" />
+        </reference>
+    </conturifurnizori_furnizori_foto>
+    
+    <conturifurnizori_furnizori_video>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_furnizori" name="furnizori_list" template="picode/conturifurnizori/furnizori/list.phtml" />
+        </reference>
+    </conturifurnizori_furnizori_video>
+    
+    <conturifurnizori_furnizori_fotovideo>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_furnizori" name="furnizori_list" template="picode/conturifurnizori/furnizori/list.phtml" />
+        </reference>
+    </conturifurnizori_furnizori_fotovideo>
+    
+    <conturifurnizori_furnizori_profil>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="conturifurnizori/conturi_furnizori" name="furnizori_view" template="picode/conturifurnizori/furnizori/view.phtml" />
+        </reference>
+        <reference name="right">
+            <block type="conturifurnizori/conturi_furnizori" name="furnizori_right" before="-" template="picode/conturifurnizori/furnizori/view/right.phtml" />
+        </reference>
+    </conturifurnizori_furnizori_profil>
+    
+	<!-- <PRODUCT_TYPE_conturifurnizori translate="label" module="catalog">
+	    <reference name="product.info">
+	        <block type="conturifurnizori/conturi_view" name="product.info" template="conturifurnizori/view.phtml">
+	            <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml"/>
+	            
+    	        <block type="catalog/product_view_additional" name="product.info.additional" as="product_additional_data" />
+    	        
+                <block type="catalog/product_view_description" name="product.description" as="description" template="catalog/product/view/description.phtml">
+                    <action method="addToParentGroup"><group>detailed_info</group></action>
+                </block>
+                <block type="catalog/product_view_attributes" name="product.attributes" as="additional" template="catalog/product/view/attributes.phtml">
+                    <action method="addToParentGroup"><group>detailed_info</group></action>
+                </block>
+                <block type="catalog/product_view" name="product.info.addtocart" as="addtocart" template="conturifurnizori/view/addtocart.phtml"/>
+
+                <block type="core/text_list" name="product.info.extrahint" as="extrahint" translate="label">
+                    <label>Product View Extra Hint</label>
+                </block>
+                
+                <block type="catalog/product_view" name="product.info.options.wrapper" as="product_options_wrapper" template="catalog/product/view/options/wrapper.phtml" translate="label">
+                    <label>Info Column Options Wrapper</label>
+                    <block type="core/template" name="options_js" template="catalog/product/view/options/js.phtml"/>
+                    <block type="catalog/product_view_options" name="product.info.options" as="product_options" template="catalog/product/view/options.phtml">
+                        <action method="addOptionRenderer"><type>text</type><block>catalog/product_view_options_type_text</block><template>catalog/product/view/options/type/text.phtml</template></action>
+                        <action method="addOptionRenderer"><type>file</type><block>catalog/product_view_options_type_file</block><template>catalog/product/view/options/type/file.phtml</template></action>
+                        <action method="addOptionRenderer"><type>select</type><block>catalog/product_view_options_type_select</block><template>catalog/product/view/options/type/select.phtml</template></action>
+                        <action method="addOptionRenderer"><type>date</type><block>catalog/product_view_options_type_date</block><template>catalog/product/view/options/type/date.phtml</template></action>
+                    </block>
+                    <block type="core/html_calendar" name="html_calendar" as="html_calendar" template="page/js/calendar.phtml"/>
+                </block>
+                <block type="catalog/product_view" name="product.info.options.wrapper.bottom" as="product_options_wrapper_bottom" template="catalog/product/view/options/wrapper/bottom.phtml" translate="label">
+                    <label>Bottom Block Options Wrapper</label>
+                    <action method="insert"><block>product.tierprices</block></action>
+                    <block type="catalog/product_view" name="product.clone_prices" as="prices" template="catalog/product/view/price_clone.phtml"/>
+                    <action method="append"><block>product.info.addtocart</block></action>
+                    <action method="append"><block>product.info.addto</block></action>
+                </block>
+
+                <block type="core/template_facade" name="product.info.container1" as="container1">
+                    <action method="setDataByKey"><key>alias_in_layout</key><value>container1</value></action>
+                    <action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
+                    <action method="append"><block>product.info.options.wrapper</block></action>
+                    <action method="append"><block>product.info.options.wrapper.bottom</block></action>
+                </block>
+                <block type="core/template_facade" name="product.info.container2" as="container2">
+                    <action method="setDataByKey"><key>alias_in_layout</key><value>container2</value></action>
+                    <action method="setDataByKeyFromRegistry"><key>options_container</key><key_in_registry>product</key_in_registry></action>
+                    <action method="append"><block>product.info.options.wrapper</block></action>
+                    <action method="append"><block>product.info.options.wrapper.bottom</block></action>
+                </block>
+                <action method="unsetCallChild"><child>container1</child><call>ifEquals</call><if>0</if><key>alias_in_layout</key><key>options_container</key></action>
+                <action method="unsetCallChild"><child>container2</child><call>ifEquals</call><if>0</if><key>alias_in_layout</key><key>options_container</key></action>
+            </block>
+	    </reference>
+	</PRODUCT_TYPE_conturifurnizori> -->
+    
+</layout>

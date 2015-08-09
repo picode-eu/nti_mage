@@ -1,0 +1,47 @@
+<div id="register-progress-wrapper">
+    <div class="block block-progress register-block-progress register-block-progress-step-login">
+        <div class="block-title">
+            <strong><span>Progres Inregistrare</span></strong>
+        </div>
+        <div class="block-content">
+            <dl>
+                <dt class="">Informatii personale</dt>
+                <div id="personal-info-progress" style="display: none;">
+                    <div class="progress-label">Nume: <span id="progress_customer_firstname">---</span></div>
+                    <div class="progress-label">Prenume: <span id="progress_customer_lastname">---</span></div>
+                    <div class="progress-label">Email: <span id="progress_customer_email">---</span></div>
+                </div>
+                
+                <dt class="">Profil furnizor</dt>
+                <div id="business-info-progress" style="display: none;">
+                    <div class="progress-heading">Detalii activitate</div>
+                    <div class="progress-label">Denumire: <span id="progress_business_descriptions_title">---</span></div>
+                    <div class="progress-label">Forma de organizare: <span id="progress_furnizor_company_type">---</span></div>
+                    <div class="progress-label">Servicii prestate: <span id="progress_furnizor_company_services">---</span></div>
+                    <div class="progress-label">Experienta: <span id="progress_business_descriptions_exp">---</span></div>
+                    <div class="progress-heading">Sediu</div>
+                    <div class="progress-label">Localitate: <span id="progress_furnizor_location_city">---</span></div>
+                    <div class="progress-label">Judet: <span id="progress_furnizor_location_province">---</span></div>
+                    <div class="progress-label">Strada: <span id="progress_furnizor_location_address">---</span></div>
+                    <div class="progress-label">Numar: <span id="progress_furnizor_location_number">---</span></div>
+                    <div class="progress-heading">Detalii contact</div>
+                    <div class="progress-label">Nume: <span id="progress_furnizor_contact_firstname">---</span></div>
+                    <div class="progress-label">Prenume: <span id="progress_furnizor_contact_lastname">---</span></div>
+                    <div class="progress-label">Email: <span id="progress_furnizor_contact_email">---</span></div>
+                    <div class="progress-label">Telefon: <span id="progress_furnizor_contact_phone">---</span></div>
+                </div>
+                
+                <?php if ($this->getQuote()->getGrandTotal() != 0): ?>
+                    <!-- <dt class="">Detalii facturare</dt>
+                    <div id="billing-info-progress">
+                        
+                    </div> -->
+                    <dt class="">Metoda de plata</dt>
+                    <div id="payment-info-progress" style="display: none;">
+                        <div class="progress-label">Plata: <span id="progress_payment_method">---</span></div>
+                    </div>
+                <?php endif; ?>
+            </dl>
+        </div>
+    </div>
+</div>

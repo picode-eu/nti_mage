@@ -1,0 +1,63 @@
+<?php
+    /*
+     * @block Picode_ConturiFurnizori_Block_Conturi_List
+     * 
+     * Se poate transmite ca si parametru nr. de zile in spate (int, required)
+     * astefel putem limita colectia la o perioada exacta
+     * pentru nelimitat = false
+     * Se poate transmite ca si parametru un integer la care sa fie limitata colectia (int, optional)
+     * default este false (toata colectia)
+     * Ex. $this->getProvidersLastAdded(7, 14);
+     */
+    $max = 15;
+    $columnCount = 5;
+    $providersCollection = $this->getProvidersLastAdded(30, $max);
+    $helper = $this->helper('conturifurnizori');
+    //Zend_Debug::dump(get_class_methods($helper));
+?>
+
+<?php if ($providersCollection->getSize()): ?>
+    <div class="">
+        <div class="single-tab">
+            <h3><?php echo $this->__('Furnizori noi') ?></h3>
+            <div class="intro">
+                <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('furnizori-noi-intro')->toHtml() ?>
+            </div>
+        </div>
+    </div>
+    <div class="newest-providers">
+        <div class="category-products">
+            <?php $i = 0; ?>
+            <ul class="products-grid products-grid--max-<?php echo $columnCount ?>-col">
+                <?php foreach ($providersCollection as $_provider): ?>
+                    <?php //Zend_Debug::dump($_provider->getData()); ?>
+                    <li class="item <?php echo $i == $columnCount - 1 ? 'last' : '' ?>">
+                        <a href="<?php echo $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $helper->seoFriendlyUrl($_provider->getBusinessDescriptionsTitle()) . '/' . $_provider->getId() ?>" title="<?php echo $_provider->getBusinessDescriptionsTitle() ?>" class="provider-image">
+                            <img src="<?php echo $helper->resizeImage($_provider->getBusinessImagesLogo(), 220, false, true) ?>" />
+                        </a>
+                        
+                        <div class="provider-info">
+                            <a class="provider-title" href="<?php echo $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $helper->seoFriendlyUrl($_provider->getBusinessDescriptionsTitle()) . '/' . $_provider->getId() ?>" title="<?php echo $_provider->getBusinessDescriptionsTitle() ?>">
+                                <?php echo $_provider->getBusinessDescriptionsTitle() ?>
+                            </a>
+                            <p><?php echo $helper->stringTruncate($_provider->getBusinessDescriptionsDesc(), 100); ?></p>
+                        </div>
+                        <div class="bottom-info">
+                            <div class="attr-info">
+                                <?php echo $this->__('Oferă servicii') ?>
+                                <strong><?php echo $_provider->getResource()->getAttribute('furnizor_company_services')->getFrontend()->getValue($_provider); ?></strong>
+                            </div>
+                            <div class="attr-info">
+                                <?php echo $this->__('Sediul') ?>
+                                <strong><?php echo $_provider->getFurnizorLocationCity() ?></strong>
+                            </div>
+                            <a href="<?php echo $this->getBaseUrl() . 'conturifurnizori/furnizori/profil/' . $helper->seoFriendlyUrl($_provider->getBusinessDescriptionsTitle()) . '/' . $_provider->getId() ?>" class="read-more">
+                                <span class="ion-ios-arrow-right"></span>
+                            </a>
+                        </div>
+                    </li>
+                <?php $i++; endforeach; ?>
+            </ul>
+        </div>
+    </div>
+<?php endif; ?>

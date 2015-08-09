@@ -1,0 +1,20 @@
+<?php
+/**
+ * This form fragment is initialized from EuroPayment_EuPlatesc_Initialize_Form
+ */ 
+
+?>
+<fieldset class="form-list">
+    <?php $_code = $this->getMethodCode() ?>
+    <ul id="payment_form_<?php echo $_code ?>" style="display:none">
+        <li>											
+            <?php echo $this->__('EuPlatesc.ro este un <strong>sistem de plata online securizata</strong>, bazat pe standardul <strong>3DSecure</strong>. Dupa plasarea comenzii veti fi redirectionat catre sistemul de plata online cu cardul bancar, unde veti introduce informatiile de indentificare a cardului pentru a putea finaliza tranzactia.') ?>
+			<br />
+			<span class="euplatesc-notice">
+				<?php echo $this->__('* In momentul acceptarii platii suma este blocata in contul dvs. iar dupa efectuarea livrarii se face debitarea contului.') ?>
+		        <br />
+		        <img src="<?php echo $this->getSkinUrl('images/ep/banner_ep.gif') ?>" border="0" width="550" height="40" alt="EuPlatesc.ro - plati online" />&nbsp;&nbsp;
+            </span>
+        </li>
+    </ul>
+</fieldset>

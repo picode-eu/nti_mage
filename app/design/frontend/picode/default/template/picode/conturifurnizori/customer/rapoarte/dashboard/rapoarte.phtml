@@ -1,0 +1,18 @@
+<?php
+    $furnizoriHelper = $this->helper('conturifurnizori');
+    $customer = $furnizoriHelper->getCustomer();
+?>
+
+<?php if ($customer->getAcOpRapoarteAvansate()): ?>
+    <div class="col-2">
+        <div class="box">
+            <div class="box-title">
+                <h3><?php echo $this->__('Rapoarte avansate') ?></h3>
+                <a href="<?php echo $this->getUrl('conturifurnizori/rapoarte/avansate/',array('_secure'=>true)) ?>"><?php echo $this->__('Detalii') ?></a>
+            </div>
+            <div class="box-content">
+                Sumar rapoarte
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
