@@ -1,0 +1,69 @@
+<!--@subject Welcome, {{var customer.name}}! @-->
+<!--@vars
+{"store url=\"\"":"Store Url",
+"var logo_url":"Email Logo Image Url",
+"htmlescape var=$customer.name":"Customer Name",
+"store url=\"customer/account/\"":"Customer Account Url",
+"var customer.email":"Customer Email",
+"htmlescape var=$customer.password":"Customer Password"}
+@-->
+
+<!--@styles
+body,td { color:#2f2f2f; font:11px/1.35em Verdana, Arial, Helvetica, sans-serif; }
+@-->
+
+<body style="background:#F6F6F6; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<div style="background:#F6F6F6; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:12px; margin:0; padding:0;">
+<table cellspacing="0" cellpadding="0" border="0" height="100%" width="100%">
+        <tr>
+            <td align="center" valign="top" style="padding:20px 0 20px 0">
+                <!-- [ header starts here] -->
+                <table bgcolor="FFFFFF" cellspacing="0" cellpadding="10" border="0" width="650" style="border:1px solid #E0E0E0;">
+                    <tr>
+                        <td valign="top">
+                            <a href="{{store url=""}}"><img src="{{var logo_url}}" alt="{{var logo_alt}}" style="margin-bottom:10px;" border="0"/></a>
+                        </td>
+                    </tr>
+                <!-- [ middle starts here] -->
+                    <tr>
+                        <td valign="top">
+                            <p style="font-size:12px; line-height:16px; margin:0 0 16px 0;">Prietenul tău <strong>{{var sender_fullname}}</strong> ți-a trimis un link către furnizorului de servicii <strong>{{var provider_services}}</strong> găsit pe <a href="{{var store_url}}" style="color:#1E7EC8;">{{config path='general/store_information/name'}}</a>:</p>
+                            <ul style="float: left; width: 100%; font-size:12px; line-height:16px; margin:0 0 16px 0; padding:0;">
+                                {{var provider_details}}
+                            </ul>
+                            <p style="font-size:12px; line-height:16px; margin:0 0 16px 0;">Vezi toate detaliile despre acest furnizor aici: <a href="{{var provider_url}}">{{var provider_name}}</a></p>
+                            <h2 style="font-size:18px; font-weight:normal; line-height:18px; margin:0 0 11px 0;">Mesajul atașat:</h2>
+                            <p style="border:1px solid #E0E0E0; font-size:12px; line-height:16px; margin:0 0 20px 0; padding:13px 18px; background:#f9f9f9;">
+                                {{var message}}
+                            </p>
+                            <p style="font-size:12px; line-height:16px; margin:0;">Acest email a fost trimis la data de {{var created_at}} de către utilizatorul cu adresa IP {{var sender_ip}}</p>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td valign="top">
+                            <p style="font-size:12px; line-height:16px; margin:0;">
+                                Cu simpatie echipa,<br />
+                                <strong>{{config path='general/store_information/name'}}</strong>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td valign="top" style="border-top: 1px solid #e0e0e0;">
+                            <p style="font-size:11px; line-height:16px; margin:0;">Acesta mesaj a fost trimis de către sistemul de notificări al <a href="{{var store_url}}" style="color:#1E7EC8;">{{config path='general/store_information/name'}}</a>. Nu răspund acestui mesaj deoarece această adresă de email nu este monitorizată. Pentru a semnala un abuz sau dacă ai primit acest email în mod repetat și/sau nejustificat te rugăm să ne semnalezi acest lucru la <a href="mailto:{{config path='trans_email/ident_support/email'}}" style="color:#1E7EC8;">{{config path='trans_email/ident_support/email'}}</a> precizând si adresa IP al utilizatorului.</p>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td bgcolor="#EAEAEA" align="center" style="background:#EAEAEA; text-align:center;">
+                            <center>
+                                <p style="font-size:12px; margin:0;">Îți multumim că utilizezi <strong>{{config path='general/store_information/name'}}</strong></p>
+                            </center></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
