@@ -1,2 +1,2 @@
-nti development
-nothing interesting to see
+nti development.
+Nothing interesting to see here.
