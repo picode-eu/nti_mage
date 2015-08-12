@@ -50,3 +50,4 @@
 /skin/frontend/picode/*
 !/skin/frontend/picode/default
 !.gitignore
+!README.md
