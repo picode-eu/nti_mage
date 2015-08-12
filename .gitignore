@@ -2,37 +2,51 @@
 #
 # Requested paths to exclude from ignore:
 #
-# app/code/local/
-# app/design/frontend/picode/
-# app/etc/modules/
-# app/locale/es_ES/
-# app/locale/ro_RO/
-# js/
-# skin/frontend/picode/
+# app/code
+# app/design/adminhtml/default/default
+# app/design/frontend/picode/default
+# app/etc/modules
+# app/locale/en_US
+# app/locale/ro_RO
+# js
+# skin/adminhtml/default/default
+# skin/frontend/picode/default
 # 
 
 /*
 !/app
 /app/*
 !/app/code
-/app/code/*
-!/app/code/local
 !/app/design
 /app/design/*
+!/app/design/adminhtml
+/app/design/adminhtml/*
+!/app/design/adminhtml/default
+/app/design/adminhtml/default/*
+!/app/design/adminhtml/default/default
 !/app/design/frontend
 /app/design/frontend/*
 !/app/design/frontend/picode
+/app/design/frontend/picode/*
+!/app/design/frontend/picode/default
 !/app/etc
 /app/etc/*
 !/app/etc/modules
 !/app/locale
 /app/locale/*
-!/app/locale/es_ES
+!/app/locale/en_US
 !/app/locale/ro_RO
 !/js
 !/skin
 /skin/*
+!/skin/adminhtml
+/skin/adminhtml/*
+!/skin/adminhtml/default
+/skin/adminhtml/default/*
+!/skin/adminhtml/default/default
 !/skin/frontend
 /skin/frontend/*
 !/skin/frontend/picode
+/skin/frontend/picode/*
+!/skin/frontend/picode/default
 !.gitignore

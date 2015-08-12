@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * EuPlatesc.ro
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * available at http://opensource.org/licenses/gpl-3.0.html
+ *
+ * @category   EuorPayment
+ * @package    EuroPayment_EuPlatesc
+ * @copyright  Copyright (c) 2008 EuroPayment Services - http://www.euplatesc.ro 
+ * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * @author     euplatesc.ro - 2009
+ */
+-->
+<config>
+    <modules>
+       <EuroPayment_EuPlatesc>
+          <version>1.0.0</version>
+       </EuroPayment_EuPlatesc>
+    </modules>
+    <global>
+        <models>
+            <ep>
+                <class>EuroPayment_EuPlatesc_Model</class>
+                <resourceModel>ep_mysql</resourceModel>
+            </ep>
+            <ep_mysql>
+                <class>EuroPayment_EuPlatesc_Model_Mysql</class>
+                <entities>
+                    <api_debug><table>ep_api_debug</table></api_debug>
+                </entities>
+            </ep_mysql>
+        </models>
+        <!--  helpers>
+            <ep>
+                <class>EuroPayment_EuPlatesc_Helper</class>
+            </ep>
+		</helpers -->
+        <resources>
+            <ep_setup>
+                <setup>
+                    <module>EuroPayment_EuPlatesc</module>
+                    <class>EuroPayment_EuPlatesc_Model_Mysql_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ep_setup>
+            <ep_write>
+                <connection>
+                  <use>core_write</use>
+                </connection>
+            </ep_write>
+            <ep_read>
+               <connection>
+                <use>core_read</use>
+              </connection>
+            </ep_read>
+        </resources>
+        <blocks>
+            <ep><class>EuroPayment_EuPlatesc_Block</class></ep>
+        </blocks>
+    </global>
+    <frontend>
+	    <secure_url>
+	        <ep_initialize>/epayment/init</ep_initialize>
+	    </secure_url>
+	    <routers>
+	        <ep>
+	            <use>standard</use>
+	            <args>
+	                <module>EuroPayment_EuPlatesc</module>
+	                <frontName>ep</frontName>
+	            </args>
+	        </ep>
+	    </routers>
+	    <translate>
+	        <modules>
+	            <EuroPayment_EuPlatesc>
+	                <files>
+	                    <default>EuroPayment_EuPlatesc.csv</default>
+	                </files>
+	            </EuroPayment_EuPlatesc>
+	        </modules>
+	    </translate>
+	    <layout>
+	         <updates>
+	              <ep_initialize_redirect>
+	                    <file>ep.xml</file>
+	              </ep_initialize_redirect>
+	         </updates>
+	    </layout>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <EuroPayment_EuPlatesc>
+                    <files>
+                        <default>EuroPayment_EuPlatesc.csv</default>
+                    </files>
+                </EuroPayment_EuPlatesc>
+            </modules>
+        </translate>
+    </adminhtml>
+    <default>
+        <payment>
+            <ep_initialize>
+                <active>1</active>
+                <model>EuroPayment_EuPlatesc_model_initialize</model>
+                <order_status>1</order_status>
+                <title>Plata online cu card bancar prin EuPlatesc.ro (3DSecure)</title>
+                <cctypes>AE,VI,MC</cctypes>
+                <acceptedcc>CCVISAMC</acceptedcc>
+                <allowspecific>0</allowspecific>
+                <merchant>44840979951</merchant>
+				<key>75E4E0517BB52F2734007BA9BF58BFCCDA047BE8</key>
+				<url>https://secure.euplatesc.ro/tdsprocess/tranzactd.php</url>
+				<newwindow>false</newwindow>
+				<test>true</test>
+				<debug>false</debug>
+            </ep_initialize>
+         </payment>
+    </default>
+</config>

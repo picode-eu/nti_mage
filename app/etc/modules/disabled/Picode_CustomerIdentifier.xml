@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<config>
-    <modules>
-        <Picode_CustomerIdentifier>
-            <active>true</active>
-            <codePool>local</codePool>
-        </Picode_CustomerIdentifier>
-    </modules>
-</config>

@@ -1,0 +1,116 @@
+<?php
+    $customer = $this->getCustomer();
+    $tabInfo = $this->getCustomtabInfo();
+?>
+<div class="entry-edit">
+    <?php $currentTab = '' ?>
+    <?php if ($tabInfo): ?>
+        <?php foreach($tabInfo as $info): ?>
+            <?php $segment = $this->getAccountSegment($info) ?>
+            <?php if($segment != $currentTab): ?>
+                <div class="entry-edit-head">
+                    <h4 class="icon-head head-edit-form fieldset-legend"> <?php echo $this->__('Account Options') ?></h4>
+                    <?php $currentTab = $segment ?>
+                </div>
+                <div class="customer_info_tabs_furnizor_account_tab_content fieldset">
+                    <div class="hor-scroll">
+                        <table class="form-list" cellspacing="0">
+                            <tbody>
+                                <?php foreach($tabInfo as $attribute): ?>
+                                    <?php $attrArr = explode('_', $attribute->getAttributeCode()) ?>
+                                    <?php if(in_array(strtolower($currentTab), $attrArr)): ?>
+                                        <tr>
+                                        <?php //Zend_Debug::dump($attribute->getData()) ?>
+                                            <td class="label">
+                                                 <label for="_account<?php echo $attribute->getAttributeCode() ?>"><?php echo $attribute->getFrontendLabel() ?> 
+                                                     <?php if($attribute->getIsRequired()): ?><span class="required">*</span><?php endif; ?>
+                                                 </label>
+                                             </td>
+                                             <td class="value">
+                                                <?php if($attribute->getFrontendInput() == 'select'): ?>
+                                                    <select class="select <?php echo $attribute->getIsRequired() ? 'required-entry' : ''; ?>" name="account[<?php echo $attribute->getAttributeCode() ?>]" id="_account<?php echo $attribute->getAttributeCode() ?>">
+                                                        <?php $options = $this->getAttributeOptions($attribute); ?>
+                                                        <?php foreach($options as $option): ?>
+                                                            <?php $customerValue = $customer->getResource()->getAttribute($attribute->getAttributeCode())->getFrontend()->getValue($customer); ?>
+                                                            <option value="<?php echo $option['value'] ?>" <?php if($customerValue == $option['label']): ?>selected="selected"<?php endif; ?>>
+                                                                <?php echo $option['label'] ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                 <?php elseif ($attribute->getFrontendInput() == 'textarea'): ?>
+                                                     <textarea cols="15" rows="2" class=" textarea" name="account[<?php echo $attribute->getAttributeCode() ?>]" id="_account<?php echo $attribute->getAttributeCode() ?>"><?php echo $customer->getResource()->getAttribute($attribute->getAttributeCode())->getFrontend()->getValue($customer); ?></textarea>
+                                                 <?php elseif ($attribute->getFrontendInput() == 'file'): ?>
+                                                    
+                                                    <?php if ($customer->getData($attribute->getAttributeCode())): ?>
+                                                        <span>
+                                                            <a href="<?php echo Mage::getBaseUrl('media') . 'customer' . $customer->getData($attribute->getAttributeCode()) ?>" title="<?php echo $customer->getData($attribute->getAttributeCode()) ?>" target="_blank">
+                                                                <img src="<?php echo Mage::getBaseUrl('media') . 'customer' . $customer->getData($attribute->getAttributeCode()) ?>" height="75" alt="Logo Image" />
+                                                            </a>
+                                                        </span>
+                                                        <?php /*
+                                                        <span>
+                                                            <a href="http://nti.nuntainimagini.ro/index.php/superadmin/customer/viewfile/file/L1QvdS9UdWxpcHMuanBn/key/a41234c07c0fa56372c3fb7276442275/">
+                                                                <img class="v-middle" src="http://nti.nuntainimagini.ro/skin/adminhtml/default/default/images/fam_bullet_disk.gif" title="Download" alt="Download">
+                                                            </a>
+                                                            <a href="http://nti.nuntainimagini.ro/index.php/superadmin/customer/viewfile/file/L1QvdS9UdWxpcHMuanBn/key/a41234c07c0fa56372c3fb7276442275/">Download</a>
+                                                        </span>
+                                                        */ ?>
+                                                    <?php endif; ?>
+                                                    <input type="file" class="input-file" name="account[<?php echo $attribute->getAttributeCode() ?>]" id="_account<?php echo $attribute->getAttributeCode() ?>">
+                                                    <input type="hidden" value="" id="_account<?php echo $attribute->getAttributeCode() ?>_value" name="account[<?php echo $attribute->getAttributeCode() ?>][value]">
+                                                    <?php if ($customer->getData($attribute->getAttributeCode())): ?>
+                                                        <span class="delete-file">
+                                                            <input type="checkbox" id="_account<?php echo $attribute->getAttributeCode() ?>_delete" class="checkbox" value="1" name="account[<?php echo $attribute->getAttributeCode() ?>][delete]">
+                                                            <label for="_account<?php echo $attribute->getAttributeCode() ?>_delete">Delete File</label>
+                                                        </span>
+                                                    <?php endif; ?>
+                                                 <?php elseif ($attribute->getFrontendInput() == 'boolean'): ?>
+                                                     <?php $customerValue = $customer->getResource()->getAttribute($attribute->getAttributeCode())->getFrontend()->getValue($customer); ?>
+                                                     <select class="select <?php echo $attribute->getIsRequired() ? 'required-entry' : ''; ?>" name="account[<?php echo $attribute->getAttributeCode() ?>]" id="_account<?php echo $attribute->getAttributeCode() ?>">
+                                                        <option value="0" <?php if($customerValue == 'No'): ?>selected="selected"<?php endif; ?>><?php echo $this->__('No') ?></option>
+                                                        <option value="1" <?php if($customerValue == 'Yes'): ?>selected="selected"<?php endif; ?>><?php echo $this->__('Yes') ?></option>
+                                                    </select>
+                                                 <?php else: ?>
+                                                    <?php $inputType = $attribute->getFrontendInput() == 'date' ? 'text' : $attribute->getFrontendInput() ?>
+                                                    <?php $inputStyle = $attribute->getFrontendInput() == 'date' ? 'style="width:110px !important;"' : false ?>
+                                                    <input type="<?php echo $inputType ?>" 
+                                                           <?php if($inputStyle) echo $inputStyle ?> 
+                                                           class="input-text <?php echo $attribute->getIsRequired() ? 'required-entry' : ''; ?>" 
+                                                           value="<?php echo $customer->getResource()->getAttribute($attribute->getAttributeCode())->getFrontend()->getValue($customer); ?>" 
+                                                           name="account[<?php echo $attribute->getAttributeCode() ?>]" 
+                                                           id="_account<?php echo $attribute->getAttributeCode() ?>"
+                                                    >
+                                                    <?php if($inputStyle): ?>
+                                                        <img title="Select Date" id="_account<?php echo $attribute->getAttributeCode() ?>_trig" class="v-middle" alt="" src="<?php echo $this->getSkinUrl() ?>/images/grid-cal.gif">
+                                                        <script type="text/javascript">
+                                                            //<![CDATA[
+                                                            jQuery(document).ready(function(){
+                                                                Calendar.setup({
+                                                                    inputField: '_account<?php echo $attribute->getAttributeCode() ?>',
+                                                                    ifFormat: '%d.%m.%Y',
+                                                                    showsTime: false,
+                                                                    button: '_account<?php echo $attribute->getAttributeCode() ?>_trig',
+                                                                    align: 'Bl',
+                                                                    singleClick : true
+                                                                });
+                                                            });
+                                                            //]]>
+                                                        </script>
+                                                    <?php endif; ?>
+                                                 <?php endif; ?>
+                                             </td>
+                                         </tr>
+                                     <?php endif; ?>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            <?php else: ?>
+                <?php continue; ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>There is nothing to show</p>
+    <?php endif; ?>
+</div>
