@@ -91,7 +91,7 @@
             <!-- adds new links to the same block -->
         </reference>
     </customer_account>
-    
+
     <customer_account_create>
         <reference name="root">
             <action method="setTemplate"><template>page/2columns-right.phtml</template></action>

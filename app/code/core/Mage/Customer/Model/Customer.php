@@ -20,7 +20,7 @@
  *
  * @category    Mage
  * @package     Mage_Customer
- * @copyright  Copyright (c) 2006-2014 X.commerce, Inc. (http://www.magento.com)
+ * @copyright  Copyright (c) 2006-2015 X.commerce, Inc. (http://www.magento.com)
  * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
@@ -688,7 +688,7 @@ class Mage_Customer_Model_Customer extends Mage_Core_Model_Abstract
      */
     public function sendPasswordResetConfirmationEmail()
     {
-        $storeId = $this->getStoreId();
+        $storeId = Mage::app()->getStore()->getId();
         if (!$storeId) {
             $storeId = $this->_getWebsiteStoreId();
         }
@@ -841,13 +841,10 @@ class Mage_Customer_Model_Customer extends Mage_Core_Model_Abstract
         if (strlen($password) && !Zend_Validate::is($password, 'StringLength', array(6))) {
             $errors[] = Mage::helper('customer')->__('The minimum password length is %s', 6);
         }
-        $confirmation = $this->getConfirmation();
-		$passwordconfirmation = $this->getPasswordConfirmation();
-		//if ($password != $confirmation) {
-		if (!(($password == $confirmation) || 
-			  ($password == $passwordconfirmation))) {
-			$errors[] = Mage::helper('customer')->__('Please make sure your passwords match.');
-		}
+        $confirmation = $this->getPasswordConfirmation();
+        if ($password != $confirmation) {
+            $errors[] = Mage::helper('customer')->__('Please make sure your passwords match.');
+        }
 
         $entityType = Mage::getSingleton('eav/config')->getEntityType('customer');
         $attribute = Mage::getModel('customer/attribute')->loadByCode($entityType, 'dob');
