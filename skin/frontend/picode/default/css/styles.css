@@ -11808,7 +11808,7 @@ div.calendar table td.button {
 .conturifurnizori-inregistrare-index .terms label {
     position: relative;
     top: -3px;
-} 
+}
 .conturifurnizori-inregistrare-index .terms em {
     color: #ff0000;
     margin-right: 5px;
@@ -12827,19 +12827,22 @@ input[type="text"] {
     margin: 0;
 }
 
-.portofoliu-left li.links {
+.portofoliu-left li.links,
+.oferte-left li.links{
     clear: both;
     float: left;
     width: 100%;
 }
 
-.portofoliu-left li.links a {
+.portofoliu-left li.links a,
+.oferte-left li.links a {
     float: left;
     margin-right: 10px;
     width: 75%;
 }
 
-.portofoliu-left li.links a.delete {
+.portofoliu-left li.links a.delete,
+.oferte-left li.links a.delete {
     float: right;
     font-size: 12px;
     line-height: 20px;

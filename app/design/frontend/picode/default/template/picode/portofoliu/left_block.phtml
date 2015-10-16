@@ -22,7 +22,11 @@
                                 <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/album/id/<?php echo $album->getAlbumId() ?>" title="Editează albumul <?php echo $album->getAlbumName() ?>">
                                     <?php echo $this->shortenString($album->getAlbumName(), 60, true) ?>
                                 </a>
-                                <a class="delete" href="javascript:void(0)" title="<?php echo $this->__('Sterge albumul') ?>" onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletealbum/id/<?php echo $album->getAlbumId() ?>', '<?php echo $album->getAlbumName() ?>')">
+                                <a
+                                    class="delete"
+                                    href="javascript:void(0)"
+                                    title="<?php echo $this->__('Sterge albumul') ?>"
+                                    onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletealbum/id/<?php echo $album->getAlbumId() ?>', 'albumul', '<?php echo $this->htmlEscape($album->getAlbumName()) ?>')">
                                     <?php echo $this->__('Sterge') ?>
                                 </a>
                             </li>
@@ -40,10 +44,13 @@
                     <?php if ($privateAlbums->getSize()): ?>
                         <?php foreach ($privateAlbums as $album): ?>
                             <li class="links">
-                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/album/id/<?php echo $album->getAlbumId() ?>" title="Editează albumul <?php echo $album->getAlbumName() ?>">
+                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/album/id/<?php echo $album->getAlbumId() ?>" title="Editează albumul <?php echo $this->htmlEscape($album->getAlbumName()) ?>">
                                     <?php echo $this->shortenString($album->getAlbumName(), 60, true) ?>
                                 </a>
-                                <a class="delete" href="javascript:void(0)" title="<?php echo $this->__('Sterge albumul') ?>" onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletealbum/id/<?php echo $album->getAlbumId() ?>', '<?php echo $album->getAlbumName() ?>')">
+                                <a
+                                    class="delete" href="javascript:void(0)"
+                                    title="<?php echo $this->__('Sterge albumul') ?>"
+                                    onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletealbum/id/<?php echo $album->getAlbumId() ?>', 'albumul', '<?php echo $album->getAlbumName() ?>')">
                                     <?php echo $this->__('Sterge') ?>
                                 </a>
                             </li>
@@ -76,10 +83,14 @@
                     <?php if ($publicVideos->getSize()): ?>
                         <?php foreach ($publicVideos as $video): ?>
                             <li class="links">
-                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/video/id/<?php echo $video->getVideoId() ?>" title="Editează videoclipul <?php echo $video->getVideoName() ?>">
+                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/video/id/<?php echo $video->getVideoId() ?>" title="Editează videoclipul <?php echo $this->htmlEscape($video->getVideoName()) ?>">
                                     <?php echo $this->shortenString($video->getVideoName(), 60, true) ?>
                                 </a>
-                                <a class="delete" href="javascript:void(0)" title="<?php echo $this->__('Sterge videoclipul') ?>" onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletevideo/id/<?php echo $video->getVideoId() ?>', '<?php echo $video->getVideoName() ?>')">
+                                <a
+                                    class="delete"
+                                    href="javascript:void(0)"
+                                    title="<?php echo $this->__('Sterge videoclipul') ?>"
+                                    onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletevideo/id/<?php echo $video->getVideoId() ?>', 'videoclipul', '<?php echo $this->htmlEscape($video->getVideoName()) ?>')">
                                     <?php echo $this->__('Sterge') ?>
                                 </a>
                             </li>
@@ -97,10 +108,14 @@
                     <?php if ($privateVideos->getSize()): ?>
                         <?php foreach ($privateVideos as $video): ?>
                             <li class="links">
-                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/video/id/<?php echo $video->getVideoId() ?>" title="Editează videoclipul <?php echo $video->getVideoName() ?>">
+                                <a href="<?php echo $this->getBaseUrl() ?>portofoliu/edit/video/id/<?php echo $video->getVideoId() ?>" title="Editează videoclipul <?php echo $this->htmlEscape($video->getVideoName()) ?>">
                                     <?php echo $this->shortenString($video->getVideoName(), 60, true) ?>
                                 </a>
-                                <a class="delete" href="javascript:void(0)" title="<?php echo $this->__('Sterge videoclipul') ?>" onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletevideo/id/<?php echo $video->getVideoId() ?>', '<?php echo $video->getVideoName() ?>')">
+                                <a
+                                    class="delete"
+                                    href="javascript:void(0)"
+                                    title="<?php echo $this->__('Sterge videoclipul') ?>"
+                                    onclick="confirmDelete('<?php echo $this->getBaseUrl() ?>portofoliu/edit/deletevideo/id/<?php echo $video->getVideoId() ?>', 'videoclipul', '<?php echo $this->htmlEscape($video->getVideoName()) ?>')">
                                     <?php echo $this->__('Sterge') ?>
                                 </a>
                             </li>
@@ -123,12 +138,12 @@
 
 <script type="text/javascript">
 //<![CDATA[
-    function confirmDelete(url, name)
+    function confirmDelete(url, type, name)
     {
-        if (confirm('Ești sigut că vrei să stergi albumul:' + "\n" + '"' + name + '"?')) {
+        if (confirm('Ești sigur că vrei să stergi ' + type + ': ' + '"' + name + '"?' + "\n\n" + 'Această actiune este IREVERSIBILA!')) {
             window.location.href = url;
         }
-        
+
         return false;
     }
 //]]>
