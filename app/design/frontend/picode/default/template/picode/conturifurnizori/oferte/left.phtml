@@ -24,7 +24,7 @@
                     <?php else: ?>
                         <?php foreach ($_oferteActive as $_product): ?>
                             <?php $isCurrent = $this->getIsCurrentLink($_product) ?>
-                            <li class="links <?php echo $isCurrent ? 'current' : ''; ?>">
+                            <li class="links <?php echo $isCurrent ? 'current' : ''; ?>"> 
                                 <a href="<?php echo $this->getEditUrl($_product) ?>" title="<?php echo 'Editează ' . $this->htmlEscape($_product->getName()) ?>">
                                     <?php echo $isCurrent ? '<strong>' : ''; ?>
                                         <?php echo $this->htmlEscape($_product->getName()) ?>
