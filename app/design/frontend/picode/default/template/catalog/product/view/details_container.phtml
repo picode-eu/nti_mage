@@ -11,7 +11,7 @@
     $_product = $this->getProduct();
     $_provider = Mage::getModel('customer/customer')->load($_product->getOfgCustomerId());
 	$productType = $_product->getOfgTipOferta();
-    //Zend_Debug::dump(get_class_methods($_product)); die();
+    //Zend_Debug::dump($productType);
 ?>
 
 <div class="tabbed-area">
@@ -20,12 +20,12 @@
             <li class="tab-title">
                 <span id="tab-generale" class="active"><?php echo $this->__('Informatii generale') ?></span>
             </li>
-            <?php if ($productType == 50 || $productType == 48): ?>
+            <?php if ($productType == 1 || $productType == 3): ?>
 	            <li class="tab-title">
 	                <span id="tab-foto" class=""><?php echo $this->__('Detalii foto') ?></span>
 	            </li>
             <?php endif; ?>
-            <?php if ($productType == 49 || $productType == 48): ?>
+            <?php if ($productType == 2 || $productType == 3): ?>
 	            <li class="tab-title">
 	                <span id="tab-video" class=""><?php echo $this->__('Detalii video') ?></span>
 	            </li>
@@ -33,12 +33,14 @@
             <li class="tab-title">
                 <span id="tab-contact"><?php echo $this->__('Detalii contact') ?></span>
             </li>
+            <?php /*
             <li class="tab-title">
                 <span id="tab-opinii"><?php echo $this->__('Opinii clienti') ?></span>
             </li>
+            */ ?>
         </ul>
     </div>
-    
+
     <div class="contents">
         <?php /*
         <div id="content-generale" class="content active">
@@ -48,7 +50,7 @@
             	<?php $i = 0; foreach ($productAttributes as $attribute): ?>
             		<div class="attribute-row <?php echo $i%2 == 0 ? 'even' : 'odd'; ?>">
 	                    <label class="attr-title"><?php echo $attribute['title'] ?></label>
-	                    <span class="attr-value"><?php echo $attribute['value']; ?></span>  
+	                    <span class="attr-value"><?php echo $attribute['value']; ?></span>
 	                </div>
 	        <?php if ($i == floor(count($productAttributes) / 2)): ?>
             	</div>
@@ -63,11 +65,11 @@
                 <h2><?php echo $this->__('Informații generale') ?></h2>
                 <div class="attribute-row even">
                     <label class="attr-title"><?php echo $this->__('Denumire furnizor') ?></label>
-                    <span class="attr-value"><?php echo $_product->getOfgCustomerFrontname(); ?></span>  
+                    <span class="attr-value"><?php echo $_product->getOfgCustomerFrontname(); ?></span>
                 </div>
                 <div class="attribute-row odd">
                     <label class="attr-title"><?php echo $this->__('Tip ofertă') ?></label>
-                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_tip_oferta')->getFrontend()->getValue($_product); ?></span>  
+                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_tip_oferta')->getFrontend()->getValue($_product); ?></span>
                 </div>
                 <div class="attribute-row even">
                     <?php
@@ -78,64 +80,64 @@
                         $attributeText = implode(', ', $zoneText);
                     ?>
                     <label class="attr-title"><?php echo $this->__('Valabilă pentru:') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <?php if ($_product->getOfgNrFotografi()): ?>
 	                <div class="attribute-row odd">
 	                    <label class="attr-title"><?php echo $this->__('Fotografi') ?></label>
-	                    <span class="attr-value"><?php echo $_product->getOfgNrFotografi(); ?></span>  
+	                    <span class="attr-value"><?php echo $_product->getOfgNrFotografi(); ?></span>
 	                </div>
 	            <?php endif; ?>
                 <?php if ($_product->getOfgNrCameramani()): ?>
 	                <div class="attribute-row even">
 	                    <label class="attr-title"><?php echo $this->__('Cameramani') ?></label>
-	                    <span class="attr-value"><?php echo $_product->getOfgNrCameramani(); ?></span>  
+	                    <span class="attr-value"><?php echo $_product->getOfgNrCameramani(); ?></span>
 	                </div>
                 <?php endif; ?>
                 <div class="attribute-row odd">
                     <label class="attr-title"><?php echo $this->__('Cheltuieli transport') ?></label>
-                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_cheltuieli_transport')->getFrontend()->getValue($_product); ?></span>  
+                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_cheltuieli_transport')->getFrontend()->getValue($_product); ?></span>
                 </div>
                 <div class="attribute-row even">
                     <label class="attr-title"><?php echo $this->__('Cheltuieli cazare') ?></label>
-                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_cheltuieli_cazare')->getFrontend()->getValue($_product); ?></span>  
+                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_cheltuieli_cazare')->getFrontend()->getValue($_product); ?></span>
                 </div>
             </div>
             <div class="col-2 right">
                 <h2><?php echo $this->__('Prezenta echipei') ?></h2>
                 <div class="attribute-row even">
                     <label class="attr-title"><?php echo $this->__('Timp alocat evenimentului') ?></label>
-                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_disponibilitate')->getFrontend()->getValue($_product); ?></span>  
+                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_disponibilitate')->getFrontend()->getValue($_product); ?></span>
                 </div>
                 <div class="attribute-row odd">
                     <?php $attributeText = $_product->getData('ofg_pregatiri_nunta') ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('Pregătiri nuntă') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <div class="attribute-row even">
                     <?php $attributeText = $_product->getData('ofg_cununie_civila') ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('Cununie civilă') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <div class="attribute-row odd">
                     <?php $attributeText = $_product->getData($_product->getOfgCununieCivilaAltaZi()) ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('Cununie civilă în altă zi?') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <div class="attribute-row even">
                     <?php $attributeText = $_product->getData('ofg_cununie_religioasa') ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('Cununie religioasă') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <div class="attribute-row odd">
                     <?php $attributeText = $_product->getData('ofg_restaurant') ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('Restaurant / Petrecere') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <div class="attribute-row even">
                     <?php $attributeText = $_product->getData('ofg_restaurant_panala') == 'alt-moment' ? $_product->getResource()->getAttribute('ofg_restaurant_definit')->getFrontend()->getValue($_product) : $_product->getResource()->getAttribute('ofg_restaurant_panala')->getFrontend()->getValue($_product); ?>
                     <label class="attr-title"><?php echo $this->__('Prezența la restaurant (până la)') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
             </div>
             <div class="row-separator"></div>
@@ -143,17 +145,17 @@
                 <h2><?php echo $this->__('Sedinte ' . $_product->getResource()->getAttribute('ofg_tip_oferta')->getFrontend()->getValue($_product) . ' programate') ?></h2>
                 <div class="attribute-row even">
                     <label class="attr-title"><?php echo $this->__('Nr. maxim ședințe programate') ?></label>
-                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_nr_sedinte')->getFrontend()->getValue($_product); ?></span>  
+                    <span class="attr-value"><?php echo $_product->getResource()->getAttribute('ofg_nr_sedinte')->getFrontend()->getValue($_product); ?></span>
                 </div>
                 <div class="attribute-row odd">
                     <?php $attributeText = $_product->getData('ofg_sedinta_logodna') ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('Ședintă logodnă (înainte de nuntă)') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <div class="attribute-row even">
                     <?php $attributeText = $_product->getData('ofg_sedinte_inainte_biserica') ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('Ședință înainte de biserică') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
             </div>
             <div class="col-2 right">
@@ -161,22 +163,22 @@
                 <div class="attribute-row even">
                     <?php $attributeText = $_product->getData('ofg_sedinte_dupa_biserica') ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('Ședință după biserică') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <?php $attributeText = $_product->getOfgSedinteSuplimentara() ? $_product->getOfgSedinteSuplimentara() : 'Nu'; ?>
                 <div class="attribute-row odd">
                     <label class="attr-title"><?php echo $this->__('Alte sedinte programate') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
                 <div class="attribute-row even">
                     <?php $attributeText = $_product->getData('ofg_trash_the_dress') ? 'Da' : 'Nu'; ?>
                     <label class="attr-title"><?php echo $this->__('"Trash the Dress" (după nuntă)') ?></label>
-                    <span class="attr-value"><?php echo $attributeText; ?></span>  
+                    <span class="attr-value"><?php echo $attributeText; ?></span>
                 </div>
             </div>
         </div>
-        
-        <?php if ($productType == 50 || $productType == 48): ?>
+
+        <?php if ($productType == 1 || $productType == 3): ?>
 	        <div id="content-foto" class="content">
 	            <h2><?php echo $this->__('Detalii foto') ?></h2>
 	            <?php $productAttributes = $this->getProductAttributesBySet($_product, 25, 181); ?>
@@ -184,7 +186,7 @@
 	            	<?php $i = 0; foreach ($productAttributes as $attribute): ?>
 	            		<div class="attribute-row <?php echo $i%2 == 0 ? 'even' : 'odd'; ?>">
 		                    <label class="attr-title"><?php echo $attribute['title'] ?></label>
-		                    <span class="attr-value"><?php echo $attribute['value']; ?></span>  
+		                    <span class="attr-value"><?php echo $attribute['value']; ?></span>
 		                </div>
 		            <?php $i++; endforeach; ?>
 	            </div>
@@ -195,14 +197,14 @@
 			            	<span class="attr-value odd"><?php echo $_product->getOffSlideShowDetalii() ?></span>
 			            </div>
 			        <?php endif; ?>
-		            
+
 		            <?php if ($_product->getOffAlbumClasic()): ?>
 		            	<div class="attribute-row single-attr">
 			            	<span class="attr-title even"><?php echo $this->__('Descriere Album Clasic') ?></span>
 			            	<span class="attr-value odd"><?php echo $_product->getOffAlbumClasicDetalii() ?></span>
 			            </div>
 		            <?php endif; ?>
-		            
+
 	            	<?php if ($_product->getOffAlbumCarte()): ?>
 	            		<div class="attribute-row single-attr">
 			            	<span class="attr-title even"><?php echo $this->__('Descriere Album FotoCarte') ?></span>
@@ -212,8 +214,8 @@
 	            </div>
 	        </div>
 	    <?php endif; ?>
-	    
-	    <?php if ($productType == 49 || $productType == 48): ?>
+
+	    <?php if ($productType == 2 || $productType == 3): ?>
 	        <div id="content-video" class="content">
 	            <h2><?php echo $this->__('Detalii video') ?></h2>
 	            <?php $productAttributes = $this->getProductAttributesBySet($_product, 25, 180); ?>
@@ -221,7 +223,7 @@
 	            	<?php $i = 0; foreach ($productAttributes as $attribute): ?>
 	            		<div class="attribute-row <?php echo $i%2 == 0 ? 'even' : 'odd'; ?>">
 		                    <label class="attr-title"><?php echo $attribute['title'] ?></label>
-		                    <span class="attr-value"><?php echo $attribute['value']; ?></span>  
+		                    <span class="attr-value"><?php echo $attribute['value']; ?></span>
 		                </div>
 		        <?php if ($i == floor(count($productAttributes) / 2)): ?>
 	            	</div>
@@ -229,7 +231,7 @@
 		        <?php endif; ?>
 		            <?php $i++; endforeach; ?>
 	            </div>
-	            
+
 	            <?php if ($_product->getOfvDetaliiSuplimentare()): ?>
 		    		<div class="attribute-row single-attr">
 		            	<span class="attr-title even"><?php echo $this->__('Detalii suplimentare') ?></span>
@@ -238,7 +240,7 @@
 		        <?php endif; ?>
 	        </div>
 	    <?php endif; ?>
-	        
+
         <div id="content-contact" class="content">
             <h2><?php echo $this->__('Detalii contact') ?></h2>
             <?php $contactDetails = $this->getProviderAttributesBySet($_provider, 'furnizor_contact'); ?>
@@ -266,7 +268,7 @@
 		                <?php else: ?>
 		                	<label class="attr-title"><?php echo $contact['title'] ?></label>
 		                    <span class="attr-value"><?php echo $contact['value']; ?></span>
-		                <?php endif; ?>  
+		                <?php endif; ?>
 	                </div>
 	            <?php $i++; endforeach; ?>
             </div>
@@ -289,6 +291,7 @@
 	            <?php $i++; endforeach; ?>
             </div>
         </div>
+        <?php /*
         <div id="content-opinii" class="content">
             <div class="customer-reviews">
                 <?php //echo $this->getChildHtml('reviews') ?>
@@ -300,6 +303,7 @@
                 <?php //echo $this->getChildHtml('product_review'); ?>
             </div>
         </div>
+        */ ?>
     </div>
 </div>
 
@@ -313,6 +317,6 @@
         jQuery(this).addClass('active');
         jQuery('#content-' + clickedId[1]).addClass('active');
     });
-    
+
 //]]>
 </script>
