@@ -409,7 +409,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
             }
         }
 
-        $message = 'Oferta ' . $_product->getName() . ' a fost stearsa cu succes.';
+        $message = 'Oferta "' . $_product->getName() . '" a fost stearsa cu succes.';
         Mage::getSingleton('core/session')->addSuccess($message);
         $this->_redirect('customer/account/');
 
