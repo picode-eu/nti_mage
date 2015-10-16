@@ -9044,6 +9044,7 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
 /* ============================================ *
  * Customer
  * ============================================ */
+ .
 .customer-account-login .scaffold-form label:first-child {
   /*width: 115px;*/
  width: auto;
@@ -9111,6 +9112,7 @@ body:not(.opc-has-progressed-from-login) .opc.opc-firststep-login .section#opc-l
     width: 49%;
     float: left;
 }
+.customer-account-create .name-middlename { display: none; }
 .customer-account-create .form-list .control {
     clear: both;
 }
