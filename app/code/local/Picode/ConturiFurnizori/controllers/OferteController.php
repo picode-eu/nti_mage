@@ -1,5 +1,5 @@
 <?php
-class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Front_Action 
+class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Front_Action
 {
 	/**
      * Check if customer is logged in or not
@@ -8,59 +8,59 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
     public function preDispatch()
     {
         parent::preDispatch();
-     
+
         if (!Mage::getSingleton('customer/session')->authenticate($this)) {
             $this->setFlag('', 'no-dispatch', true);
         }
     }
-    
+
     public function getCustomerSession()
     {
         return Mage::getSingleton('customer/session');
     }
-    
+
 	public function listAction()
 	{
 	    if ($this->getRequest()->getParam('type')) {
 	        $this->loadLayout();
-        
+
             $this->_initLayoutMessages('customer/session');
             $this->_initLayoutMessages('catalog/session');
-            
+
             $this->getLayout()->getBlock('head')->setTitle($this->__('Oferte foto/video'));
             $this->renderLayout();
 	    } else {
 	        $this->_redirect('customer/account/');
 	    }
 	}
-    
+
     public function editeazaAction()
     {
         $productId = $this->getRequest()->getParam('oferta');
-        
+
         if ($productId != 'noua') {
             $customerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
             $_product = Mage::getModel('catalog/product')->load($productId);
             $productOwner = $_product->getOfgCustomerId();
-            
+
             // verify that the customer has permission to edit the given product
             if ($customerId != $productOwner) {
                 // redirect with error message
                 $message = 'Nu ai permisiunea să editezi această ofertă!';
                 Mage::getSingleton('core/session')->addError($message);
                 $this->_redirect('customer/account/');
-                
+
                 return;
-                
+
             } else {
                 // the logged in customer is the product owner
                 Mage::getSingleton('customer/session')->setData('current_status', $_product->getStatus());
-                
+
                 $this->loadLayout();
-        
+
                 $this->_initLayoutMessages('customer/session');
                 $this->_initLayoutMessages('catalog/session');
-                
+
                 $this->getLayout()->getBlock('head')->setTitle($this->__('Editeaza oferta'));
                 $this->renderLayout();
             }
@@ -68,10 +68,10 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
             // create new product
             Mage::getSingleton('customer/session')->setData('current_status', 2);
             $this->loadLayout();
-    
+
             $this->_initLayoutMessages('customer/session');
             $this->_initLayoutMessages('catalog/session');
-            
+
             $this->getLayout()->getBlock('head')->setTitle($this->__('Creaza oferta noua'));
             $this->renderLayout();
         } else {
@@ -81,7 +81,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
             $this->_redirect('customer/account/');
             return;
         }
-        
+
         return;
     }
 
@@ -93,10 +93,10 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
         } else {
             $this->_redirect('customer/account');
         }
-        
+
         return;
     }
-    
+
     public function ajaxformAction()
     {
         if ($this->getRequest()->isPost()) {
@@ -105,19 +105,19 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
         } else {
             $this->_redirect('customer/account');
         }
-        
+
         return;
     }
-    
+
     public function saveofertaAction()
     {
         /**
          * Modern versions of Magento won't let you programmatically save a product
          * if the store object's ID isn't set to the admin store's id
          */
-        
+
 		Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
-        
+
     	// inputs that needs special treatments
     	$specialFormatedInputs = array(
                                 'price',
@@ -131,12 +131,12 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                                 'addimg_2',
                                 'addimg_3',
                             );
-							
+
         // inputs that needs further verification before save
         $specialAttentionInputs = array(
                                 'visibility',
                             );
-                            
+
         // required inputs that are not prezents in form
         $systemRequiredInputs = array(
                                 'short_description',
@@ -147,13 +147,13 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                                 'meta_title',
                                 'meta_description',
                             );
-							
+
         $existing = false;
         $customer = Mage::getSingleton('customer/session')->getCustomer();
         $helper = Mage::helper('conturifurnizori');
         $ofertaData = $helper->getOfertaObj();
         //Zend_Debug::dump($ofertaData->getData());
-        
+
         if ($ofertaData->hasData()) {
             // temp directory of uploaded images
             $tempDir = Mage::getBaseDir() . DS . 'media' . DS .'tmp_uploads' . DS . $customer->getId() . DS;
@@ -173,15 +173,15 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
 				$product->setAttributeSetId(25);// 25 is for oferte Furnizori
 				$product->setTypeId('ofertefurnizori');
                 $product->setData('sku', $ofertaData['sku']);
-				$product->setStockData(array('is_in_stock' => 1,  'qty' => 0)); 
+				$product->setStockData(array('is_in_stock' => 1,  'qty' => 0));
 				$product->setInventoryManageStock(0);
             }
-			
+
 			// save url key
 			$product->setData('url_key', $this->getFriendlyUrl($ofertaData['name']) . '-' . $product->getSku());
 			$product->setData('url_path', $this->getFriendlyUrl($ofertaData['name']) . '-' . $product->getSku());
-            $product->setData('url_key_create_redirect', true); 
-            
+            $product->setData('url_key_create_redirect', true);
+
             // start adding product attributes
             foreach ($ofertaData->getData() as $attrCode => $value) {
                 if (in_array($attrCode, $specialFormatedInputs)) {
@@ -222,7 +222,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                     $product->setData($attrCode, $value);
                 }
             }
-            
+
             // save inputs that are not prezent in the form
             foreach ($systemRequiredInputs as $code) {
                 switch ($code) {
@@ -264,9 +264,9 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                         break;
                 }
             }
-            
+
             //Zend_Debug::dump($product->getData());
-            
+
             // reset unused inputs
             switch ($ofertaData['ofg_tip_oferta']) {
                 case '1': // foto
@@ -274,13 +274,13 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                     $attributes = $helper->getAttributesFromGroup(180); // 180 is for Video Details
                     $categories = array('4', '6');
                     break;
-                
+
                 case '2': // video
                     // unset foto inputs
                     $attributes = $helper->getAttributesFromGroup(181); // 181 is for Foto Details
                     $categories = array('4', '7');
                     break;
-                    
+
                 case '3': // foto-video
                     $attributes = false;
 					$categories = array('4', '8');
@@ -292,23 +292,23 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                     $product->setData($attr->getAttributeCode(), $attr->getDefaultValue());
                 }
             }
-			
+
 			// asign categories
 			$product->setCategoryIds(array());
 			$product->setCategoryIds($categories);
-            
+
 			try
 			{
 			    $product->setCreatedAt(date("Y-m-d H:i:s",  strtotime(Mage::getModel('core/date')->date('Y-m-d H:i:s') . ' +2 hour')));
-                
+
                 // set popularity form provider's reputation
                 // $providerId = Mage::getSingleton('customer/session')->getCustomer()->getId();
                 // $customerReputation = Mage::getModel('providerreputation/reputation')
                         // ->getCollection()
                         // ->addFieldToFilter('provider_id', $providerId);
-//                         
+//
                 // Zend_Debug::dump($providerReputation->getData()); die();
-                
+
 			    $product->save();
 
                 // fire an event
@@ -318,29 +318,29 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
 
 				// save / delete product images
 				if (
-					isset($ofertaData['main_img']) || 
-					isset($ofertaData['addimg_1']) || 
-					isset($ofertaData['addimg_2']) || 
-					isset($ofertaData['addimg_3']) || 
+					isset($ofertaData['main_img']) ||
+					isset($ofertaData['addimg_1']) ||
+					isset($ofertaData['addimg_2']) ||
+					isset($ofertaData['addimg_3']) ||
 					isset($ofertaData['delete_orig_image'])
 					)
 				{
 					$this->saveProductImage($product, $ofertaData, $existing);
 				}
-				
+
                 if ($existing) {
                     $message = 'Modificarile la oferta <strong>' . $product->getName() . '</strong> au fost salvate cu succes.';
                 } else {
                     $message = 'Oferta <strong>' . $product->getName() . '</strong> a fost salvata cu succes.';
                 }
-				
+
 				// reindex Category Products
                 //$process = Mage::getModel('index/indexer')->getProcessByCode('catalog_category_product')->reindexAll();
-				
+
 				Mage::getSingleton('core/session')->addSuccess($message);
 				// redirect to customer account
 		        $this->_redirect('customer/account/');
-				
+
 				return;
 			}
 			catch (Exception $e)
@@ -349,7 +349,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
 			    $message = 'Ceva neasteptat s-a intamplat. Te rugam incearca din nou.';
 	            Mage::getSingleton('core/session')->addError($message);
 	            $this->_redirect('customer/account/');
-				
+
 				return;
 			}
 
@@ -357,44 +357,95 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
             $message = 'Ceva neasteptat s-a intamplat. Te rugam incearca din nou. Daca problema persista nu ezita sa ne contactezi.';
             Mage::getSingleton('core/session')->addError($message);
             $this->_redirect('customer/account/');
-			
+
             return;
         }
-		
+
 		// ends editing the product
 		return;
+    }
+
+    public function deleteofertaAction()
+    {
+        $params = $this->getRequest()->getParams();
+        $customerId = $this->getCustomerSession()->getCustomerId();
+        $_product = Mage::getModel('catalog/product')->load($params['id']);
+
+        if ($customerId != $_product->getOfgCustomerId()) {
+            $message = 'Nu ai permisiunea sa editezi aceasta oferta!';
+            Mage::getSingleton('core/session')->addError($message);
+            $this->_redirect('customer/account/');
+
+            return;
+        } else {
+            try
+            {
+                /**
+                 * Modern versions of Magento won't let you programmatically save a product
+                 * if the store object's ID isn't set to the admin store's id
+                 */
+                Mage::app()->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+
+                // remove product images
+                $productImages = $_product->getMediaGallery('images');
+                foreach ($productImages as $image) {
+                    $imageFile = Mage::getBaseDir() . '/media/catalog/product' . $image['file'];
+                    if (file_exists($imageFile)) {
+                        unlink($imageFile);
+                    }
+                }
+                // delete the product
+                $_product->delete();
+
+            }
+            catch (Exception $e)
+            {
+                //throw new Exception( 'Something really gone wrong' . $e->getMessage());
+                $message = 'Ceva neasteptat s-a intamplat. Te rugam incearca din nou.';
+                Mage::getSingleton('core/session')->addError($message);
+                $this->_redirect('customer/account/');
+
+                return;
+            }
+        }
+
+        $message = 'Oferta ' . $_product->getName() . ' a fost stearsa cu succes.';
+        Mage::getSingleton('core/session')->addSuccess($message);
+        $this->_redirect('customer/account/');
+
+        return;
     }
 
     public function canActivateOffers($providerId)
     {
         $_provider = Mage::getModel('customer/customer')->load($providerId);
-        
+
         if ($_provider->getFurnizorAccountStatus() == 1 && $_provider->getFurnizorAccountOnlineStatus() == 1) {
             return true;
         }
 
         return false;
     }
-    
+
     public function activeOffersExceeded($providerId, $existing, $newStatus)
     {
         $_provider = Mage::getModel('customer/customer')->load($providerId);
         $activeOffersAllowed = $_provider->getAcOpMaxOferteActive();
         $activeOffers = Mage::helper('conturifurnizori')->countActiveOffers($providerId);
         $currentStatus = Mage::getSingleton('customer/session')->getCurrentStatus();
-        
+
         if ($existing && $newStatus < $currentStatus) {
             $activeOffers += 1;
         } else {
             $activeOffers -= 1;
         }
-        
+
         //echo $newStatus . ' - ' . $activeOffers; die();
-        
+
         if ($activeOffers < $activeOffersAllowed) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -403,14 +454,14 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
         $reloadImgObj = false;
         $mediaApi  = Mage::getModel("catalog/product_attribute_media_api");
         $mediaPath = Mage::getBaseDir('media') . DS . 'catalog' . DS . 'product' . DS;
-        
+
         if ($product->getId() && $existing) {
             $items = $mediaApi->items($product->getId());
-            
+
             // before save the new images we have first to delete the old ones
             if (count($ofertaData['delete_orig_image'])) {
                 //Zend_Debug::dump($items); die();
-                
+
                 // create an array with the position of the images that will be deleted
                 foreach ($ofertaData['delete_orig_image'] as $image) {
                     $position = explode('_', $image);
@@ -422,19 +473,19 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                          * because the counter of the deleted image starts from 1
                          * Position 1 is reserved for the main image
                          */
-                        $deletePosition[] = end($position) + 1; 
+                        $deletePosition[] = end($position) + 1;
                     }
                 }
-                
+
                 // start deleting images
                 foreach ($items as $item) {
                     if (in_array($item['position'], $deletePosition)) {
-                        
+
                         $mediaApi->remove($product->getId(), $item['file']);
                         if (file_exists($mediaPath . $item['file'])) {
                             unlink($mediaPath . $item['file']);
                         }
-                        
+
                         $reloadImgObj = true;
                     }
                 }
@@ -446,7 +497,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
             }
 
         }
-        
+
         // get all product images if product exists (is not new)
         if ($product->getId() && $existing) {
             $items = $mediaApi->items($product->getId());
@@ -455,13 +506,13 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
 
         // start saving new uploaded images
         $tmpImagePath = Mage::getBaseDir('media') . DS . 'tmp_uploads' . DS . $this->getCustomerSession()->getCustomer()->getId() . DS;
-        
+
         // save new main image
         if (isset($ofertaData['main_img'])) {
-            
+
             $imgName = $tmpImagePath . $ofertaData['main_img'];
             $pathInfo = pathinfo($imgName);
-            
+
             switch($pathInfo['extension']){
                 case 'png':
                     $mimeType = 'image/png';
@@ -470,7 +521,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                     $mimeType = 'image/jpeg';
                     break;
             }
-            
+
             $newImage = array(
                 'file' => array(
                     'content' => base64_encode($imgName),
@@ -482,16 +533,16 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                 'types' => array ('image','small_image','thumbnail'),
                 'exclude' => 0,
             );
-            
+
             $mediaApi->create($product->getSku(), $newImage, null, 'sku');
         }
-        
+
         // upload other gallery images
         for ($i = 1; $i <= 3; $i++) {
             if (isset($ofertaData['addimg_' . $i])) {
                 $imgName = $tmpImagePath . $ofertaData['addimg_' . $i];
                 $pathInfo = pathinfo($imgName);
-                
+
                 switch($pathInfo['extension']){
                     case 'png':
                         $mimeType = 'image/png';
@@ -500,7 +551,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                         $mimeType = 'image/jpeg';
                         break;
                 }
-                
+
                 $newImage = array(
                     'file' => array(
                         'content' => base64_encode($imgName),
@@ -512,7 +563,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
                     'types' => 'gallery',
                     'exclude' => 0,
                 );
-                
+
                 $mediaApi->create($product->getSku(), $newImage, null, 'sku');
             }
         }
@@ -526,7 +577,7 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
 	      $string = preg_replace('/&([a-z])(acute|uml|circ|grave|ring|cedil|slash|tilde|caron|lig|quot|rsquo);/i', '\\1', $string );
 	      $string = preg_replace(array('/[^a-z0-9]/i', '/[-]+/') , '-', $string);
 	      $string = trim($string, '-');
-	
+
 	      if($ext){
 	           return strtolower(trim($string, '-')).$ext;
 	      }else{
@@ -534,8 +585,8 @@ class Picode_ConturiFurnizori_OferteController extends Mage_Core_Controller_Fron
 	      }
 	 }
 
-    
-	
+
+
     /*
     array(51) {
       ["name"] => string(6) "Name 1"
